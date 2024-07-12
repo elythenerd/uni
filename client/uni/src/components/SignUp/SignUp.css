@@ -1,0 +1,129 @@
+
+.container{
+    background-color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    gap: 0.5rem;
+    width: 30rem;
+    height: 35rem;
+    border-radius: 5px;
+    box-shadow: 1px 1px 1px 1px  rgb(239, 239, 239);
+    padding: 2rem;}
+.underline{
+    width: 5rem;
+    height: 5px;
+    background-color: black;
+    border-radius: 5px;
+
+}
+.title{
+    display: flex;
+    flex-direction: column;
+    
+    align-items: center;
+   
+}
+
+.body{
+    height: 23rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    align-items:end;
+}
+.body input{
+    height: 3rem;
+    padding: 5px;
+   
+    border: none;
+    direction: rtl;
+    width: 29rem;
+
+}
+.body input:focus{
+    outline: none;
+}
+.footer select{
+    height: 3.5rem;
+    direction: rtl;
+    width: 5rem;
+    border-radius: 5px;
+    border: 2px solid lightgray;
+}
+.footer input{
+    height: 1.2rem;
+    direction: rtl;
+    width: 11rem;
+    border-radius: 5px;
+    border: 2px solid lightgray;
+}
+.footer{
+    display: flex;
+    gap: 0.5rem;
+    height: 8rem;
+    justify-content: space-between;
+   
+}
+.signup-button{
+    width: 30rem;
+    background-color: rgb(80, 139, 241);
+    color: white;
+}
+.end{
+    display: flex;
+    flex-direction: column;
+    direction: rtl;
+}
+.file-selector{
+    height: 1.2rem;
+    direction: rtl;
+    width: 10rem;
+    border-radius: 5px;
+    border: 2px solid lightgra
+}
+.link{
+    width: 7rem;
+    color: rgb(80, 139, 241);
+}
+.date-file-container{
+    display: flex;
+    flex-direction: column;
+    height: 6rem;
+    width: 13rem;
+    gap: 0.5rem;
+}
+.dropdown-login-container{
+    display: flex;
+    flex-direction: column;
+}
+.dropdown{
+    display: flex;
+    height: 6rem;
+    gap: 0.5rem;
+    
+    
+}
+.MuiAutocomplete-root MuiAutocomplete-hasPopupIcon css-1mzp2lc-MuiAutocomplete-root{
+    height: 6rem;
+}
+.link-container{
+    direction: rtl;
+}
+.signUp-input-container div{
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    height: 3rem;
+    padding: 5px;
+    border-radius: 5px ;
+    border: 2px solid lightgray;
+    
+    width: 29rem;
+}
+.signUp-input-container{
+    display: flex;
+    gap: 5px;
+    flex-direction: column;
+
+}

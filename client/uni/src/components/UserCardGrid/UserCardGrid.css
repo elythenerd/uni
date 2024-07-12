@@ -1,0 +1,10 @@
+.cardGrid{
+    display: grid;
+    grid-template-columns: 30% 30% 30%;
+    justify-content: center;
+    width: 99vw;
+    align-items: start;
+    padding:5px;
+    grid-auto-rows: minmax(auto, max-content);
+
+}

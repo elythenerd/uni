@@ -1,0 +1,13 @@
+.navbar-container{
+    display: flex;
+    flex-direction: row;
+    direction: rtl;
+    align-items: center;
+    justify-content: space-between;
+}
+.navbar-pages-container{
+    display: flex;
+    flex-direction: row;
+    direction: rtl;
+    align-items: center;
+}
