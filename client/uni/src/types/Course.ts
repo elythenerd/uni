@@ -1,7 +1,16 @@
 export interface CourseInterface {
     Name: string,
-    Id: number,
-    SubjectId : number,
-    TeacherId: number,
+    Id: string,
+    SubjectId : string,
+    TeacherId: string,
     Status : boolean
+}
+
+
+export interface coursesState {
+    courses : coursesValue
+}
+
+export interface coursesValue{
+    value: {courses:CourseInterface[]}
 }

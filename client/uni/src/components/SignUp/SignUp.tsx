@@ -9,8 +9,10 @@ import { GenderType, JobType, User, UserContextType, UserLabels } from '../../ty
 import { JobOption, jobOptions, genderOptions, GenderOption } from './Options';
 import { useNavigate } from 'react-router-dom';
 import UserContext from '../../context/usersContext';
-
-
+import { useDispatch, useSelector } from 'react-redux';
+import { setUsers } from '../../store/Users';
+import { UseSelector } from 'react-redux';
+import { usersState } from '../../types/User';
 const SignUp = () => {
     const [Id, setID] = useState<string>('')
     const [Name, setName] = useState<string>('')
@@ -20,9 +22,10 @@ const SignUp = () => {
     const [DateOfBirth, setDateOfBirth] = useState<string>('')
     const [ProfilePicture, setProfilePicture] = useState<string>('')
     const [showPassword,setShowPassword] = useState<boolean>(false)
-    // const [Users, setUsers] = useState<User[]>([])
+    const Users = useSelector((state: usersState) => state)
+    const dispatch = useDispatch()
 
-    const { Users, setUsers }: UserContextType = useContext(UserContext) || { Users: [], setUsers: () => { } }
+    // const { Users, setUsers }: UserContextType = useContext(UserContext) || { Users: [], setUsers: () => { } }
     const Navigator = useNavigate()
     //  console.log(useContext(UserContext))
     const checkBirthDate = (e: ChangeEvent<HTMLInputElement>) => {
@@ -47,13 +50,14 @@ const SignUp = () => {
 
             }
             //console.log(newUser)
-
-            // setUsers([...Users, newUser])
-            setUsers((prev) => {
-                return [...prev, newUser]
-            })
-            console.log(Users)
-            Navigator('/')
+           
+            dispatch(setUsers(newUser))
+            // // setUsers([...Users, newUser])
+            // setUsers((prev) => {
+            //     return [...prev, newUser]
+            // })
+            //  console.log(Users)
+             Navigator('/')
         }
     }
     return (

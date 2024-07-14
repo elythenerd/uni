@@ -42,3 +42,13 @@ export type UserContextType  = {
     Users: User[] ;
     setUsers: Dispatch<SetStateAction<User[]>>;
 };
+
+
+
+export interface usersState {
+    users : usersValue
+}
+
+export interface usersValue{
+    value: {users:User[]}
+}
