@@ -5,7 +5,7 @@ export interface User {
     Password:string,
     Job : JobType,
     Gender : GenderType ,
-    DareOfBirth: string,
+    DateOfBirth: string,
     ProfilePicture: string
 }
 

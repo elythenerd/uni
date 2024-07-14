@@ -44,7 +44,7 @@ const SignUp = () => {
                 Name: Name,
                 Password: Password,
                 Job: Job,
-                DareOfBirth: DateOfBirth,
+                DateOfBirth: DateOfBirth,
                 Gender: Gender,
                 ProfilePicture: ProfilePicture
 

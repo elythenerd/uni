@@ -22,7 +22,7 @@ const AddCourse = ({ setOpenCourse }: { setOpenCourse: React.Dispatch<React.SetS
     const teachers = Users.filter((user) => { return user.Job === 'teacher' })
     const dispatch  = useDispatch()
     const checkAddCourse = () => {
-        if (Name|| SubjectId!=='' ||TeacherId) {
+        if (Name && SubjectId && TeacherId) {
 
             console.log(TeacherId)
             const NewCourse: CourseInterface = {

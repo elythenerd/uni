@@ -1,6 +1,13 @@
 export interface StudentsInterface{
-    StudentID : number,
+    Id : string,
     Name : string,
-    BirthYear :number
+    BirthYear :string
 }
 
+export interface studentsState {
+    students : studentsValue
+}
+
+export interface studentsValue{
+    value: {students:StudentsInterface[]}
+}

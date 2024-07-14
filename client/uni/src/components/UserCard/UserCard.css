@@ -6,6 +6,8 @@
     width: 20rem;
     height: 10rem;
     padding: 0px;
+    background-color: rgb(80, 139, 241);
+
 }
 .avatar-name-container{
     display: flex;
