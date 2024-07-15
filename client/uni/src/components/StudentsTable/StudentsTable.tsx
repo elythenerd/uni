@@ -6,7 +6,7 @@ import { studentsState } from "../../types/Students";
 const StudentsTable = () => {
     const students = useSelector((state: studentsState) => state.students.value.students)
     return (
-        <TableContainer component={Paper}>
+        <TableContainer component={Paper} sx={{width:'80rem'}}>
             <Table>
                 <TableHead sx={{ direction: 'rtl' }}>
                     <TableRow sx={{ direction: 'rtl' }}>

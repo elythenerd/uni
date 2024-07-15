@@ -18,7 +18,7 @@ const AddSubject = ({setOpenSubject}:{ setOpenSubject: React.Dispatch<React.SetS
         if (Subject){
             console.log(Subject)
             setOpenSubject(false)
-            const newSubject:Subject = {Name:Subject,ID:uuidv4()}
+            const newSubject:Subject = {Name:Subject,ID:uuidv4(),Active:true}
             dispatch(setSubjects(newSubject))
             // console.log(dispatch(setSubjects({name: Subject})))
         }

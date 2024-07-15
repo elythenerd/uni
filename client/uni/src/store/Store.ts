@@ -3,11 +3,13 @@ import { SubjectSlice } from "./Subject"
 import { usersSlice } from "./Users"
 import { coursesSlice } from "./courses"
 import { studentsSlice } from "./students"
+import { TeachersSubjectsSlice } from "./TeachersSubjects"
 export const store = configureStore({
     reducer: {
         subject : SubjectSlice.reducer,
         users :usersSlice.reducer,
         courses : coursesSlice.reducer,
-        students : studentsSlice.reducer
+        students : studentsSlice.reducer,
+        teachersSubjects: TeachersSubjectsSlice.reducer
     }
 })

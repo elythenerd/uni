@@ -7,6 +7,6 @@ import './Home.css'
 export const Home = ()=>{
     return <div className="home-container">
     <Navbar></Navbar>
-    <UserCardGrid/>
+    <UserCardGrid set={false}/>
     </div>
 }
