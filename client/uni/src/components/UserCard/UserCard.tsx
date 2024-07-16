@@ -1,7 +1,7 @@
 import React, { useContext, useState } from "react";
 import './UserCard.css'
 import UserContext from "../../context/usersContext";
-import { Avatar, Box, Card, CardContent, Chip, Dialog, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Card, CardContent, Chip, Dialog, IconButton, Stack, Typography } from "@mui/material";
 import { JobType, User } from "../../types/User";
 import { FaBirthdayCake } from "react-icons/fa";
 import { CiCirclePlus } from "react-icons/ci";
@@ -58,9 +58,11 @@ export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
                     {teacherMode &&
                         <Box sx={{ direction: 'rtl' }}>
                             {TeachersSubjects.map((teachersubject) => {
-                                return <Chip label={<ChipSubject teacherid={teachersubject.TeacherId} subjectid={teachersubject.SubjectId} label={getSubject(teachersubject.SubjectId)}></ChipSubject>}></Chip>
+                                return <Chip label={<ChipSubject id={teachersubject.Id} teacherid={teachersubject.TeacherId} subjectid={teachersubject.SubjectId} label={getSubject(teachersubject.SubjectId)}></ChipSubject>}></Chip>
                             })}
-                            <CiCirclePlus onClick={() => setOpenTeacherSubject(true)}></CiCirclePlus>
+                            <IconButton>
+                                <CiCirclePlus onClick={() => setOpenTeacherSubject(true)}></CiCirclePlus>
+                            </IconButton>
                             <Dialog open={OpenTeacherSubject} onClose={() => setOpenTeacherSubject(false)}>
                                 <AddSubjectTeacher setOpenTeacherSubject={setOpenTeacherSubject} teacherid={user.Id}></AddSubjectTeacher>
                             </Dialog>

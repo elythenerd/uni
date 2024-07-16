@@ -7,19 +7,18 @@ const SubjectsList = () => {
     const Subjects = useSelector((state: subjectState) => state.subject.value.Subjects)
 
     return (
-        <Box>
-            <Grid container spacing={0.5} sx={{direction:'rtl'}} >
+        
+            <Grid container  sx={{direction:'rtl'}} >
                 {
                     Subjects.filter((subject)=>subject.Active).map((subject) => {
                         return (
-                            <Grid item xs={7} sm={7} md={5} >
+                            <Grid item xs={2} sx={{padding:'10px'}} >
                                 <SubjectCard key={subject.ID} subject={subject}></SubjectCard>
                             </Grid>)
                     })
                 }
             </Grid>
 
-        </Box>
 
     )
 }

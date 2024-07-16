@@ -4,6 +4,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { Subject, subjectState } from "../../types/Subject";
 import { TeachersSubjects, teachersSubjectsState } from "../../types/TeachersSubjects";
 import { setTeachersSubjects } from "../../store/TeachersSubjects";
+import { v4 } from "uuid";
 
 const AddSubjectTeacher = ({ teacherid,setOpenTeacherSubject }: { teacherid: string,setOpenTeacherSubject: React.Dispatch<React.SetStateAction<boolean>> }) => {
     const TeachersSubjects = useSelector((state: teachersSubjectsState) => state.teachersSubjects.value.teachersSubjects.filter((TeachersSubject: TeachersSubjects) =>TeachersSubject.Active && TeachersSubject.TeacherId==teacherid )).map((ts)=>ts.SubjectId) 
@@ -15,6 +16,7 @@ const AddSubjectTeacher = ({ teacherid,setOpenTeacherSubject }: { teacherid: str
     const checkAddTeachersSubject = () => {
         if (SubjectId) {
             const newTeacherSubject: TeachersSubjects = {
+                Id : v4(),
                 TeacherId: teacherid,
                 SubjectId: SubjectId,
                 Active: true

@@ -1,22 +1,24 @@
 import React from "react";
 import Navbar from "../../components/Navbar/Navbar";
-import { Box } from "@mui/material";
+import { Box, Chip, Divider, Grid, Stack, Typography } from "@mui/material";
+import CourseCard from "../../components/courseCard/CourseCard";
+import { useSelector } from "react-redux";
+import { coursesState } from "../../types/Course";
+import CourseGrid from "../../components/CourseGrid/CourseGrid";
 
 const Teacher = () => {
+    const courses = useSelector((state: coursesState) => state.courses.value.courses)
+
     return (
-        <Box sx={{ display: 'flex', width: '100vw', height: '100vh' }}>
-            <Box sx={{ width: '100vw' }}>
-                <Navbar></Navbar>
-            </Box>
-            <Box>
-                <Box>
+        <Box sx={{ width: '100vw', height: '100vh' }}>
+            <Stack>
+                <Navbar />
+                <Divider><Chip label='קורסים פתוחים'></Chip></Divider>
+                {courses.filter((course) => course.Status).length?<CourseGrid courses={courses.filter((course) => course.Status)}/>:<Typography sx={{textAlign:'center'}}>אין קורסים פתוחים</Typography>}
+                {<Divider ><Chip label='קורסים סגורים'></Chip></Divider>}
+                <CourseGrid courses={courses.filter((course) => !course.Status)} />
 
-                </Box>
-                <Box>
-                    
-                </Box>
-            </Box>
-
+            </Stack>
         </Box>
 
 

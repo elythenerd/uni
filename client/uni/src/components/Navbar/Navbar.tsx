@@ -32,6 +32,9 @@ const Navbar = () => {
                     <MenuItem onClick={()=>navigator('/Boss')}>
                         <Typography textAlign="center">מנהלים</Typography>
                     </MenuItem>
+                    <MenuItem onClick={()=>navigator('/Teacher')}>
+                        <Typography textAlign="center">מורים</Typography>
+                    </MenuItem>
                 </div>
                 <Avatar sx={{height:'1.5rem',width:'1.5rem'}}></Avatar>
             </div>

@@ -1,22 +1,40 @@
 import React from "react";
-import { Box, Typography } from "@mui/material";
+import { Box, Card, CardContent, Chip, IconButton, Typography } from "@mui/material";
 import { CourseInterface } from "../../types/Course";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { usersState } from "../../types/User";
 import { subjectState } from "../../types/Subject";
-const CourseCard = ({course}:{course:CourseInterface})=>{
+import { MdDone } from "react-icons/md";
+import { removeCourse } from "../../store/courses";
+import { TiDeleteOutline } from "react-icons/ti";
+
+const CourseCard = ({ course }: { course: CourseInterface }) => {
     const Users = useSelector((state: usersState) => state.users.value.users)
     const Subjects = useSelector((state: subjectState) => state.subject.value.Subjects)
 
     const teacher = Users.find(user => user.Id === course.TeacherId)
     const subject = Subjects.find(subject => subject.ID === course.SubjectId)
-
+    const dispatch = useDispatch()
+    function deleteCourse(id:string){
+        dispatch(removeCourse(id))
+    }
     return (
-        <Box sx={{backgroundColor:"rgb(80, 139, 241)",borderRadius:'5px',height:'5rem',width:'5rem'}}>
-            <Typography  sx={{color:'white'}}>{course.Name}</Typography>
-            <Typography  sx={{color:'white'}}>{teacher?.Name}</Typography>
-            <Typography  sx={{color:'white'}}>{subject?.Name}</Typography>
-        </Box>
+
+        <Card sx={{ width: 200 }}>
+            <CardContent sx={{ textAlign: 'center' }}>
+
+                <Typography variant="h5" sx={{ color: 'black' }}>{course.Name}</Typography>
+                <Typography color="text.secondary">{teacher?.Name}</Typography>
+                <Chip label={subject?.Name}></Chip>
+                <Typography color={course.Status ? "green" : "red"}>{course.Status ? "פעיל" : 'סגור'}</Typography>
+                <IconButton>
+                   {course.Status && <TiDeleteOutline onClick={()=> deleteCourse(course.Id)}></TiDeleteOutline>}
+                </IconButton>
+
+            </CardContent>
+        </Card>
+
+
     )
 }
 export default CourseCard

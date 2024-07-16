@@ -14,7 +14,7 @@ export const TeachersSubjectsSlice = createSlice({
         },
         removeTeachersSubjects: (state,action)=>{
              console.log(action.payload)
-            let index:number = state.value.teachersSubjects.findIndex(teachersSubject=>teachersSubject.SubjectId==action.payload.SubjectId)
+            let index:number = state.value.teachersSubjects.findIndex(teachersSubject=>teachersSubject.Id==action.payload.Id)
             console.log(index)
             state.value.teachersSubjects[index] = {...state.value.teachersSubjects[index],Active:false}
             console.log(state.value.teachersSubjects[0])

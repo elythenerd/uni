@@ -16,6 +16,7 @@ import Tabs from '@mui/material/Tabs';
 import Tab from '@mui/material/Tab';
 import { TabContext, TabPanel } from "@mui/lab";
 import UserCardGrid from "../../components/UserCardGrid/UserCardGrid";
+import CourseGrid from "../../components/CourseGrid/CourseGrid";
 const BossPage = () => {
     const [openCourse, setOpenCourse] = useState<boolean>(false)
     const [openSubject, setOpenSubject] = useState<boolean>(false)
@@ -66,27 +67,32 @@ const BossPage = () => {
                         <Box sx={{ justifyContent: 'center', display: 'flex', width: '100%', alignItems: 'center' }}>
                             <TabPanel value="0">
                                 <Stack sx={{ gap: '2rem', display: 'flex', justifyContent: 'center' }}>
-                                    <Button sx={{ width: '8rem' }} onClick={() => setOpenSubject(true)}>הוסף מקצוע חדש</Button>
-                                    <SubjectsList></SubjectsList>
+                                    <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+                                        <Button sx={{ width: '8rem' }} onClick={() => setOpenSubject(true)}>הוסף מקצוע חדש</Button>
+                                    </Box>
+                                    <Box sx={{ display: 'flex', justifyContent: 'center'}}>
+                                        <SubjectsList></SubjectsList>
+                                    </Box>
                                 </Stack>
 
 
                             </TabPanel>
                             <TabPanel value='1'>
-                                {
-                                    courses.map((cousre) => {
-                                        return <CourseCard course={cousre}></CourseCard>
-                                    })
-                                }
+                                <CourseGrid courses={courses}></CourseGrid>
                             </TabPanel>
                             <TabPanel value="2">
-                                <Button onClick={() => setopenStudent(true)}> הוסף תלמיד חדש</Button>
-                                <StudentsTable></StudentsTable>
-
+                                <Box sx={{ display: "flex", flexDirection: "column", alignItems: 'center' }}>
+                                    <Button onClick={() => setopenStudent(true)}> הוסף תלמיד חדש</Button>
+                                    <StudentsTable></StudentsTable>
+                                </Box>
                             </TabPanel>
                             <TabPanel value="3">
-                                <Button onClick={() => setOpenCourse(true)}> הוסף קורס חדש</Button>
+                                <Box sx={{ display: "flex", flexDirection: "column", alignItems: 'center' }}>
+                                    <Button onClick={() => setOpenCourse(true)}> הוסף קורס חדש</Button>
+
+                                </Box>
                                 <UserCardGrid set={true}></UserCardGrid>
+
                             </TabPanel>
 
 
