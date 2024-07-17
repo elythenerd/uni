@@ -52,7 +52,7 @@ export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
             <Card sx={{ width: 200 }}>
                 <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
                     {checkBirthday(user.DateOfBirth) && !teacherMode && <FaBirthdayCake></FaBirthdayCake>}
-                    <Avatar alt="Remy Sharp" src={user.ProfilePicture}>{getInitials(user.Name)}</Avatar>
+                    <Avatar alt="Remy Sharp" src={user?.ProfilePicture}>{getInitials(user.Name)}</Avatar>
                     <Typography color="text.secondary">{user.Name}</Typography>
                     <Chip label={user.Job == JobType.Boss ? JobType.BossLabel : JobType.TeacherLabel}></Chip>
                     {teacherMode &&

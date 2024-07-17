@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { CourseInterface } from "../../types/Course";
+import { CourseInterface, coursesState } from "../../types/Course";
 import { Box, TextField, Typography, Button, MenuItem } from "@mui/material";
 import { ChangeEvent } from "react";
 import { useDispatch, useSelector, UseSelector } from "react-redux";
@@ -9,10 +9,10 @@ import { usersState } from "../../types/User";
 import { Dispatch } from "@reduxjs/toolkit";
 import { setCourses } from "../../store/courses";
 import { Subject } from "../../types/Subject";
+import axios from "axios";
 const AddCourse = ({ setOpenCourse }: { setOpenCourse: React.Dispatch<React.SetStateAction<boolean>> }) => {
     const [Name, setName] = useState<string>('')
     // const [Subject, SetSubject] = useState<string>('')
-
     const [Id, setId] = useState<number>()
     const [SubjectId, setSubjectId] = useState<string>('')
     const [TeacherId, setTeacherId] = useState<string>('')
@@ -22,10 +22,21 @@ const AddCourse = ({ setOpenCourse }: { setOpenCourse: React.Dispatch<React.SetS
     const Users = useSelector((state: usersState) => state.users.value.users)
     const teachers = Users.filter((user) => { return user.Job === 'teacher' })
     const dispatch  = useDispatch()
+
+    async function createCourse(newCourse: CourseInterface){
+        try{
+            const res = await axios.post('http://localhost:8000/api/courses/create',newCourse)
+            console.log('post created')
+        }catch (e){
+            console.log('posting user failed:',e)
+        }
+        
+        
+    }
     const checkAddCourse = () => {
         if (Name && SubjectId && TeacherId) {
 
-            console.log(TeacherId)
+            console.log(SubjectId)
             const NewCourse: CourseInterface = {
                 Id: uuidv4(),
                 Name: Name,
@@ -38,7 +49,8 @@ const AddCourse = ({ setOpenCourse }: { setOpenCourse: React.Dispatch<React.SetS
             //     return [NewCourse]
 
             // })
-            dispatch(setCourses(NewCourse))
+            // dispatch(setCourses(NewCourse))
+            createCourse(NewCourse)
             setOpenCourse(false)
         } else {
             // console.log(teachers)

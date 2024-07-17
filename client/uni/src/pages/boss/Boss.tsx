@@ -24,7 +24,7 @@ const BossPage = () => {
     const [openStudent, setopenStudent] = useState<boolean>(false)
     const [tabvalue, setTabValue] = useState<string>('0');
 
-    const courses = useSelector((state: coursesState) => state.courses.value.courses)
+    // const courses = useSelector((state: coursesState) => state.courses.value.courses)
 
     return (
         <Box sx={{ display: 'flex', width: '100vw', height: '100vh', flexDirection: 'column' }}>
@@ -78,7 +78,7 @@ const BossPage = () => {
 
                             </TabPanel>
                             <TabPanel value='1'>
-                                <CourseGrid courses={courses}></CourseGrid>
+                                <CourseGrid></CourseGrid>
                             </TabPanel>
                             <TabPanel value="2">
                                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: 'center' }}>

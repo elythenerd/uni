@@ -9,9 +9,9 @@ export const usersSlice = createSlice({
         setUsers : (state,action)=>{
             // console.log(state.value.Subjects[0])
             // console.log(action.payload)
-            state.value.users.push(action.payload)
-            
-        }
+            state.value.users = action.payload
+        },
+        
     }
     
 })

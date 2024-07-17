@@ -16,7 +16,7 @@ function App() {
 
   return (
     <>
-      <Provider store={store}>
+      <Provider store={store} stabilityCheck="never">
         <UserContextProvider>
           <OpenContextProvider>
 

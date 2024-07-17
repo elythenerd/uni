@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUsers } from '../../store/Users';
 import { UseSelector } from 'react-redux';
 import { usersState } from '../../types/User';
+import axios from 'axios';
 const SignUp = () => {
     const [Id, setID] = useState<string>('')
     const [Name, setName] = useState<string>('')
@@ -21,13 +22,20 @@ const SignUp = () => {
     const [Gender, setGender] = useState<GenderType>()
     const [DateOfBirth, setDateOfBirth] = useState<string>('')
     const [ProfilePicture, setProfilePicture] = useState<string>('')
-    const [showPassword,setShowPassword] = useState<boolean>(false)
+    const [showPassword, setShowPassword] = useState<boolean>(false)
     const Users = useSelector((state: usersState) => state)
     const dispatch = useDispatch()
-
-    // const { Users, setUsers }: UserContextType = useContext(UserContext) || { Users: [], setUsers: () => { } }
     const Navigator = useNavigate()
-    //  console.log(useContext(UserContext))
+    async function createUser(newUser: User){
+        try{
+            const res = await axios.post('http://localhost:8000/api/users/create',newUser)
+            console.log('post created')
+        }catch (e){
+            console.log('posting user failed:',e)
+        }
+        
+        
+    }
     const checkBirthDate = (e: ChangeEvent<HTMLInputElement>) => {
         if (new Date(e.target.value) < new Date()) {
             setDateOfBirth(e.target.value)
@@ -50,14 +58,15 @@ const SignUp = () => {
 
             }
             //console.log(newUser)
-           
-            dispatch(setUsers(newUser))
+
+            // dispatch(setUsers(newUser))
+            createUser(newUser)
             // // setUsers([...Users, newUser])
             // setUsers((prev) => {
             //     return [...prev, newUser]
             // })
             //  console.log(Users)
-             Navigator('/')
+            Navigator('/')
         }
     }
     return (
@@ -69,20 +78,20 @@ const SignUp = () => {
             <div className='body'>
                 <div className='signUp-input-container'>
 
-                <div>
-                    <input placeholder='ת.ז' type='text' onChange={(e: ChangeEvent<HTMLInputElement>) => setID(e.target.value)}></input>
-                    
+                    <div>
+                        <input placeholder='ת.ז' type='text' onChange={(e: ChangeEvent<HTMLInputElement>) => setID(e.target.value)}></input>
 
-                </div>
-                <div>
-                    <input placeholder='שם מלא' type='text' onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}></input>
-                </div>
 
-                <div className='password-container'>
-                    <BiShow  onMouseDown={()=>setShowPassword(true)} onMouseUp={()=>setShowPassword(false)}/>
-                    <input placeholder='סיסמה' type={showPassword?'text':'password'} onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}></input>
-                </div>
-                                
+                    </div>
+                    <div>
+                        <input placeholder='שם מלא' type='text' onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}></input>
+                    </div>
+
+                    <div className='password-container'>
+                        <BiShow onMouseDown={() => setShowPassword(true)} onMouseUp={() => setShowPassword(false)} />
+                        <input placeholder='סיסמה' type={showPassword ? 'text' : 'password'} onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}></input>
+                    </div>
+
                 </div>
                 <div className='footer'>
                     <div className='date-file-container'>

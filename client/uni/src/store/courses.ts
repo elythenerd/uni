@@ -9,7 +9,7 @@ export const coursesSlice = createSlice({
         setCourses: (state, action) => {
             // console.log(state.value.Subjects[0])
             // console.log(action.payload)
-            state.value.courses.push(action.payload)
+            state.value.courses = action.payload
 
         },
         removeCourse: (state, action) => {
@@ -22,7 +22,8 @@ export const coursesSlice = createSlice({
 
         }
 
-    }})
+    }
+})
 
-export const { setCourses,removeCourse } = coursesSlice.actions
+export const { setCourses, removeCourse } = coursesSlice.actions
 

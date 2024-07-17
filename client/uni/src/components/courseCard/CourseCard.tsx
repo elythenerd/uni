@@ -14,6 +14,7 @@ const CourseCard = ({ course }: { course: CourseInterface }) => {
 
     const teacher = Users.find(user => user.Id === course.TeacherId)
     const subject = Subjects.find(subject => subject.ID === course.SubjectId)
+    console.log(subject)
     const dispatch = useDispatch()
     function deleteCourse(id:string){
         dispatch(removeCourse(id))
