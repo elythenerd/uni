@@ -6,7 +6,7 @@ export const TeachersSubjectsSlice = createSlice({
     name : "teachersSubjects",
     initialState: teachersSubjectsInitialState,
     reducers: {
-        setTeachersSubjects : (state,action)=>{
+        addTeachersSubjects : (state,action)=>{
              console.log(state.value.teachersSubjects[0])
              console.log(action.payload)
             state.value.teachersSubjects.push(action.payload)
@@ -19,10 +19,13 @@ export const TeachersSubjectsSlice = createSlice({
             state.value.teachersSubjects[index] = {...state.value.teachersSubjects[index],Active:false}
             console.log(state.value.teachersSubjects[0])
 
+        },
+        setTeachersSubjects : (state,action)=>{
+            state.value.teachersSubjects = action.payload
         }
     }
     
 })
 
-export const {setTeachersSubjects,removeTeachersSubjects} = TeachersSubjectsSlice.actions
+export const {addTeachersSubjects,removeTeachersSubjects,setTeachersSubjects} = TeachersSubjectsSlice.actions
 

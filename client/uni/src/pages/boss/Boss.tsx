@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Box, Button, Dialog, DialogTitle, Stack } from "@mui/material";
 import Navbar from "../../components/Navbar/Navbar";
 import AddCourse from "../../components/AddCourse/AddCourse";
 import AddSubject from "../../components/AddSubject/AddSubject";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { subjectState } from "../../types/Subject";
 import SubjectsList from "../../components/subjectsList/subjectsList";
 import AddTeacher from "../../components/addTeacher/addTeacher";
-import { coursesState } from "../../types/Course";
+import { CourseInterface, coursesState } from "../../types/Course";
 import SubjectCard from "../../components/subjectCard/SubjectCard";
 import CourseCard from "../../components/courseCard/CourseCard";
 import AddStudent from "../../components/AddStudent/AddStudent";
@@ -17,6 +17,8 @@ import Tab from '@mui/material/Tab';
 import { TabContext, TabPanel } from "@mui/lab";
 import UserCardGrid from "../../components/UserCardGrid/UserCardGrid";
 import CourseGrid from "../../components/CourseGrid/CourseGrid";
+import axios from "axios";
+import { setCourses } from "../../store/courses";
 const BossPage = () => {
     const [openCourse, setOpenCourse] = useState<boolean>(false)
     const [openSubject, setOpenSubject] = useState<boolean>(false)
@@ -24,7 +26,22 @@ const BossPage = () => {
     const [openStudent, setopenStudent] = useState<boolean>(false)
     const [tabvalue, setTabValue] = useState<string>('0');
 
-    // const courses = useSelector((state: coursesState) => state.courses.value.courses)
+    const dispatch  = useDispatch()
+    useEffect(()=>{
+        fetchCourses()
+    },[])
+    const fetchCourses = async ()=>{
+        try{
+        const res = axios.get('http://localhost:8000/api/courses/get')
+        const courses : CourseInterface[] = (await res).data
+        // console.log(users)
+        dispatch(setCourses(courses))
+        return courses
+        }catch(e){
+            console.log('users not fetched',e)
+        }
+    }
+    const courses:CourseInterface[] = useSelector((state: coursesState) => state.courses.value.courses)
 
     return (
         <Box sx={{ display: 'flex', width: '100vw', height: '100vh', flexDirection: 'column' }}>
@@ -78,7 +95,7 @@ const BossPage = () => {
 
                             </TabPanel>
                             <TabPanel value='1'>
-                                <CourseGrid></CourseGrid>
+                                <CourseGrid courses={courses}></CourseGrid>
                             </TabPanel>
                             <TabPanel value="2">
                                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: 'center' }}>

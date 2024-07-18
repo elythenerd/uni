@@ -5,9 +5,11 @@ export async function createTeachersSubject(req: Request, res: Response) {
     try {
         const teachersSubjects : TsInterface = req.body
         // console.log(Object.keys().)
-        await TeachersSubjects.create(teachersSubjects)
+         await TeachersSubjects.create(teachersSubjects)
+        console.log('this is')
         res.json().status(200)
     }catch (e){
+        console.log(e)
         res.send(e).status(400)
     }
 }
@@ -22,6 +24,34 @@ export async function getTeachersSubject(req: Request, res: Response) {
         const teachersSubjects:TsInterface[] = await TeachersSubjects.get()
         res.send(teachersSubjects).status(200)
     }catch (e){
+        res.send(e).status(400)
+    }
+}
+
+
+
+export async function deleteTeachersSubject(req: Request, res: Response) {
+    try {
+        // console.log(Subjects)
+
+        const teacherSubjectId: string = req.params.id
+        TeachersSubjects.delete(teacherSubjectId)
+        res.send(teacherSubjectId).status(200)
+    } catch (e) {
+        res.send(e).status(400)
+    }
+}
+
+
+
+export async function getTeachersSubjectOptions(req: Request, res: Response) {
+    try {
+        // console.log(Subjects)
+
+        const teacherId: string = req.params.id
+        const teacherSubjects = await TeachersSubjects.aggregation(teacherId)
+        res.send(teacherSubjects).status(200)
+    } catch (e) {
         res.send(e).status(400)
     }
 }

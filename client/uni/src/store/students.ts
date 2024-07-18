@@ -9,12 +9,16 @@ export const studentsSlice = createSlice({
         setStudents : (state,action)=>{
             // console.log(state.value.Subjects[0])
             // console.log(action.payload)
-            state.value.students.push(action.payload)
+            state.value.students = action.payload
             
+        },
+        addStudent: (state,action) =>{
+            state.value.students.push(action.payload)
+
         }
     }
     
 })
 
-export const {setStudents} = studentsSlice.actions
+export const {setStudents,addStudent} = studentsSlice.actions
 

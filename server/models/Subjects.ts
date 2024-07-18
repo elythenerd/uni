@@ -26,7 +26,54 @@ class Subjects {
     async get(): Promise<subjectInterface[]> {
         return this.subjects.find()
     }
-
+    async delete(id:string): Promise<subjectInterface[] |null>{
+        return this.subjects.findOneAndUpdate(
+            {Id:id},
+            {Active:false},
+            {new:true}
+        )
+    }
+    async aggregate(id: string):Promise<subjectInterface[]>{
+        return this.subjects.aggregate(
+            [
+                {
+                  '$lookup': {
+                    'from': 'teacherssubjects', 
+                    'localField': 'Id', 
+                    'foreignField': 'SubjectId', 
+                    'as': 'result'
+                  }
+                }, {
+                  '$unwind': {
+                    'path': '$result', 
+                    'preserveNullAndEmptyArrays': true
+                  }
+                }, {
+                  '$project': {
+                    '_id': 1, 
+                    'Id': 1, 
+                    'Name': 1, 
+                    'teacherId': '$result.TeacherId', 
+                    'Active': 1
+                  }
+                }, {
+                  '$match': {
+                    'teacherId': {
+                      '$ne': '329877922'
+                    }
+                  }
+                }, {
+                  '$project': {
+                    '_id': 1, 
+                    'Id': 1, 
+                    'Name': 1, 
+                    'Active': 1
+                  }
+                }
+              ]
+        )
+    }
+    
 
 
 }

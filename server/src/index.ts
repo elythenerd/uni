@@ -10,16 +10,15 @@ import cousreParticipantRouter from './routes/CourseParticipants'
 import cors from 'cors'
 const app = express()
 dotenv.config()
-console.log(1)
 
 app.use(express.json())
 app.use(cors())
-app.use('/',userRouter)
-app.use('/',cousreRouter)
-app.use('/',subjectRouter)
-app.use('/',studentsRouter)
-app.use('/',teachersSubjectsRouter)
-app.use('/',cousreParticipantRouter)
+app.use('/api/users',userRouter)
+app.use('/api/courses',cousreRouter)
+app.use('/api/subjects',subjectRouter)
+app.use('/api/students',studentsRouter)
+app.use('/api/ts',teachersSubjectsRouter)
+app.use('/api/cp',cousreParticipantRouter)
 
 
 

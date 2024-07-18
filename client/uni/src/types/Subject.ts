@@ -1,7 +1,7 @@
 import { Dispatch,SetStateAction } from "react"
 export interface Subject {
     Name:string,
-    ID: string,
+    Id: string,
     Active: boolean
 }
 

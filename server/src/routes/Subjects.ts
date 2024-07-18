@@ -1,10 +1,14 @@
 import { Router } from "express";
-import { createSubject, getSubjects } from "../services/Subjects";
+import { createSubject, deleteSubject, getSubjectOptions, getSubjects } from "../services/Subjects";
 
 const subjectRouter = Router()
 
-subjectRouter.post('/api/subjects/create',createSubject)
-subjectRouter.get('/api/subjects/get',getSubjects)
+subjectRouter.post('/create',createSubject)
+subjectRouter.get('/get',getSubjects)
+subjectRouter.patch('/delete/:id',deleteSubject)
+subjectRouter.get('/options/:id',getSubjectOptions)
+
+
 
 
 export default subjectRouter

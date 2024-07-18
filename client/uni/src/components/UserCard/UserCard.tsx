@@ -1,4 +1,4 @@
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 import './UserCard.css'
 import UserContext from "../../context/usersContext";
 import { Avatar, Box, Card, CardContent, Chip, Dialog, IconButton, Stack, Typography } from "@mui/material";
@@ -6,18 +6,34 @@ import { JobType, User } from "../../types/User";
 import { FaBirthdayCake } from "react-icons/fa";
 import { CiCirclePlus } from "react-icons/ci";
 import AddSubjectTeacher from "../AddSubjectTeacher/AddSubjectTeacher";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { Subject, subjectState } from "../../types/Subject";
 import { TeachersSubjects, teachersSubjectsState } from "../../types/TeachersSubjects";
 import ChipSubject from "./ChipSubject";
+import { setTeachersSubjects } from "../../store/TeachersSubjects";
+import axios from "axios";
 
 export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
-    // console.log(Users)
-    const TeachersSubjects = useSelector((state: teachersSubjectsState) => state.teachersSubjects.value.teachersSubjects.filter((TeachersSubject: TeachersSubjects) => TeachersSubject.Active))
-    const Subjects = useSelector((state: subjectState) => state.subject.value.Subjects)
-
     const [teacherMode, setTeacherMode] = useState<boolean>(set)
     const [OpenTeacherSubject, setOpenTeacherSubject] = useState<boolean>(false)
+    const dispatch = useDispatch()
+    useEffect(() => {
+        fetchTeachersSubjects()
+    }, [])
+    const fetchTeachersSubjects = async () => {
+        try {
+            const res = axios.get('http://localhost:8000/api/ts/get')
+            const TeachersSubjects: TeachersSubjects[] = (await res).data
+            //  console.log(TeachersSubjects)
+            dispatch(setTeachersSubjects(TeachersSubjects))
+            return TeachersSubjects
+        } catch (e) {
+            console.log('users not fetched', e)
+        }
+    }
+    const TeachersSubjects = useSelector((state: teachersSubjectsState) => state.teachersSubjects.value.teachersSubjects.filter((TeachersSubject: TeachersSubjects) => TeachersSubject.Active && TeachersSubject.TeacherId == user.Id))
+    const Subjects = useSelector((state: subjectState) => state.subject.value.Subjects)
+  
 
     function getInitials(name: string) {
         const initials = name.match(/\b\p{L}/gu) || [];
@@ -31,7 +47,7 @@ export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
         return dateToCheck >= pastDate
     }
     function getSubject(id: string) {
-        const subjectObj: Subject | undefined = Subjects.find((subject) => subject.ID == id)
+        const subjectObj: Subject | undefined = Subjects.find((subject) => subject.Id == id)
         return subjectObj?.Name
     }
 

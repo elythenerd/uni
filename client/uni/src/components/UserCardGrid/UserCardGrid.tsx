@@ -22,6 +22,7 @@ const UserCardGrid = ({ set }: { set: boolean }) => {
             console.log('users not fetched',e)
         }
     }
+    
     const Users = useSelector((state: usersState) => state.users.value.users)
 
     return (

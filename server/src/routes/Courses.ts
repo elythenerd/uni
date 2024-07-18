@@ -1,10 +1,12 @@
 import { Router } from "express";
-import { createCourse, getCourses } from "../services/Courses";
+import { createCourse, deleteCourse, getCourses } from "../services/Courses";
 
 const cousreRouter = Router()
 
-cousreRouter.post('/api/courses/create',createCourse)
-cousreRouter.get('/api/courses/get',getCourses)
+cousreRouter.post('/create',createCourse)
+cousreRouter.get('/get',getCourses)
+cousreRouter.patch('/delete/:id',deleteCourse)
+
 
 
 export default cousreRouter

@@ -1,10 +1,14 @@
 import { Router } from "express";
-import { createTeachersSubject, getTeachersSubject } from "../services/TeachersSubjects";
+import { createTeachersSubject, deleteTeachersSubject, getTeachersSubject, getTeachersSubjectOptions } from "../services/TeachersSubjects";
 
 const teachersSubjectsRouter = Router()
 
-teachersSubjectsRouter.post('/api/ts/create',createTeachersSubject)
-teachersSubjectsRouter.get('/api/ts/get',getTeachersSubject)
+teachersSubjectsRouter.post('/create',createTeachersSubject)
+teachersSubjectsRouter.get('/get',getTeachersSubject)
+teachersSubjectsRouter.patch('/delete/:id',deleteTeachersSubject)
+teachersSubjectsRouter.get('/options/:id',getTeachersSubjectOptions)
+
+
 
 
 export default teachersSubjectsRouter

@@ -1,5 +1,6 @@
 export interface TsInterface{
     Id:string
     TeacherId: string,
-    subjectId:string,
+    SubjectId:string,
+    Active : boolean
 }

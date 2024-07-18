@@ -3,8 +3,8 @@ import { createCourseParticipant, getCourseParticipants } from "../services/Cour
 
 const cousreParticipantRouter = Router()
 
-cousreParticipantRouter.post('/api/cp/create',createCourseParticipant)
-cousreParticipantRouter.get('/api/cp/get',getCourseParticipants)
+cousreParticipantRouter.post('/create',createCourseParticipant)
+cousreParticipantRouter.get('/get',getCourseParticipants)
 
 
 export default cousreParticipantRouter
