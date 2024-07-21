@@ -4,3 +4,7 @@ export interface cpInterface{
     Grade: string,
     
 }
+export interface avgGradesInterface{
+    _id: string,
+    avgGrade:number
+}

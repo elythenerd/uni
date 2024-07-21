@@ -1,11 +1,15 @@
-import { Paper, Table, TableContainer, TableHead, TableCell, TableRow, TableBody } from "@mui/material";
-import React, { useEffect } from "react";
+import { Paper, Table, TableContainer, TableHead, TableCell, TableRow, TableBody, TextField, Button } from "@mui/material";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { StudentsInterface, studentsState } from "../../types/Students";
 import { setStudents } from "../../store/students";
 import axios from "axios";
+import { cpInterface } from "../../types/CourseParticicpants";
+import AddGrade from "../AddGrade/AddGrade";
 
 const StudentsTable = () => {
+    const [coursParticipants, setCourseParticicpants] = useState<cpInterface[]>([])
+
     const dispatch = useDispatch()
     useEffect(() => {
         fetchSubjects()
@@ -21,6 +25,8 @@ const StudentsTable = () => {
             console.log('users not fetched', e)
         }
     }
+    const courseId = '123456789'
+
     const students = useSelector((state: studentsState) => state.students.value.students)
     return (
         <TableContainer component={Paper} sx={{ width: '80vw', maxHeight: '70vh', overflowY: 'auto' }}>
@@ -30,6 +36,7 @@ const StudentsTable = () => {
                         <TableCell align="center">שנתון</TableCell>
                         <TableCell align="center">שם</TableCell>
                         <TableCell align="center">ת.ז</TableCell>
+                        <TableCell align="center">הזן ציון</TableCell>
                     </TableRow>
                 </TableHead>
                 <TableBody>
@@ -42,6 +49,10 @@ const StudentsTable = () => {
                             <TableCell align="center">{row.BirthYear}</TableCell>
                             <TableCell align="center">{row.Name}</TableCell>
                             <TableCell align="center">{row.Id}</TableCell>
+                            <TableCell align="center">
+
+                                <AddGrade id={row.Id} courseId={courseId} ></AddGrade>
+                            </TableCell>
                         </TableRow>
                     ))}
                 </TableBody>

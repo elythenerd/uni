@@ -1,4 +1,4 @@
-import { Model, Schema } from "mongoose";
+import { Model, PipelineStage, Schema } from "mongoose";
 import mongoose from "mongoose";
 import { cousresInterface } from "../types/courses";
 import { subjectInterface } from "../types/subject";
@@ -33,44 +33,12 @@ class Subjects {
             {new:true}
         )
     }
-    async aggregate(id: string):Promise<subjectInterface[]>{
+    async update(expression={},apply={},how={}):Promise<subjectInterface[] | null>{
+      return this.subjects.findOneAndUpdate(expression,apply,how)
+  }
+    async aggregate(pipeline: PipelineStage[]):Promise<subjectInterface[]>{
         return this.subjects.aggregate(
-            [
-                {
-                  '$lookup': {
-                    'from': 'teacherssubjects', 
-                    'localField': 'Id', 
-                    'foreignField': 'SubjectId', 
-                    'as': 'result'
-                  }
-                }, {
-                  '$unwind': {
-                    'path': '$result', 
-                    'preserveNullAndEmptyArrays': true
-                  }
-                }, {
-                  '$project': {
-                    '_id': 1, 
-                    'Id': 1, 
-                    'Name': 1, 
-                    'teacherId': '$result.TeacherId', 
-                    'Active': 1
-                  }
-                }, {
-                  '$match': {
-                    'teacherId': {
-                      '$ne': '329877922'
-                    }
-                  }
-                }, {
-                  '$project': {
-                    '_id': 1, 
-                    'Id': 1, 
-                    'Name': 1, 
-                    'Active': 1
-                  }
-                }
-              ]
+           pipeline
         )
     }
     

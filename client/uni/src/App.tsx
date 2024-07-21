@@ -11,6 +11,7 @@ import BossPage from './pages/boss/Boss';
 import { Provider } from 'react-redux';
 import OpenContextProvider from './context/SubjectContext/openContext/openContextProvider';
 import { store } from './store/Store';
+import Course from './pages/course/Course';
 function App() {
 
 
@@ -28,6 +29,8 @@ function App() {
                 <Route path='/LogIn' element={<LogInPage></LogInPage>}></Route>
                 <Route path='/Teacher' element={<Teacher></Teacher>}></Route>
                 <Route path='/Boss' element={<BossPage></BossPage>}></Route>
+                <Route path='/Course' element={<Course></Course>}></Route>
+
               </Routes>
             </Router>
           </OpenContextProvider>
