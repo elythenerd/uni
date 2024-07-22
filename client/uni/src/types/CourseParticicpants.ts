@@ -1,7 +1,8 @@
 export interface cpInterface{
     CourseId: string,
     StudentId: string,
-    Grade: string,
+    Grade?: string,
+    
     
 }
 export interface cpState {

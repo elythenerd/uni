@@ -19,6 +19,8 @@ import UserCardGrid from "../../components/UserCardGrid/UserCardGrid";
 import CourseGrid from "../../components/CourseGrid/CourseGrid";
 import axios from "axios";
 import { setCourses } from "../../store/courses";
+import { setStudents } from "../../store/students";
+import { StudentsInterface, studentsState } from "../../types/Students";
 const BossPage = () => {
     const [openCourse, setOpenCourse] = useState<boolean>(false)
     const [openSubject, setOpenSubject] = useState<boolean>(false)
@@ -29,6 +31,7 @@ const BossPage = () => {
     const dispatch  = useDispatch()
     useEffect(()=>{
         fetchCourses()
+        fetchStudents()
     },[])
     const fetchCourses = async ()=>{
         try{
@@ -41,7 +44,19 @@ const BossPage = () => {
             console.log('users not fetched',e)
         }
     }
+    const fetchStudents = async ()=>{
+        try{
+        const res = axios.get('http://localhost:8000/api/students/get')
+        const students : CourseInterface[] = (await res).data
+        // console.log(users)
+        dispatch(setStudents(students))
+        return students
+        }catch(e){
+            console.log('users not fetched',e)
+        }
+    }
     const courses:CourseInterface[] = useSelector((state: coursesState) => state.courses.value.courses)
+    const students:StudentsInterface[] = useSelector((state: studentsState) => state.students.value.students)
 
     return (
         <Box sx={{ display: 'flex', width: '100vw', height: '100vh', flexDirection: 'column' }}>
@@ -100,7 +115,7 @@ const BossPage = () => {
                             <TabPanel value="2">
                                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: 'center' }}>
                                     <Button onClick={() => setopenStudent(true)}> הוסף תלמיד חדש</Button>
-                                    <StudentsTable></StudentsTable>
+                                    <StudentsTable students={students.filter((student) => student.Status)}></StudentsTable>
                                 </Box>
                             </TabPanel>
                             <TabPanel value="3">

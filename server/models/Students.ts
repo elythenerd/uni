@@ -11,7 +11,7 @@ const studentsSchema = new Schema<studentInterface>(
     }
 )
 
-// const users = 
+
 class Students {
     private students: Model<studentInterface>
     constructor() {
@@ -25,11 +25,14 @@ class Students {
         return this.students.find()
     }
 
-    async aggregate(pipeline:PipelineStage[]): Promise<studentInterface[]> {
+    async aggregate(pipeline: PipelineStage[]): Promise<studentInterface[]> {
         return this.students.aggregate(pipeline)
     }
 
-
+    async update(expression = {}, apply = {}, how = {}): Promise<studentInterface[] | null> {
+        return this.students.findOneAndUpdate(expression, apply, how)
+    }
+    
 
 }
 

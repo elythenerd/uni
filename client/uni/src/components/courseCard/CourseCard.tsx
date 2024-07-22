@@ -1,5 +1,5 @@
 import React from "react";
-import { Box, Card, CardContent, Chip, IconButton, Typography } from "@mui/material";
+import { Box, Button, Card, CardContent, Chip, IconButton, Stack, Typography } from "@mui/material";
 import { CourseInterface } from "../../types/Course";
 import { useDispatch, useSelector } from "react-redux";
 import { usersState } from "../../types/User";
@@ -8,41 +8,46 @@ import { MdDone } from "react-icons/md";
 import { removeCourse } from "../../store/courses";
 import { TiDeleteOutline } from "react-icons/ti";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 const CourseCard = ({ course }: { course: CourseInterface }) => {
     const Users = useSelector((state: usersState) => state.users.value.users)
     const Subjects = useSelector((state: subjectState) => state.subject.value.Subjects)
-
+    const Navigator = useNavigate()
     const teacher = Users.find(user => user.Id === course.TeacherId)
     const subject = Subjects.find(subject => subject.Id === course.SubjectId)
-     console.log(Users)
+    console.log(Users)
     const dispatch = useDispatch()
     function patchCourse(id: string) {
         try {
             const res = axios.patch(`http://localhost:8000/api/courses/delete/${id}`)
             console.log(`deleted course: ${res}`)
-        }catch (e){
-            console.log( 'course not deleted',e)
+        } catch (e) {
+            console.log('course not deleted', e)
         }
-         
+
     }
     function deleteCourse(id: string) {
         patchCourse(id)
         dispatch(removeCourse(id))
     }
+    function toCourse(id:string){
+        Navigator('/Course',{state:{CourseId:id}})
+    }
     return (
 
         <Card sx={{ width: 700 }}>
             <CardContent sx={{ textAlign: 'center' }}>
-
-                <Typography variant="h5" sx={{ color: 'black' }}>{course.Name}</Typography>
-                <Typography color="text.secondary">{teacher?.Name}</Typography>
-                <Chip label={subject?.Name}></Chip>
-                <Typography color={course.Status ? "green" : "red"}>{course.Status ? "פעיל" : 'סגור'}</Typography>
-                {course.Status &&<IconButton onClick={() => deleteCourse(course.Id)}>
-                    <TiDeleteOutline ></TiDeleteOutline>
-                </IconButton>}
-
+                <Stack sx={{alignItems:'center'}}>
+                    <Typography variant="h5" sx={{ color: 'black' }}>{course.Name}</Typography>
+                    <Typography color="text.secondary">{teacher?.Name}</Typography>
+                    <Chip sx={{width:'40%'}} label={subject?.Name}></Chip>
+                    <Typography color={course.Status ? "green" : "red"}>{course.Status ? "פעיל" : 'סגור'}</Typography>
+                    {course.Status && <IconButton onClick={() => deleteCourse(course.Id)}>
+                        <TiDeleteOutline ></TiDeleteOutline>
+                    </IconButton>}
+                    <Button onClick={()=>toCourse(course.Id)}>לפרטי קורס</Button>
+                </Stack>
             </CardContent>
         </Card>
 

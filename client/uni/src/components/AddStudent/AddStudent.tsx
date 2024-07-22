@@ -27,7 +27,8 @@ const AddStudent = ({ setopenStudent }: { setopenStudent: React.Dispatch<React.S
             const newStudent: StudentsInterface = {
                 Id,
                 Name: name,
-                BirthYear: birthDate
+                BirthYear: birthDate,
+                Status:true
             }
             dispatch(addStudent(newStudent))
             createStudent(newStudent)

@@ -15,10 +15,18 @@ export const studentsSlice = createSlice({
         addStudent: (state,action) =>{
             state.value.students.push(action.payload)
 
-        }
-    }
+        },
+        deleteStudent: (state, action) => {
+            // console.log(action.payload)
+            let index: number = state.value.students.findIndex(student => student.Id == action.payload)
+            // console.log(index)
+            // console.log(state.value.courses)
+            state.value.students[index] = { ...state.value.students[index], Status: false }
+            // console.log(state.value.courses[0])
+
+    }}
     
 })
 
-export const {setStudents,addStudent} = studentsSlice.actions
+export const {setStudents,addStudent,deleteStudent} = studentsSlice.actions
 

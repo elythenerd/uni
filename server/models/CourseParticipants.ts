@@ -5,8 +5,8 @@ const cpSchema = new Schema<cpInterface>(
     {
         CourseId: { type: String, require: true},
         StudentId: { type: String, require: true },
-        Grade: { type: String, require: true },
-       
+        Grade: { type: String, require: true }
+    //    Active:{type: Boolean,required:true}
         
         
 
@@ -28,9 +28,15 @@ class CourseParticipants{
     async createMany(body:cpInterface[]):Promise<cpInterface[]>{
         return this.courseParticipants.insertMany(body)
     }
+    async updateMany(filter={},update={},how={}){
+        return this.courseParticipants.findOneAndUpdate(filter,update,how)
+    }
     async aggregate(pipeline:PipelineStage[]): Promise<avgGradesInterface[]> {
         
         return this.courseParticipants.aggregate(pipeline)
+    }
+    async delete(find={}){
+        return this.courseParticipants.deleteMany(find)
     }
     
 }

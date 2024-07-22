@@ -11,6 +11,18 @@ export async function createCourseParticipant(req: Request, res: Response) {
         res.send(e).status(400)
     }
 }
+export async function deleteCourseParticipant(req: Request, res: Response) {
+    try {
+        console.log(CourseParticipants)
+        const id:string = req.params.id
+        const courseId:string = req.params.courseId
+        await CourseParticipants.delete({StudentId:id,CourseId:courseId})
+        res.json().status(200)
+    }catch (e){
+        res.send(e).status(400)
+    }
+}
+
 
 
 
@@ -62,17 +74,24 @@ export async function getAvgGrades(req: Request, res: Response) {
         const avgGrades:avgGradesInterface[] = await CourseParticipants.aggregate(
             [
                 {
-                  '$addFields': {
-                    'gradeInt': {
-                      '$toInt': '$Grade'
-                    }
+                  '$lookup': {
+                    'from': 'avgGradeView', 
+                    'localField': 'Id', 
+                    'foreignField': '_id', 
+                    'as': 'result'
                   }
                 }, {
-                  '$group': {
-                    '_id': '$StudentId', 
-                    'avgGrade': {
-                      '$avg': '$gradeInt'
-                    }
+                  '$unwind': {
+                    'path': '$result', 
+                    'preserveNullAndEmptyArrays': true
+                  }
+                }, {
+                  '$project': {
+                    '_id': 1, 
+                    'Id': 1, 
+                    'Name': 1, 
+                    'BirthYear': 1, 
+                    'Grade': '$result.avgGrade'
                   }
                 }
               ]

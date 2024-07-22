@@ -1,7 +1,9 @@
 export interface StudentsInterface{
     Id : string,
     Name : string,
-    BirthYear :string
+    BirthYear :string,
+    Grade?:string,
+    Status : boolean
 }
 
 export interface studentsState {
