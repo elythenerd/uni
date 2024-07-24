@@ -8,3 +8,10 @@ export interface avgGradesInterface{
     _id: string,
     avgGrade:number
 }
+
+
+export interface PieGradesInterface{
+    _id:string,
+    count: number,
+    color: string
+}

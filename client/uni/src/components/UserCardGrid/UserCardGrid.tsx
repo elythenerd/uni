@@ -6,31 +6,28 @@ import { useDispatch, useSelector, UseSelector } from "react-redux";
 import { User, usersState } from "../../types/User";
 import axios from "axios";
 import { setUsers } from "../../store/Users";
-const UserCardGrid = ({ set }: { set: boolean }) => {
-    const dispatch  = useDispatch()
-    useEffect(()=>{
-        fetchUsers()
-    },[])
-    const fetchUsers = async ()=>{
-        try{
-        const res = axios.get('http://localhost:8000/api/users/get')
-        const users : User[] = (await res).data
-        // console.log(users)
-        dispatch(setUsers(users))
-        return users
-        }catch(e){
-            console.log('users not fetched',e)
-        }
-    }
-    
-    const Users = useSelector((state: usersState) => state.users.value.users)
+import { Grid } from "@mui/material";
+const UserCardGrid = ({ set,Users }: { set: boolean,Users:User[] }) => {
+   
+    // const Users = useSelector((state: usersState) => state.users.value.users)
 
     return (
-        <div className="cardGrid">
+        <Grid container sx={{ direction: 'rtl' }}>
+
             {Users.map((user) => {
-                return <UserCard set={set} key={user.Id} user={user} />
+                return (<Grid item
+                    xs={2}
+                  
+                    key={user.Id}
+                    sx={{
+                        padding: '10px',
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center'
+                    }}> <UserCard set={set} key={user.Id} user={user} /></Grid>)
             })}
-        </div>
+        </Grid>
+
 
 
     )

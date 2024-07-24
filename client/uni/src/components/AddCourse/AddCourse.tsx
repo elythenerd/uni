@@ -70,7 +70,7 @@ const AddCourse = ({ setOpenCourse }: { setOpenCourse: React.Dispatch<React.SetS
     }
     return (
         <Box sx={{
-            direction: 'rtl',
+            
 
             borderRadius: '5px',
             width: '25rem',
@@ -89,7 +89,7 @@ const AddCourse = ({ setOpenCourse }: { setOpenCourse: React.Dispatch<React.SetS
             }}>
                 <TextField required label='שם' onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)} />
 
-                <TextField select label='מורה' sx={{ direction: 'rtl' }}>
+                <TextField select label='מורה' >
                     {
                         teachers.map((option) => {
 
@@ -104,7 +104,7 @@ const AddCourse = ({ setOpenCourse }: { setOpenCourse: React.Dispatch<React.SetS
 
 
 
-                <TextField select disabled={TeacherId?false:true}  label='מקצוע' sx={{ direction: 'rtl' }}>
+                <TextField select disabled={TeacherId?false:true}  label='מקצוע' >
                     {
                         subjects.map((option) => {
                             return <MenuItem onClick={(e: React.MouseEvent<HTMLLIElement>) => setSubjectId(option.Id)} key={option.Id} value={option.Id}>{option.Name}</MenuItem>

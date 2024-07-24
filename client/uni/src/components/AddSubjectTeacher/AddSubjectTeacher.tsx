@@ -47,7 +47,7 @@ const AddSubjectTeacher = ({ teacherid,setOpenTeacherSubject }: { teacherid: str
         }
     }
     return (<Stack>
-        <TextField select label='מקצוע' sx={{ direction: 'rtl' }} onClick={()=> getSubjectOptions(teacherid)}>
+        <TextField select label='מקצוע'  onClick={()=> getSubjectOptions(teacherid)}>
             {
                 Subjects.map((option) => {
                     return <MenuItem key={option.Id} value={option.Id} onClick={(e: React.MouseEvent<HTMLLIElement>) => setSubjectId(option.Id)}>{option.Name} </MenuItem>

@@ -12,3 +12,15 @@ export interface cpState {
 export interface cpValue{
     value: {courseParticipants:cpInterface[]}
 }
+
+
+export interface PieGradesInterface{
+    _id:string,
+    count: number,
+    color: string
+}
+
+export interface avgGradesInterface{
+    _id: string,
+    avgGrade:number
+}

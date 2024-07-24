@@ -39,14 +39,16 @@ const StudentsTable = ({ students, addGrade = false, course = false }: { student
     return (
         <TableContainer component={Paper} sx={{ width: '80vw', maxHeight: '70vh', overflowY: 'auto' }}>
             <Table stickyHeader >
-                <TableHead sx={{ direction: 'rtl' }}>
-                    <TableRow sx={{ direction: 'rtl' }}>
+                <TableHead >
+                    <TableRow >
+                    {!addGrade && <TableCell align="center"></TableCell>}
+                    <TableCell align="center">ת.ז</TableCell>
+                    <TableCell align="center">שם</TableCell>
+                    <TableCell align="center">שנתון</TableCell>
                         {course && <>
                             {addGrade && <TableCell align="center">הזן ציון</TableCell>}
                             {!addGrade && <TableCell align="center">ציון</TableCell>}</>}
-                        <TableCell align="center">שנתון</TableCell>
-                        <TableCell align="center">שם</TableCell>
-                        <TableCell align="center">ת.ז</TableCell>
+                        
 
 
                     </TableRow>
@@ -57,21 +59,21 @@ const StudentsTable = ({ students, addGrade = false, course = false }: { student
                             key={row.Id}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
-
-                            {course && <>{addGrade &&<TableCell align="center">
-
-                                 <AddGrade id={row.Id} courseId={courseId} ></AddGrade>
-                            </TableCell>}
-                                {!addGrade && <TableCell align="center">{row.Grade?row.Grade:'-'}</TableCell>}</>}
-                            <TableCell align="center">{row.BirthYear}</TableCell>
-                            <TableCell align="center">{row.Name}</TableCell>
-                            <TableCell align="center">{row.Id}</TableCell>
-                            {!addGrade &&<TableCell align="center">
+                             {!addGrade &&<TableCell align="center">
                                 <IconButton onClick={() => course?removeStudentParticipation(row.Id,courseId):removeStudent(row.Id)}>
                                     <FaTrash></FaTrash>
                                 </IconButton>
 
                             </TableCell>}
+                            <TableCell align="center">{row.Id}</TableCell>
+                            <TableCell align="center">{row.Name}</TableCell>
+                            <TableCell align="center">{row.BirthYear}</TableCell>
+                            {course && <>{addGrade &&<TableCell align="center">
+
+                                 <AddGrade id={row.Id} courseId={courseId} ></AddGrade>
+                            </TableCell>}
+                                {!addGrade && <TableCell align="center">{row.Grade?row.Grade:'-'}</TableCell>}</>}
+                            
                         </TableRow>
                     ))}
                 </TableBody>

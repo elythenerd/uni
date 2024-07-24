@@ -52,3 +52,16 @@ export interface usersState {
 export interface usersValue{
     value: {users:User[]}
 }
+export interface userCredentials{
+    Id:string,
+    Password:string
+}
+
+
+export interface userState {
+    user : userValue
+}
+
+export interface userValue{
+    value: {user:User}
+}

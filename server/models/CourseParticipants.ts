@@ -1,6 +1,6 @@
 import { Model, PipelineStage, Schema } from "mongoose";
 import mongoose from "mongoose";
-import { avgGradesInterface, cpInterface } from "../types/courseParticipants";
+import { avgGradesInterface, cpInterface, PieGradesInterface } from "../types/courseParticipants";
 const cpSchema = new Schema<cpInterface>(
     {
         CourseId: { type: String, require: true},
@@ -31,7 +31,7 @@ class CourseParticipants{
     async updateMany(filter={},update={},how={}){
         return this.courseParticipants.findOneAndUpdate(filter,update,how)
     }
-    async aggregate(pipeline:PipelineStage[]): Promise<avgGradesInterface[]> {
+    async aggregate(pipeline:PipelineStage[]): Promise<any> {
         
         return this.courseParticipants.aggregate(pipeline)
     }

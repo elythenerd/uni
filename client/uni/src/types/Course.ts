@@ -3,7 +3,9 @@ export interface CourseInterface {
     Id: string,
     SubjectId : string,
     TeacherId: string,
-    Status : boolean
+    Status : boolean,
+    TeacherName?: string,
+    SubjectName?:string
 }
 
 

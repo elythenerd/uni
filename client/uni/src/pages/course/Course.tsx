@@ -1,10 +1,10 @@
-import { Box, Button, Dialog, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Dialog, Divider, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import react, { useEffect } from 'react';
 import { useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import StudentsTable from '../../components/StudentsTable/StudentsTable';
 import { useSelector } from 'react-redux';
-import { cpInterface, cpState } from '../../types/CourseParticicpants';
+import { avgGradesInterface, cpInterface, cpState } from '../../types/CourseParticicpants';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { StudentsInterface } from '../../types/Students';
@@ -17,6 +17,8 @@ const Course = () => {
     const [OpenAddStudent, setOpenAddStudent] = useState<boolean>(false)
     const [studentOptions, setstudentOptions] = useState<StudentsInterface[]>()
     const [students, setStudents] = useState<StudentsInterface[]>()
+    const [Grade, setGrade] = useState<avgGradesInterface[]>()
+
     const [studentId, setStudentId] = useState<string>('')
 
     const courseParticipants = useSelector((state: cpState) => state.courseParticipants.value.courseParticipants)
@@ -26,6 +28,7 @@ const Course = () => {
     useEffect(() => {
         getStudentOptions(courseId)
         fetchStudents()
+        fetchGrade(courseId)
     }, [])
     async function getStudentOptions(id: string) {
         const res = await axios.get(`http://localhost:8000/api/students/get/course/options/${id}`)
@@ -41,6 +44,18 @@ const Course = () => {
             setStudents(res_students)
             // dispatch(setStudents(students))
             return students
+        } catch (e) {
+            console.log('users not fetched', e)
+        }
+    }
+    const fetchGrade = async (id: string) => {
+        try {
+            const res = await axios.get(`http://localhost:8000/api/cp/get/Grade/${id}`)
+            const res_Grade: avgGradesInterface[] = res.data
+            // console.log(res_students)
+            setGrade(res_Grade)
+            // dispatch(setStudents(students))
+            return res_Grade
         } catch (e) {
             console.log('users not fetched', e)
         }
@@ -113,8 +128,15 @@ const Course = () => {
                 </Stack>
             </Dialog>
             <StudentsTable students={students as StudentsInterface[]} course={true}></StudentsTable>
-            <Box>
-                <PieChart></PieChart>
+            <Box sx={{ display: 'flex', alignItems: 'center' }}>
+                <PieChart courseId={courseId}></PieChart>
+                <Card sx={{ height: '30%', alignItems: 'center', justifyContent: 'center', display: 'flex', width: '30%', direction: 'rtl' }}>
+                    <CardContent >
+                        <Typography sx={{fontSize:30}}>ציון ממוצע</Typography>
+                        <Divider></Divider>
+                        <Typography>{Grade?.map((value) => value.avgGrade)}</Typography>
+                    </CardContent>
+                </Card>
             </Box>
 
         </Stack>

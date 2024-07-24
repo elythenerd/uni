@@ -11,7 +11,7 @@ const CourseGrid = ({courses}:{courses:CourseInterface[]})=>{
     
 
     return(
-        <Grid container sx={{direction:'rtl'}}>
+        <Grid container >
                     {
                         courses.map((course) => {
                             // console.log(course.SubjectId)

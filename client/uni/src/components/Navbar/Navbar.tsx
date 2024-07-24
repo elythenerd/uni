@@ -15,7 +15,10 @@ import Tooltip from '@mui/material/Tooltip';
 import MenuItem from '@mui/material/MenuItem';
 import AdbIcon from '@mui/icons-material/Adb';
 import { useNavigate } from "react-router-dom";
+import { useSelector } from "react-redux";
+import { JobType, userState } from "../../types/User";
 const Navbar = () => {
+    const loggedUser = useSelector((state: userState) => state.user.value.user)
     const location = useLocation()
    const navigator = useNavigate()
     return (
@@ -29,12 +32,12 @@ const Navbar = () => {
                         
                     </MenuItem>
                    
-                    <MenuItem onClick={()=>navigator('/Boss')}>
+                   {loggedUser.Job === JobType.Boss && <MenuItem onClick={()=>navigator('/Boss')}>
                         <Typography textAlign="center">מנהלים</Typography>
-                    </MenuItem>
-                    <MenuItem onClick={()=>navigator('/Teacher')}>
+                    </MenuItem>}
+                    {loggedUser.Job === JobType.Teacher &&<MenuItem onClick={()=>navigator('/Teacher')}>
                         <Typography textAlign="center">מורים</Typography>
-                    </MenuItem>
+                    </MenuItem>}
                 </div>
                 <Avatar sx={{height:'1.5rem',width:'1.5rem'}}></Avatar>
             </div>

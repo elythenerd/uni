@@ -26,11 +26,12 @@ const ChipSubject = ({ label, teacherid, subjectid, id }: { label: string | unde
         dispatch(removeTeachersSubjects(chipToRemove))
         patchTeacherSubject(chipToRemove?.Id)
     }
-    return (<Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-        <Typography>{label}</Typography>
+    return (<Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem',justifyContent:'flex-end'  }}>
         <IconButton sx={{fontSize:'1rem'}} onClick={() => deletechip(subjectid, teacherid, id)}>
             <FaTrash></FaTrash>
         </IconButton>
+        <Typography>{label}</Typography>
+
 
     </Box>
 

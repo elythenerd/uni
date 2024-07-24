@@ -41,7 +41,7 @@ const CourseCard = ({ course }: { course: CourseInterface }) => {
                 <Stack sx={{alignItems:'center'}}>
                     <Typography variant="h5" sx={{ color: 'black' }}>{course.Name}</Typography>
                     <Typography color="text.secondary">{teacher?.Name}</Typography>
-                    <Chip sx={{width:'40%'}} label={subject?.Name}></Chip>
+                    <Chip sx={{width:'40%'}} label={course.SubjectName}></Chip>
                     <Typography color={course.Status ? "green" : "red"}>{course.Status ? "פעיל" : 'סגור'}</Typography>
                     {course.Status && <IconButton onClick={() => deleteCourse(course.Id)}>
                         <TiDeleteOutline ></TiDeleteOutline>

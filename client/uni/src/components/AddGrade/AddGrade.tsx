@@ -52,7 +52,7 @@ const AddGrade = ({ id, courseId}: { id: string, courseId: string }) => {
         // console.log(courseParticipants)
     }
     return (
-        <TextField sx={{ width: 100, direction: 'rtl', textAlign: 'center' }} error={checkGrade()} label={checkGrade() ? 'הזן ציון בין 0-100' : 'הזן ציון'} type="number" variant="standard" inputProps={{ min: 0, max: 100 }} value={grade} onChange={(event: React.ChangeEvent<HTMLInputElement>) => { setGrade(event.target.value) }} onBlur={() => addParticipant(id, courseId, grade)}></TextField>)
+        <TextField sx={{ width: 100, textAlign: 'center' }} error={checkGrade()} label={checkGrade() ? 'הזן ציון בין 0-100' : 'הזן ציון'} type="number" variant="standard" inputProps={{ min: 0, max: 100 }} value={grade} onChange={(event: React.ChangeEvent<HTMLInputElement>) => { setGrade(event.target.value) }} onBlur={() => addParticipant(id, courseId, grade)}></TextField>)
 }
 
 export default AddGrade

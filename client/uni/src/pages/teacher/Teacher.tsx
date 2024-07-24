@@ -15,7 +15,7 @@ const Teacher = () => {
     },[])
     const fetchCourses = async ()=>{
         try{
-        const res = axios.get('http://localhost:8000/api/courses/get')
+        const res = axios.get('http://localhost:8000/api/courses/get/names')
         const courses : CourseInterface[] = (await res).data
         // console.log(users)
         dispatch(setCourses(courses))

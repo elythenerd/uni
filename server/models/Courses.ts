@@ -1,4 +1,4 @@
-import { Model, Schema } from "mongoose";
+import { Model, PipelineStage, Schema } from "mongoose";
 import mongoose from "mongoose";
 import { cousresInterface } from "../types/courses";
 const CoursesSchema = new Schema<cousresInterface>(
@@ -35,18 +35,9 @@ class Courses{
             {new:true}
         )
     } 
-    async aggregate():Promise<cousresInterface[]>{
+    async aggregate(body:PipelineStage[]):Promise<cousresInterface[]>{
         return this.courses.aggregate(
-            [
-                {
-                  '$lookup': {
-                    'from': 'subjects', 
-                    'localField': 'SubjectId', 
-                    'foreignField': 'Id', 
-                    'as': 'subjectinfo'
-                  }
-                }
-              ]
+            body
         )
     }
     
