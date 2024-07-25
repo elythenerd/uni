@@ -10,13 +10,16 @@ import { Dispatch } from "@reduxjs/toolkit";
 import { addCourse, setCourses } from "../../store/courses";
 import { Subject } from "../../types/Subject";
 import axios from "axios";
+import { checkEnrollmentYear } from "../../utils/checkEnrollmentYear";
 const AddCourse = ({ setOpenCourse }: { setOpenCourse: React.Dispatch<React.SetStateAction<boolean>> }) => {
     const [Name, setName] = useState<string>('')
     const [subjects, setSubjects] = useState<Subject[]>([])
     const [Id, setId] = useState<number>()
     const [SubjectId, setSubjectId] = useState<string>('')
     const [TeacherId, setTeacherId] = useState<string>('')
-    const [Status, setStatus] = useState<boolean>(true)
+    const [birthDate, setbirthDate] = useState<string>('')
+    const [yearError,setYearError] = useState<boolean>()
+    const [enable, setEnable] = useState<boolean>(false)
     // const [Courses, setCourses] = useState<CourseInterface[]>()
     const Subjects = useSelector((state: subjectState) => state.subject.value.Subjects.filter((subject: Subject) => subject.Active))
     const Users = useSelector((state: usersState) => state.users.value.users)
@@ -32,19 +35,29 @@ const AddCourse = ({ setOpenCourse }: { setOpenCourse: React.Dispatch<React.SetS
 
 
     }
-    async function getSubjectOptions(id: string) {
+    async function getSubjectOptions(id: string,birthDate:string) {
         console.log(TeacherId)
-
-        const res = await axios.get(`http://localhost:8000/api/ts/options/${id}`)
+        try{
+        const res = await axios.get(`http://localhost:8000/api/ts/options/${id}/${birthDate}`)
         const subjects: Subject[] = res.data
         console.log(subjects)
-        setSubjects(subjects)
+        if (subjects.length>0){
+            setEnable(true)
+        }else{
+            setEnable(false)
+        }
+        
+        setSubjects(subjects)}catch(e){
+            setEnable(false)
+            console.log(e)
+        }
         // return subjects
     }
+    
 
 
     const checkAddCourse = () => {
-        if (Name && SubjectId && TeacherId) {
+        if (Name && SubjectId && TeacherId && !yearError && enable) {
 
             console.log(SubjectId)
             const NewCourse: CourseInterface = {
@@ -52,7 +65,8 @@ const AddCourse = ({ setOpenCourse }: { setOpenCourse: React.Dispatch<React.SetS
                 Name: Name,
                 SubjectId: SubjectId,
                 TeacherId: TeacherId,
-                Status: true
+                Status: true,
+                enrollementYear:birthDate
 
             }
             // setCourses((prev) => {
@@ -88,14 +102,14 @@ const AddCourse = ({ setOpenCourse }: { setOpenCourse: React.Dispatch<React.SetS
                 gap: '5px'
             }}>
                 <TextField required label='שם' onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)} />
-
+                <TextField error={yearError} onBlur={()=>{getSubjectOptions(TeacherId,birthDate)}}  required label={yearError?'נא להזין שנתון עם ארבע ספרות':'שנתון'} onChange={(e: ChangeEvent<HTMLInputElement>) => checkEnrollmentYear(e.target.value,setYearError,setbirthDate)} />
                 <TextField select label='מורה' >
                     {
                         teachers.map((option) => {
 
                             return <MenuItem onClick={(e: React.MouseEvent<HTMLLIElement>) => {
                                 setTeacherId(option.Id)
-                                getSubjectOptions(option.Id)
+                                getSubjectOptions(option.Id,birthDate)
                             }} key={option.Id} value={option.Id}>{option.Name}</MenuItem>
                         })
 
@@ -104,10 +118,10 @@ const AddCourse = ({ setOpenCourse }: { setOpenCourse: React.Dispatch<React.SetS
 
 
 
-                <TextField select disabled={TeacherId?false:true}  label='מקצוע' >
+                <TextField select disabled={!enable}  label='מקצוע' >
                     {
                         subjects.map((option) => {
-                            return <MenuItem onClick={(e: React.MouseEvent<HTMLLIElement>) => setSubjectId(option.Id)} key={option.Id} value={option.Id}>{option.Name}</MenuItem>
+                            return <MenuItem onClick={(e: React.MouseEvent<HTMLLIElement>) => setSubjectId(option.Id)} key={option.Id} value={option.Id}>{enable&&option.Name}</MenuItem>
                         })
 
                     }

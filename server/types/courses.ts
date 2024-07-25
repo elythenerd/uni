@@ -3,5 +3,6 @@ export interface cousresInterface{
     Name: string,
     TeacherId: string,
     SubjectId: string,
+    enrollementYear?:string,
     Status:  Boolean
 }

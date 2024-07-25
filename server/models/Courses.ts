@@ -7,7 +7,7 @@ const CoursesSchema = new Schema<cousresInterface>(
         Name: { type: String, require: true },
         TeacherId: { type: String, require: true },
         SubjectId: { type: String, require: true },
-
+        enrollementYear:{type:String},
         Status:  { type: Boolean, require: true }
        
         

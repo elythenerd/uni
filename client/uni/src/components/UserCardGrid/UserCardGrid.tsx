@@ -16,7 +16,7 @@ const UserCardGrid = ({ set,Users }: { set: boolean,Users:User[] }) => {
 
             {Users.map((user) => {
                 return (<Grid item
-                    xs={2}
+                    xs={3}
                   
                     key={user.Id}
                     sx={{

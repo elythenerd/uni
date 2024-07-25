@@ -9,7 +9,9 @@ export async function createSubject(req: Request, res: Response) {
         await Subjects.update({
             Name: subject.Name
         },
-            { $set: subject },
+            {$set: {Active: true},
+            $setOnInsert:{  ...subject,
+            Active: undefined } },
             { new: true, upsert: true }
             
         )

@@ -1,12 +1,21 @@
 import Users from "../../models/Users";
 import { Response,Request } from "express";
 import { userCredentials, userInterface } from "../../types/users";
+import { Password } from "@mui/icons-material";
 export async function createUsers(req: Request, res: Response) {
     try {
         const user : userInterface = req.body
+        const users:userInterface[] = await Users.get()
+        const findUser = users.find((userDB)=>userDB.Id === user.Id )
         // console.log(Object.keys().)
-        await Users.create(user)
-        res.json().status(200)
+        if (findUser){
+            return res.status(401).send('user already signed')
+        }else{
+            await Users.create(user)
+            req.session.user = user
+            return res.status(200).json(user)
+        }
+       
     }catch (e){
         res.send(e).status(400)
     }
@@ -60,7 +69,7 @@ export async function checkAuth(req: Request, res: Response) {
 
     try {
         if (!req.session.user){
-            return res.status(401).send('need to login')
+            return res.status(401).send({Id:undefined,Password:undefined})
         }else{
             res.status(200).send(req.session.user)
         }
@@ -77,6 +86,50 @@ export async function checkAuth(req: Request, res: Response) {
         
         
     }catch (e){
+        res.send(e).status(400)
+    }
+}
+
+
+export async function getTeacherOptions(req: Request, res: Response) {
+    try {
+        // console.log(Subjects)
+
+        const year: string = req.params.year
+        const subjects = await Users.aggregation([
+            {
+              '$lookup': {
+                'from': 'courses', 
+                'localField': 'Id', 
+                'foreignField': 'TeacherId', 
+                'as': 'result'
+              }
+            }, {
+              '$unwind': {
+                'path': '$result', 
+                'preserveNullAndEmptyArrays': false
+              }
+            }, {
+              '$project': {
+                '_id': 1, 
+                'Id': 1, 
+                'Name': 1, 
+                'BirthYear': 1, 
+                'Password': 1, 
+                'Gender': 1, 
+                'Job': 1, 
+                '__v': 1, 
+                'year': '$result.enrollementYear'
+              }
+            }, {
+              '$match': {
+                'year': {'$ne':year}
+              }
+            }
+          ])
+        console.log(subjects, 1)
+        res.send(subjects).status(200)
+    } catch (e) {
         res.send(e).status(400)
     }
 }

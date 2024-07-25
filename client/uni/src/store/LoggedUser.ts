@@ -1,12 +1,12 @@
-import { configureStore, createSlice } from "@reduxjs/toolkit";
+import { configureStore, createSlice, PayloadAction } from "@reduxjs/toolkit";
 // import { Subject } from "../types/Subject";
-import {User} from '../types/User'
-const userInitialState = {value : {user : {}  as  User} }
+import {User, userState, userValue} from '../types/User'
+const userInitialState : userValue = {value : {user : undefined} }
 export const userSlice = createSlice({
     name : "user",
     initialState: userInitialState,
     reducers: {
-        setUser : (state,action)=>{
+        setLoggedUser : (state,action)=>{
             // console.log(state.value.Subjects[0])
             console.log(action.payload,'11111111111')
             state.value.user  = action.payload
@@ -16,5 +16,5 @@ export const userSlice = createSlice({
     
 })
 
-export const {setUser} = userSlice.actions
+export const {setLoggedUser} = userSlice.actions
 

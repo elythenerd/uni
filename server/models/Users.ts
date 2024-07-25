@@ -1,4 +1,4 @@
-import { Model, Schema } from "mongoose";
+import { Model, PipelineStage, Schema } from "mongoose";
 import mongoose from "mongoose";
 import { userInterface } from "../types/users";
 const UsersSchema = new Schema<userInterface>(
@@ -26,6 +26,11 @@ class Users{
 
     async get():Promise<userInterface[]>{
         return this.users.find()
+    }
+    async aggregation(pipeline:PipelineStage[]): Promise<userInterface[] | null> {
+        return this.users.aggregate(
+            pipeline
+        )
     }
     
     

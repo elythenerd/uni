@@ -5,7 +5,8 @@ export interface CourseInterface {
     TeacherId: string,
     Status : boolean,
     TeacherName?: string,
-    SubjectName?:string
+    SubjectName?:string,
+    enrollementYear?:string
 }
 
 

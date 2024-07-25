@@ -32,14 +32,14 @@ const Navbar = () => {
                         
                     </MenuItem>
                    
-                   {loggedUser.Job === JobType.Boss && <MenuItem onClick={()=>navigator('/Boss')}>
+                   {loggedUser?.Job === JobType.Boss && <MenuItem onClick={()=>navigator('/Boss')}>
                         <Typography textAlign="center">מנהלים</Typography>
                     </MenuItem>}
-                    {loggedUser.Job === JobType.Teacher &&<MenuItem onClick={()=>navigator('/Teacher')}>
+                    {loggedUser?.Job === JobType.Teacher &&<MenuItem onClick={()=>navigator('/Teacher')}>
                         <Typography textAlign="center">מורים</Typography>
                     </MenuItem>}
                 </div>
-                <Avatar sx={{height:'1.5rem',width:'1.5rem'}}></Avatar>
+                <Avatar  sx={{height:'1.5rem',width:'1.5rem'}}></Avatar>
             </div>
         </AppBar>
     );

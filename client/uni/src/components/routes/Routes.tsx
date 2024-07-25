@@ -21,7 +21,7 @@ const AllRoutes = () => {
             <Route path='/SignUp' element={<SignUpPage></SignUpPage>}></Route>
             <Route path='/LogIn' element={<LogInPage></LogInPage>}></Route>
             <Route path='/Teacher' element={<Teacher></Teacher>}></Route>
-            {loggedUser.Job=='boss'&&<Route path='/Boss' element={<BossPage></BossPage>}></Route>}
+            {loggedUser?.Job=='boss'&&<Route path='/Boss' element={<BossPage></BossPage>}></Route>}
             <Route path='/Course' element={<Course></Course>}></Route>
 
         

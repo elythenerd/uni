@@ -6,7 +6,7 @@ export interface User {
     Job : JobType,
     Gender : GenderType ,
     DateOfBirth: string,
-    ProfilePicture: string
+    ProfilePicture?: string
 }
 
 
@@ -63,5 +63,5 @@ export interface userState {
 }
 
 export interface userValue{
-    value: {user:User}
+    value: {user:User | undefined}
 }

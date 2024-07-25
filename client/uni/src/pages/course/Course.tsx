@@ -24,6 +24,7 @@ const Course = () => {
     const courseParticipants = useSelector((state: cpState) => state.courseParticipants.value.courseParticipants)
     const location = useLocation()
     const courseId = location.state.CourseId
+    const year = location.state.year
     // console.log(courseId)
     useEffect(() => {
         getStudentOptions(courseId)
@@ -31,7 +32,7 @@ const Course = () => {
         fetchGrade(courseId)
     }, [])
     async function getStudentOptions(id: string) {
-        const res = await axios.get(`http://localhost:8000/api/students/get/course/options/${id}`)
+        const res = await axios.get(`http://localhost:8000/api/students/get/course/options/${id}/${year}`)
         const options = res.data
         console.log(options)
         setstudentOptions(options)

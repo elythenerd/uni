@@ -3,7 +3,7 @@ import React, { useEffect } from "react"
 import { useNavigate } from "react-router-dom"
 import { User } from "../../types/User"
 import { useDispatch } from "react-redux"
-import { setUser } from "../../store/LoggedUser"
+import { setLoggedUser } from "../../store/LoggedUser"
 const Auth = ({ children }: { children: React.ReactNode }) => {
     const dispatch = useDispatch()
     const navigator = useNavigate()
@@ -16,7 +16,7 @@ const Auth = ({ children }: { children: React.ReactNode }) => {
             // console.log(res)
             const user: User = res.data
             // console.log(user)
-            dispatch(setUser(user))
+            dispatch(setLoggedUser(user))
             navigator('/')
         } catch (e) {
             navigator('/LogIn')

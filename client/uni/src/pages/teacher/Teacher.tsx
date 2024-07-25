@@ -7,15 +7,20 @@ import { CourseInterface, coursesState } from "../../types/Course";
 import CourseGrid from "../../components/CourseGrid/CourseGrid";
 import axios from "axios";
 import { setCourses } from "../../store/courses";
+import { JobType, userState } from "../../types/User";
+import { useLocation } from "react-router-dom";
 
 const Teacher = () => {
+    const location = useLocation()
+    const loggedUser = useSelector((state:userState)=> state.user.value.user)
+    const id : string = loggedUser?.Job===JobType.Boss? location.state.id:loggedUser?.Id
     const dispatch  = useDispatch()
     useEffect(()=>{
         fetchCourses()
     },[])
     const fetchCourses = async ()=>{
         try{
-        const res = axios.get('http://localhost:8000/api/courses/get/names')
+        const res = axios.get(`http://localhost:8000/api/courses/get/names/byId/${id}`,{withCredentials:true})
         const courses : CourseInterface[] = (await res).data
         // console.log(users)
         dispatch(setCourses(courses))

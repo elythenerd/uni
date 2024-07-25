@@ -55,7 +55,7 @@ export async function deleteTeachersSubject(req: Request, res: Response) {
 export async function getTeachersSubjectOptions(req: Request, res: Response) {
     try {
         // console.log(Subjects)
-
+        const year: string = req.params.year
         const teacherId: string = req.params.id
         const teacherSubjects = await TeachersSubjects.aggregation( [
             {
@@ -78,7 +78,35 @@ export async function getTeachersSubjectOptions(req: Request, res: Response) {
                 '$project': {
                     '_id': 1,
                     'Id': '$SubjectId',
+                    'TeacherId':1,
                     'Name': '$result.Name'
+                }
+            }, {
+                '$lookup': {
+                    'from': 'courses', 
+                    'localField': 'TeacherId', 
+                    'foreignField': 'TeacherId', 
+                    'as': 'result'
+                }
+            }, {
+                '$unwind': {
+                    'path': '$result', 
+                    'preserveNullAndEmptyArrays': true
+                }
+            }, {
+                '$project': {
+                    '_id': 1, 
+                    'Id': 1, 
+                    'Name': 1, 
+                    'teacherId': 1, 
+                    'Active': 1, 
+                    'year': '$result.enrollementYear'
+                }
+            }, {
+                '$match': {
+                    'year': {
+                        '$ne': year
+                    }
                 }
             }
         ])

@@ -1,7 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import './UserCard.css'
 import UserContext from "../../context/usersContext";
-import { Avatar, Box, Card, CardContent, Chip, Dialog, IconButton, Stack, Typography } from "@mui/material";
+import { Avatar, Box, Button, Card, CardContent, Chip, Dialog, IconButton, Stack, Typography } from "@mui/material";
 import { JobType, User } from "../../types/User";
 import { FaBirthdayCake } from "react-icons/fa";
 import { CiCirclePlus } from "react-icons/ci";
@@ -12,8 +12,10 @@ import { TeachersSubjects, teachersSubjectsState } from "../../types/TeachersSub
 import ChipSubject from "./ChipSubject";
 import { setTeachersSubjects } from "../../store/TeachersSubjects";
 import axios from "axios";
+import { Navigate, useNavigate } from "react-router-dom";
 
 export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
+    const navigator = useNavigate()
     const [teacherMode, setTeacherMode] = useState<boolean>(set)
     const [OpenTeacherSubject, setOpenTeacherSubject] = useState<boolean>(false)
     const dispatch = useDispatch()
@@ -31,9 +33,13 @@ export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
             console.log('users not fetched', e)
         }
     }
+    const toTeacherPage = () =>{
+        
+        navigator('/Teacher',{state:{id:user.Id}})
+    }
     const TeachersSubjects = useSelector((state: teachersSubjectsState) => state.teachersSubjects.value.teachersSubjects.filter((TeachersSubject: TeachersSubjects) => TeachersSubject.Active && TeachersSubject.TeacherId == user.Id))
     const Subjects = useSelector((state: subjectState) => state.subject.value.Subjects)
-  
+
 
     function getInitials(name: string) {
         const initials = name.match(/\b\p{L}/gu) || [];
@@ -64,28 +70,34 @@ export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
 
 
         // </div>
-        <Box>
-            <Card sx={{ width: 200 }}>
-                <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
-                    {checkBirthday(user.DateOfBirth) && !teacherMode && <FaBirthdayCake></FaBirthdayCake>}
-                    <Avatar alt="Remy Sharp" src={user?.ProfilePicture}>{getInitials(user.Name)}</Avatar>
-                    <Typography color="text.secondary">{user.Name}</Typography>
-                    <Chip label={user.Job == JobType.Boss ? JobType.BossLabel : JobType.TeacherLabel}></Chip>
-                    {teacherMode &&
-                        <Box sx={{ direction: 'rtl' }}>
+
+        <Card sx={{ width: '100%' }}>
+            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
+                {checkBirthday(user.DateOfBirth) && !teacherMode && <FaBirthdayCake></FaBirthdayCake>}
+                <Avatar alt="Remy Sharp" src={user?.ProfilePicture}>{getInitials(user.Name)}</Avatar>
+                <Typography color="text.secondary">{user.Name}</Typography>
+                <Chip label={user.Job == JobType.Boss ? JobType.BossLabel : JobType.TeacherLabel}></Chip>
+                {teacherMode &&
+                    <Box sx={{ direction: 'rtl' }}>
+                        <Box sx={{ display: 'flex', width: '90%' }}>
                             {TeachersSubjects.map((teachersubject) => {
                                 return <Chip label={<ChipSubject id={teachersubject.Id} teacherid={teachersubject.TeacherId} subjectid={teachersubject.SubjectId} label={getSubject(teachersubject.SubjectId)}></ChipSubject>}></Chip>
                             })}
+                        </Box>
+                        <Box sx={{ display: 'flex', justifyContent: 'center',flexDirection:'column' }}>
                             <IconButton>
                                 <CiCirclePlus onClick={() => setOpenTeacherSubject(true)}></CiCirclePlus>
-                            </IconButton>
-                            <Dialog open={OpenTeacherSubject} onClose={() => setOpenTeacherSubject(false)}>
-                                <AddSubjectTeacher setOpenTeacherSubject={setOpenTeacherSubject} teacherid={user.Id}></AddSubjectTeacher>
-                            </Dialog>
-                        </Box>}
-                </CardContent>
-            </Card>
 
-        </Box>
+                            </IconButton>
+                            <Button onClick={()=>toTeacherPage()}>קורסים</Button>
+                        </Box>
+                        <Dialog open={OpenTeacherSubject} onClose={() => setOpenTeacherSubject(false)}>
+                            <AddSubjectTeacher setOpenTeacherSubject={setOpenTeacherSubject} teacherid={user.Id}></AddSubjectTeacher>
+                        </Dialog>
+                    </Box>}
+            </CardContent>
+        </Card>
+
+
     )
 }
