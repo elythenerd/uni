@@ -65,51 +65,42 @@ export async function getTeachersSubjectOptions(req: Request, res: Response) {
                     'foreignField': 'Id',
                     'as': 'result'
                 }
-            }, {
+            }, 
+            {
                 '$unwind': {
                     'path': '$result',
                     'preserveNullAndEmptyArrays': true
                 }
-            }, {
+            }, 
+            {
                 '$match': {
                     'TeacherId': teacherId
                 }
-            }, {
+            }, 
+            {
                 '$project': {
                     '_id': 1,
                     'Id': '$SubjectId',
-                    'TeacherId':1,
-                    'Name': '$result.Name'
+                    'TeacherId': 1,
+                    'Name': '$result.Name',
+                    'enrollementYear': '$result.enrollementYear'
                 }
-            }, {
+            }, 
+            {
                 '$lookup': {
                     'from': 'courses', 
                     'localField': 'TeacherId', 
                     'foreignField': 'TeacherId', 
                     'as': 'result'
                 }
-            }, {
-                '$unwind': {
-                    'path': '$result', 
-                    'preserveNullAndEmptyArrays': true
-                }
-            }, {
-                '$project': {
-                    '_id': 1, 
-                    'Id': 1, 
-                    'Name': 1, 
-                    'teacherId': 1, 
-                    'Active': 1, 
-                    'year': '$result.enrollementYear'
-                }
-            }, {
+            },
+            {
                 '$match': {
-                    'year': {
-                        '$ne': year
-                    }
+                    'result.enrollementYear': {'$ne':year }// Replace with the year to match
                 }
             }
-        ])
+        ]
+        )
         res.send(teacherSubjects).status(200)
     } catch (e) {
         res.send(e).status(400)

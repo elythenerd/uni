@@ -11,8 +11,11 @@ import cors from 'cors'
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import http from 'http'
+const { Server } = require("socket.io");
+
 const app = express()
 const server: http.Server = http.createServer(app)
+const io = new Server(server);
 dotenv.config()
 
 app.use(express.json())

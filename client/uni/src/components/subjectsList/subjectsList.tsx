@@ -26,7 +26,7 @@ const SubjectsList = () => {
     // console.log(Subjects.filter((subject)=>subject.Active),1)
     return (
         
-            <Grid container  sx={{direction:'rtl'}} >
+            <Grid container   >
                 {
                     Subjects.filter((subject)=>subject.Active).map((subject) => {
                         return (

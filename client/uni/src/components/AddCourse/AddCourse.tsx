@@ -23,7 +23,7 @@ const AddCourse = ({ setOpenCourse }: { setOpenCourse: React.Dispatch<React.SetS
     // const [Courses, setCourses] = useState<CourseInterface[]>()
     const Subjects = useSelector((state: subjectState) => state.subject.value.Subjects.filter((subject: Subject) => subject.Active))
     const Users = useSelector((state: usersState) => state.users.value.users)
-    const teachers = Users.filter((user) => { return user.Job === 'teacher' })
+    const teachers = Users.filter((user) => { return user.Job === 'teacher' && user.Active!==false})
     const dispatch = useDispatch()
     async function createCourse(newCourse: CourseInterface) {
         try {

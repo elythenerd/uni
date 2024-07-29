@@ -11,8 +11,10 @@ import { StudentsInterface } from '../../types/Students';
 import { setStudents } from '../../store/students';
 import { Doughnut, Pie } from "react-chartjs-2";
 import PieChart from '../../components/PieChart/PieChart';
+import methods from '../../utils/methods';
 
 const Course = () => {
+    // const mehtod = new methods()
     const [OpenAddTest, setOpenAddTest] = useState<boolean>(false)
     const [OpenAddStudent, setOpenAddStudent] = useState<boolean>(false)
     const [studentOptions, setstudentOptions] = useState<StudentsInterface[]>()
@@ -32,14 +34,19 @@ const Course = () => {
         fetchGrade(courseId)
     }, [])
     async function getStudentOptions(id: string) {
-        const res = await axios.get(`http://localhost:8000/api/students/get/course/options/${id}/${year}`)
-        const options = res.data
-        console.log(options)
-        setstudentOptions(options)
+        try{
+            const res = await methods.get(`http://localhost:8000/api/students/get/course/options/${id}/${year}`)
+            const options = res.data
+            console.log(options)
+            setstudentOptions(options)
+        }catch(e){
+            console.log(e)
+        }
+      
     }
     const fetchStudents = async () => {
         try {
-            const res = axios.get(`http://localhost:8000/api/students/get/course/${courseId}/grades/avg`)
+            const res = methods.get(`http://localhost:8000/api/students/get/course/${courseId}/grades/avg`)
             const res_students: StudentsInterface[] = (await res).data
             // console.log(res_students)
             setStudents(res_students)
@@ -51,7 +58,7 @@ const Course = () => {
     }
     const fetchGrade = async (id: string) => {
         try {
-            const res = await axios.get(`http://localhost:8000/api/cp/get/Grade/${id}`)
+            const res = await methods.get(`http://localhost:8000/api/cp/get/Grade/${id}`)
             const res_Grade: avgGradesInterface[] = res.data
             // console.log(res_students)
             setGrade(res_Grade)
@@ -65,7 +72,7 @@ const Course = () => {
         try {
             // body.forEach((cp)=> cp.Active=true)
             console.log(body)
-            const req = await axios.post('http://localhost:8000/api/cp/createMany', body)
+            const req = await methods.post('http://localhost:8000/api/cp/createMany', body)
             console.log('post created \n', req)
         } catch (e) {
             console.log(e, 'error')

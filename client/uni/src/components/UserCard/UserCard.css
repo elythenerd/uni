@@ -37,3 +37,13 @@
     align-items: center;
     height: 3rem;
 }
+.birthday{
+    font-size: 30px;
+    animation: colors 1s infinite ease-out
+}
+@keyframes colors {
+    0% {color:  rgb(0, 186, 248);}  
+    5% {color:  rgb(0, 81, 255);}  
+    50% {color: rgb(132, 0, 255);}  
+    100% {color: rgb(0, 186, 248);}  
+}

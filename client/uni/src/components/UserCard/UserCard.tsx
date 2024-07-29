@@ -13,6 +13,9 @@ import ChipSubject from "./ChipSubject";
 import { setTeachersSubjects } from "../../store/TeachersSubjects";
 import axios from "axios";
 import { Navigate, useNavigate } from "react-router-dom";
+import methods from "../../utils/methods";
+import { AiOutlineUserDelete } from "react-icons/ai";
+import { removeUser } from "../../store/Users";
 
 export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
     const navigator = useNavigate()
@@ -24,7 +27,7 @@ export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
     }, [])
     const fetchTeachersSubjects = async () => {
         try {
-            const res = axios.get('http://localhost:8000/api/ts/get')
+            const res = methods.get('http://localhost:8000/api/ts/get')
             const TeachersSubjects: TeachersSubjects[] = (await res).data
             //  console.log(TeachersSubjects)
             dispatch(setTeachersSubjects(TeachersSubjects))
@@ -33,9 +36,9 @@ export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
             console.log('users not fetched', e)
         }
     }
-    const toTeacherPage = () =>{
-        
-        navigator('/Teacher',{state:{id:user.Id}})
+    const toTeacherPage = () => {
+
+        navigator('/Teacher', { state: { id: user.Id } })
     }
     const TeachersSubjects = useSelector((state: teachersSubjectsState) => state.teachersSubjects.value.teachersSubjects.filter((TeachersSubject: TeachersSubjects) => TeachersSubject.Active && TeachersSubject.TeacherId == user.Id))
     const Subjects = useSelector((state: subjectState) => state.subject.value.Subjects)
@@ -46,17 +49,32 @@ export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
         return initials.join('');
     }
     const checkBirthday = (date: string) => {
+        const birthDate = new Date(date)
+        const today = new Date()
+        const todaysYear = today.getFullYear()
+        const birthDateMonth = birthDate.getMonth()
+        const birthDateDay = birthDate.getDate()
+        let dateToCheckString = `${todaysYear}-${birthDateMonth+1}-${birthDateDay}`
         let pastDate = new Date();
-        let dateToCheck: Date = new Date(date)
+        let dateToCheck = new Date(dateToCheckString)
         pastDate.setDate(pastDate.getDate() - 7);
-
-        return dateToCheck >= pastDate
+        // console.log(dateToCheckString)
+        return (dateToCheck >= pastDate && dateToCheck<=today)
     }
     function getSubject(id: string) {
         const subjectObj: Subject | undefined = Subjects.find((subject) => subject.Id == id)
         return subjectObj?.Name
     }
-
+    const deleteUser = async (id:string)=>{
+        try{
+            await methods.patch(`http://localhost:8000/api/users/delete/${id}`)
+            dispatch(removeUser(id))
+            console.log('patch not created')
+        }catch(e){
+            console.log(e)
+        }
+        
+    }
     return (
         // <div className="userCardContainer">
         //     <div className="avatar-name-container">
@@ -73,7 +91,7 @@ export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
 
         <Card sx={{ width: '100%' }}>
             <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
-                {checkBirthday(user.DateOfBirth) && !teacherMode && <FaBirthdayCake></FaBirthdayCake>}
+                {checkBirthday(user.BirthDate) && !teacherMode && <FaBirthdayCake className="birthday"></FaBirthdayCake>}
                 <Avatar alt="Remy Sharp" src={user?.ProfilePicture}>{getInitials(user.Name)}</Avatar>
                 <Typography color="text.secondary">{user.Name}</Typography>
                 <Chip label={user.Job == JobType.Boss ? JobType.BossLabel : JobType.TeacherLabel}></Chip>
@@ -84,12 +102,15 @@ export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
                                 return <Chip label={<ChipSubject id={teachersubject.Id} teacherid={teachersubject.TeacherId} subjectid={teachersubject.SubjectId} label={getSubject(teachersubject.SubjectId)}></ChipSubject>}></Chip>
                             })}
                         </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'center',flexDirection:'column' }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
                             <IconButton>
                                 <CiCirclePlus onClick={() => setOpenTeacherSubject(true)}></CiCirclePlus>
 
                             </IconButton>
-                            <Button onClick={()=>toTeacherPage()}>קורסים</Button>
+                            <Button onClick={() => toTeacherPage()}>קורסים</Button>
+                            <IconButton>
+                                <AiOutlineUserDelete onClick={()=>deleteUser(user.Id)}></AiOutlineUserDelete>
+                            </IconButton>
                         </Box>
                         <Dialog open={OpenTeacherSubject} onClose={() => setOpenTeacherSubject(false)}>
                             <AddSubjectTeacher setOpenTeacherSubject={setOpenTeacherSubject} teacherid={user.Id}></AddSubjectTeacher>

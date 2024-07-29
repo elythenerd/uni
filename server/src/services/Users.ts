@@ -21,7 +21,19 @@ export async function createUsers(req: Request, res: Response) {
     }
 }
 
-
+export async function deleteUser(req: Request, res: Response){
+    const id = req.params.id
+    try{
+        await Users.update({ Id: id },
+            { Active: false },
+            { new: true })
+        res.send(id).status(200)
+        
+    }catch(e){
+        res.status(400).send(e)
+        // console.log('not updated',e)
+    }
+}
 
 
 export async function getUsers(req: Request, res: Response) {
@@ -61,7 +73,21 @@ export async function checkUserAuth(req: Request, res: Response) {
         res.send(e).status(400)
     }
 }
-
+export async function logOut(req: Request, res: Response) {
+    console.log('in')
+    try {
+        
+        req.session.destroy((err)=>{
+            console.log(err)
+           
+        })
+        res.send('logged out').status(200)
+        }
+        
+    catch (e){
+        res.send(e).status(400)
+    }
+}
 
 
 

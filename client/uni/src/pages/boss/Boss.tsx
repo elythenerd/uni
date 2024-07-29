@@ -21,9 +21,12 @@ import axios from "axios";
 import { setCourses } from "../../store/courses";
 import { setStudents } from "../../store/students";
 import { StudentsInterface, studentsState } from "../../types/Students";
-import { setUsers } from "../../store/Users";
+import { removeUser, setUsers } from "../../store/Users";
 import { JobType, User, usersState } from "../../types/User";
+import { FetchCourses } from "../../utils/requests";
+import methods from "../../utils/methods";
 const BossPage = () => {
+    
     const [openCourse, setOpenCourse] = useState<boolean>(false)
     const [openSubject, setOpenSubject] = useState<boolean>(false)
     // const [openTeacher, setOpenTeacher] = useState<boolean>(false)
@@ -38,7 +41,7 @@ const BossPage = () => {
     }, [])
     const fetchCourses = async () => {
         try {
-            const res = axios.get('http://localhost:8000/api/courses/get/names')
+            const res = methods.get('http://localhost:8000/api/courses/get/names')
             const courses: CourseInterface[] = (await res).data
             // console.log(users)
             dispatch(setCourses(courses))
@@ -47,10 +50,10 @@ const BossPage = () => {
             console.log('users not fetched', e)
         }
     }
-    
+
     const fetchStudents = async () => {
         try {
-            const res = axios.get('http://localhost:8000/api/students/get')
+            const res = methods.get('http://localhost:8000/api/students/get')
             const students: CourseInterface[] = (await res).data
             // console.log(users)
             dispatch(setStudents(students))
@@ -59,17 +62,19 @@ const BossPage = () => {
             console.log('users not fetched', e)
         }
     }
-    
+
     const fetchUsers = async () => {
         try {
-            const res = axios.get('http://localhost:8000/api/users/get')
+            const res = methods.get('http://localhost:8000/api/users/get')
             const users: User[] = (await res).data
             // console.log(users)
             dispatch(setUsers(users))
             return users
         } catch (e) {
             console.log('users not fetched', e)
-        }}
+        }
+    }
+    
     const courses: CourseInterface[] = useSelector((state: coursesState) => state.courses.value.courses)
     const students: StudentsInterface[] = useSelector((state: studentsState) => state.students.value.students)
     const Users = useSelector((state: usersState) => state.users.value.users)
@@ -80,7 +85,6 @@ const BossPage = () => {
                 <Navbar></Navbar>
             </Box>
             <Box>
-
                 <Box>
                     <Dialog open={openCourse} onClose={() => setOpenCourse(false)}>
                         <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>הוסף קורס</DialogTitle>
@@ -113,7 +117,7 @@ const BossPage = () => {
 
                         </Box>
                         <Box sx={{ justifyContent: 'center', display: 'flex', width: '100%', alignItems: 'center' }}>
-                            <TabPanel value="0" sx={{width:'100%',height:'100%'}}>
+                            <TabPanel value="0" sx={{ width: '100%', height: '100%' }}>
                                 <Stack sx={{ gap: '2rem', display: 'flex', justifyContent: 'center' }}>
                                     <Box sx={{ display: 'flex', justifyContent: 'center' }}>
                                         <Button sx={{ width: '8rem' }} onClick={() => setOpenSubject(true)}>הוסף מקצוע חדש</Button>
@@ -125,19 +129,19 @@ const BossPage = () => {
 
 
                             </TabPanel >
-                            <TabPanel value='1' sx={{width:'100%',height:'100%'}}>
+                            <TabPanel value='1' sx={{ width: '100%', height: '100%' }}>
                                 <CourseGrid courses={courses}></CourseGrid>
                             </TabPanel>
-                            <TabPanel value="2" sx={{width:'100%',height:'100%'}}>
+                            <TabPanel value="2" sx={{ width: '100%', height: '100%' }}>
                                 <Box sx={{ display: "flex", flexDirection: "column", alignItems: 'center' }}>
                                     <Button onClick={() => setopenStudent(true)}> הוסף תלמיד חדש</Button>
                                     <StudentsTable students={students.filter((student) => student.Status)}></StudentsTable>
                                 </Box>
                             </TabPanel>
-                            <TabPanel value="3" sx={{width:'100%',height:'100%'}}>
+                            <TabPanel value="3" sx={{ width: '100%', height: '100%' }}>
                                 <Stack>
                                     <Button onClick={() => setOpenCourse(true)}> הוסף קורס חדש</Button>
-                                    <UserCardGrid Users={Users.filter((user)=> user.Job === JobType.Teacher)} set={true}></UserCardGrid>
+                                    <UserCardGrid Users={Users.filter((user) => user.Job === JobType.Teacher && user.Active!==false)} set={true}></UserCardGrid>
                                 </Stack>
 
 

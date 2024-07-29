@@ -40,7 +40,7 @@ export async function deleteSubject(req: Request, res: Response) {
         // console.log(Subjects)
 
         const subjectsId: string = req.params.id
-        Subjects.update({ Id: subjectsId },
+        await Subjects.update({ Id: subjectsId },
             { Active: false },
             { new: true })
         res.send(subjectsId).status(200)

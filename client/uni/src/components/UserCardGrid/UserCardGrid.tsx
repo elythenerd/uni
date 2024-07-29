@@ -12,7 +12,7 @@ const UserCardGrid = ({ set,Users }: { set: boolean,Users:User[] }) => {
     // const Users = useSelector((state: usersState) => state.users.value.users)
 
     return (
-        <Grid container sx={{ direction: 'rtl' }}>
+        <Grid container >
 
             {Users.map((user) => {
                 return (<Grid item

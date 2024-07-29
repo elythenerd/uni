@@ -33,12 +33,16 @@ const SignUp = () => {
         try {
             const res = await axios.post('http://localhost:8000/api/users/create', newUser, { withCredentials: true })
             if (res.status === 200) {
-                setAuth(true);
+                console.log('status 200')
+                Navigator('/')
+                dispatch(setLoggedUser(newUser))
             } else {
-                setAuth(false);
+                console.log('status err')
+                setIdErrorMessage('ת.ז זה כבר קיים במערכת')
             }
         } catch (error) {
-            setAuth(false);
+            console.log(error)
+            setIdErrorMessage('ת.ז זה כבר קיים במערכת')
         }
         // console.log('post created',res.data,11111)
         // setAuth(true)
@@ -65,24 +69,26 @@ const SignUp = () => {
                 Name: Name,
                 Password: Password,
                 Job: Job,
-                DateOfBirth: DateOfBirth,
+                BirthDate: DateOfBirth,
                 Gender: Gender,
-                ProfilePicture: ProfilePicture
+                ProfilePicture: ProfilePicture,
+                Active: true
 
             }
-            //console.log(newUser)
+            createUser(newUser)
+            console.log(newUser)
 
             // dispatch(setUsers(newUser))
             
-                const userCheck = await createUser(newUser)
-                if (auth){
-                    Navigator('/')
-                    dispatch(setLoggedUser(newUser))
+                // const userCheck = await createUser(newUser)
+                // if (auth){
+                //     Navigator('/')
+                //     dispatch(setLoggedUser(newUser))
                     
-                }else{
-                    setIdErrorMessage('ת.ז זה כבר קיים במערכת')
-                }
-                console.log('in')
+                // }else{
+                //     setIdErrorMessage('ת.ז זה כבר קיים במערכת')
+                // }
+                // console.log('in')
                 // Navigator('/')
             
                 // console.log('failed')
@@ -93,7 +99,7 @@ const SignUp = () => {
             // setUsers((prev) => {
             //     return [...prev, newUser]
             // })
-            console.log(auth)
+            // console.log(auth)
             // Navigator('/')
         }
     }
