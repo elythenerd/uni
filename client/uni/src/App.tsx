@@ -19,6 +19,7 @@ import axios from 'axios';
 import { User, userState } from './types/User';
 import Auth from './components/Auth/Auth';
 import AllRoutes from './components/routes/Routes';
+import Sockets from './Sockets';
 // import { ThemeProvider } from '@emotion/react';
 function App() {
 
@@ -29,13 +30,13 @@ function App() {
         <CacheProvider value={cacheRtl} >
 
           <Provider store={store} stabilityCheck="never">
+            <Sockets/>
             <UserContextProvider>
               <OpenContextProvider>
 
                 <Router>
-                  <Auth>
+                  <Auth/>
                    <AllRoutes></AllRoutes>
-                  </Auth>
                 </Router>
               </OpenContextProvider>
 

@@ -9,7 +9,7 @@ import methods from "../../utils/methods";
 import { setUsers } from "../../store/Users";
 
 export const Home = () => {
-    const [Users,setUsers] = useState<User[]>([])
+   
     const dispatch = useDispatch()
     useEffect(()=>{
         fetchUsers()
@@ -20,13 +20,13 @@ export const Home = () => {
             const res = methods.get('http://localhost:8000/api/users/get')
             const users: User[] = (await res).data
             // console.log(users)
-            setUsers(users)
+            dispatch(setUsers(users))
             return users
         } catch (e) {
             console.log('users not fetched', e)
         }
     }
-    // const Users = useSelector((state: usersState) => state.users.value.users)
+    const Users = useSelector((state: usersState) => state.users.value.users)
     return <div className="home-container">
         <Navbar></Navbar>
         <UserCardGrid Users={Users.filter((user)=>user.Active!==false)} set={false} />

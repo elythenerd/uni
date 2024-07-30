@@ -1,12 +1,14 @@
 import Courses from "../../models/Courses";
 import { Response, Request } from "express";
 import { cousresInterface } from "../../types/courses";
+import { io } from "..";
 export async function createCourse(req: Request, res: Response) {
   try {
     console.log(Courses)
     const courses: cousresInterface = req.body
-    await Courses.create(courses)
+    const course = await Courses.create(courses)
     res.json().status(200)
+    io.addCourse(course)
   } catch (e) {
     res.send(e).status(400)
   }
@@ -31,7 +33,8 @@ export async function deleteCourse(req: Request, res: Response) {
     console.log(Courses)
 
     const courseId: string = req.params.id
-    Courses.delete(courseId)
+    const course = await Courses.delete(courseId)
+    io.removeCourse(course as cousresInterface)
     res.send(courseId).status(200)
   } catch (e) {
     res.send(e).status(400)

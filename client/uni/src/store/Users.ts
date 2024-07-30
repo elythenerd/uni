@@ -19,10 +19,14 @@ export const usersSlice = createSlice({
             state.value.users[index] = { ...state.value.users[index], Active: false }
             // console.log(state.value.courses[0])
 
+        },
+        addUser: (state,action) =>{
+            state.value.users.push(action.payload)
+
         }
     }
     
 })
 
-export const {setUsers,removeUser} = usersSlice.actions
+export const {setUsers,removeUser,addUser} = usersSlice.actions
 

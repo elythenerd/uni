@@ -29,7 +29,7 @@ const CourseCard = ({ course }: { course: CourseInterface }) => {
     }
     function deleteCourse(id: string) {
         patchCourse(id)
-        dispatch(removeCourse(id))
+        // dispatch(removeCourse(id))
     }
     function toCourse(id:string,year:string|undefined){
         Navigator('/Course',{state:{CourseId:id,year:year}})

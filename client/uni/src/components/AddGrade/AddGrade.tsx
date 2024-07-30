@@ -3,7 +3,7 @@ import TextField from "@mui/material/TextField";
 import React, { useState } from "react";
 import { cpInterface, cpState } from "../../types/CourseParticicpants";
 import { useDispatch, useSelector } from "react-redux";
-import { addGrade, changegrade } from "../../store/CourseParticipants";
+import { addGrade, changegrade } from "../../store/AddGrade";
 
 const AddGrade = ({ id, courseId}: { id: string, courseId: string }) => {
     const [grade, setGrade] = useState<string>('')
@@ -11,7 +11,7 @@ const AddGrade = ({ id, courseId}: { id: string, courseId: string }) => {
     
     // const [coursParticipants, setCourseParticicpants] = useState<cpInterface[]>([])
 
-    const courseParticipants = useSelector((state: cpState) => state.courseParticipants.value.courseParticipants)
+    const courseParticipants = useSelector((state: cpState) => state.grades.value.courseParticipants)
     const checkGrade = () => {
         const parsedGrade = parseInt(grade, 10)
         if (parsedGrade > 100 || parsedGrade < 0) {

@@ -33,7 +33,7 @@ class Subjects {
             {new:true}
         )
     }
-    async update(expression={},apply={},how={}):Promise<subjectInterface[] | null>{
+    async update(expression={},apply={},how={}):Promise<subjectInterface | null>{
       return this.subjects.findOneAndUpdate(expression,apply,how)
   }
     async aggregate(pipeline: PipelineStage[]):Promise<subjectInterface[]>{

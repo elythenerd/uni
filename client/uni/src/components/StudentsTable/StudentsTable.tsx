@@ -21,13 +21,14 @@ const StudentsTable = ({ students, addGrade = false, course = false }: { student
     const removeStudent = (id: string) => {
         try {
             const res = axios.patch(`http://localhost:8000/api/students/delete/${id}`)
-            dispatch(deleteStudent(id))
+            // dispatch(deleteStudent(id))
             console.log('deleted student')
         } catch (e) {
             console.log('student not deleted', e)
         }
     }
     const removeStudentParticipation = (id: string,courseId:string) => {
+        console.log(id,'studentsid')
         try {
             const res = axios.delete(`http://localhost:8000/api/cp/delete/${id}/${courseId}`)
             // dispatch(deleteStudent(id))

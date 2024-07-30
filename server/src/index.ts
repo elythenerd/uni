@@ -11,11 +11,16 @@ import cors from 'cors'
 import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import http from 'http'
-const { Server } = require("socket.io");
-
+import sockets from './sockets'
 const app = express()
 const server: http.Server = http.createServer(app)
-const io = new Server(server);
+export const io = new sockets(server)
+
+app.use(cors({
+    origin: ['http://localhost:5173'],
+    credentials: true
+}))
+
 dotenv.config()
 
 app.use(express.json())
@@ -30,10 +35,7 @@ app.use(session({
     // cookie: { secure: true }, // Comment this line if testing locally without HTTPS
 
 }))
-app.use(cors({
-    origin: ['http://localhost:5173'],
-    credentials: true
-}))
+
 
 app.use('/api/users', userRouter)
 app.use('/api/courses', cousreRouter)

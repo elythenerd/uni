@@ -2,6 +2,7 @@ import Users from "../../models/Users";
 import { Response,Request } from "express";
 import { userCredentials, userInterface } from "../../types/users";
 import { Password } from "@mui/icons-material";
+import { io } from "../index";
 export async function createUsers(req: Request, res: Response) {
     try {
         const user : userInterface = req.body
@@ -12,6 +13,8 @@ export async function createUsers(req: Request, res: Response) {
             return res.status(401).send('user already signed')
         }else{
             await Users.create(user)
+            io.addUser(user)
+            console.log('----------------------servr')
             req.session.user = user
             return res.status(200).json(user)
         }
@@ -24,11 +27,12 @@ export async function createUsers(req: Request, res: Response) {
 export async function deleteUser(req: Request, res: Response){
     const id = req.params.id
     try{
-        await Users.update({ Id: id },
+        const user = await Users.update({ Id: id },
             { Active: false },
             { new: true })
         res.send(id).status(200)
         
+        io.deleteUser(user as userInterface)
     }catch(e){
         res.status(400).send(e)
         // console.log('not updated',e)

@@ -27,7 +27,7 @@ class Users{
     async get():Promise<userInterface[]>{
         return this.users.find()
     }
-    async update(expression={},apply={},how={}):Promise<userInterface[] | null>{
+    async update(expression={},apply={},how={}):Promise<userInterface | null>{
         return this.users.findOneAndUpdate(expression,apply,how)
     }
     async aggregation(pipeline:PipelineStage[]): Promise<userInterface[] | null> {

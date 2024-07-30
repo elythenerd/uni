@@ -3,8 +3,8 @@ import react, { useEffect } from 'react';
 import { useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import StudentsTable from '../../components/StudentsTable/StudentsTable';
-import { useSelector } from 'react-redux';
-import { avgGradesInterface, cpInterface, cpState } from '../../types/CourseParticicpants';
+import { useDispatch, useSelector } from 'react-redux';
+import { avgGradesInterface, cpInterface, cpState, cpStateStudents } from '../../types/CourseParticicpants';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { StudentsInterface } from '../../types/Students';
@@ -12,6 +12,7 @@ import { setStudents } from '../../store/students';
 import { Doughnut, Pie } from "react-chartjs-2";
 import PieChart from '../../components/PieChart/PieChart';
 import methods from '../../utils/methods';
+import { setCp } from '../../store/CourseParticipants';
 
 const Course = () => {
     // const mehtod = new methods()
@@ -20,10 +21,12 @@ const Course = () => {
     const [studentOptions, setstudentOptions] = useState<StudentsInterface[]>()
     const [students, setStudents] = useState<StudentsInterface[]>()
     const [Grade, setGrade] = useState<avgGradesInterface[]>()
-
+    
     const [studentId, setStudentId] = useState<string>('')
+    const dispatch = useDispatch()
+    const grades = useSelector((state: cpState) => state.grades.value.courseParticipants)
 
-    const courseParticipants = useSelector((state: cpState) => state.courseParticipants.value.courseParticipants)
+    const courseParticipants = useSelector((state: cpStateStudents) => state.courseParticipants.value.courseParticipants)
     const location = useLocation()
     const courseId = location.state.CourseId
     const year = location.state.year
@@ -49,8 +52,8 @@ const Course = () => {
             const res = methods.get(`http://localhost:8000/api/students/get/course/${courseId}/grades/avg`)
             const res_students: StudentsInterface[] = (await res).data
             // console.log(res_students)
-            setStudents(res_students)
-            // dispatch(setStudents(students))
+            // setStudents(res_students)
+            dispatch(setCp(res_students))
             return students
         } catch (e) {
             console.log('users not fetched', e)
@@ -78,11 +81,21 @@ const Course = () => {
             console.log(e, 'error')
         }
     }
+    async function postCourseParticipant(body: cpInterface) {
+        try {
+            // body.forEach((cp)=> cp.Active=true)
+            console.log(body)
+            const req = await methods.post('http://localhost:8000/api/cp/create', body)
+            console.log('post created \n', req)
+        } catch (e) {
+            console.log(e, 'error')
+        }
+    }
 
     const checkAddTest = () => {
-        if (courseParticipants.filter((cp) => parseInt(cp.Grade as string) >= 0 && parseInt(cp.Grade as string) <= 100).length === courseParticipants.length) {
-            postCourseParticipants(courseParticipants)
-
+        if (grades.filter((cp) => parseInt(cp.Grade as string) >= 0 && parseInt(cp.Grade as string) <= 100).length === grades.length) {
+            postCourseParticipants(grades)
+            console.log(grades)
             setOpenAddTest(false)
         } else {
             console.log('not good')
@@ -95,7 +108,8 @@ const Course = () => {
 
         }
         if (studentId) {
-            postCourseParticipants([newStudent])
+            postCourseParticipant(newStudent)
+            setOpenAddStudent(false)
         }
     }
 
@@ -109,7 +123,7 @@ const Course = () => {
 
             <Dialog open={OpenAddTest} onClose={() => setOpenAddTest(false)} maxWidth='lg' >
                 <Stack >
-                    <StudentsTable students={students as StudentsInterface[]} course={true} addGrade={true} ></StudentsTable>
+                    <StudentsTable students={courseParticipants as StudentsInterface[]} course={true} addGrade={true} ></StudentsTable>
                     <Button sx={{ padding: '5px' }} onClick={() => checkAddTest()}>שמור מבחן</Button>
 
                 </Stack>
@@ -135,7 +149,7 @@ const Course = () => {
 
                 </Stack>
             </Dialog>
-            <StudentsTable students={students as StudentsInterface[]} course={true}></StudentsTable>
+            <StudentsTable students={courseParticipants as StudentsInterface[]} course={true}></StudentsTable>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <PieChart courseId={courseId}></PieChart>
                 <Card sx={{ height: '30%', alignItems: 'center', justifyContent: 'center', display: 'flex', width: '30%', direction: 'rtl' }}>

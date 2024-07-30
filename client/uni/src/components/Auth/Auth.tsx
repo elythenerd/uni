@@ -4,7 +4,8 @@ import { useNavigate } from "react-router-dom"
 import { User } from "../../types/User"
 import { useDispatch } from "react-redux"
 import { setLoggedUser } from "../../store/LoggedUser"
-const Auth = ({ children }: { children: React.ReactNode }) => {
+import { Box } from "@mui/material"
+const Auth = () => {
     const dispatch = useDispatch()
     const navigator = useNavigate()
     useEffect(() => {
@@ -24,7 +25,7 @@ const Auth = ({ children }: { children: React.ReactNode }) => {
         }
     }
     return (
-        <>{children}</>
+        <Box id='auth'></Box>
     )
 
 

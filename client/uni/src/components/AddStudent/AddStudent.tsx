@@ -36,7 +36,8 @@ const AddStudent = ({ setopenStudent }: { setopenStudent: React.Dispatch<React.S
                 BirthYear: birthDate,
                 Status:true
             }
-            dispatch(addStudent(newStudent))
+            // dispatch(addStudent(newStudent))
+            setopenStudent(false)
             createStudent(newStudent)
            
         } else {

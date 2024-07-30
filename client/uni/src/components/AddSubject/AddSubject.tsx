@@ -47,7 +47,7 @@ const AddSubject = ({ setOpenSubject }: { setOpenSubject: React.Dispatch<React.S
             createSubject(newSubject)
             setOpenSubject(false)
             // fetchSubjects()
-            dispatch(addSubject(newSubject))
+            // dispatch(addSubject(newSubject))
             // console.log(dispatch(setSubjects({name: Subject})))
         }
     }

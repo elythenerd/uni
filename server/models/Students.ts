@@ -29,7 +29,7 @@ class Students {
         return this.students.aggregate(pipeline)
     }
 
-    async update(expression = {}, apply = {}, how = {}): Promise<studentInterface[] | null> {
+    async update(expression = {}, apply = {}, how = {}): Promise<studentInterface | null> {
         return this.students.findOneAndUpdate(expression, apply, how)
     }
     

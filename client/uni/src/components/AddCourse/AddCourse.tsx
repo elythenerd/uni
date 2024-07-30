@@ -75,7 +75,7 @@ const AddCourse = ({ setOpenCourse }: { setOpenCourse: React.Dispatch<React.SetS
             // })
             // dispatch(setCourses(NewCourse))
             createCourse(NewCourse)
-            dispatch(addCourse(NewCourse))
+            // dispatch(addCourse(NewCourse))
             setOpenCourse(false)
         } else {
             // console.log(teachers)

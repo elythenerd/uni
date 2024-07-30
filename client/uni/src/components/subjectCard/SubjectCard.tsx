@@ -23,7 +23,7 @@ const SubjectCard = ({ subject }: { subject: Subject }) => {
     function deleteSubject(id: string) {
         // console.log(1)
         patchSubject(id)
-        dispatch(removeSubject(id))
+        // dispatch(removeSubject(id))
     }
     return (
         <Card sx={{ width: 200, borderRadius: 5 }}>

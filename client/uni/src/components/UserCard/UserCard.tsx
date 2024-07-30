@@ -68,7 +68,7 @@ export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
     const deleteUser = async (id:string)=>{
         try{
             await methods.patch(`http://localhost:8000/api/users/delete/${id}`)
-            dispatch(removeUser(id))
+            // dispatch(removeUser(id))
             console.log('patch not created')
         }catch(e){
             console.log(e)

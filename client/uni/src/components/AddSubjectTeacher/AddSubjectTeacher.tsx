@@ -42,7 +42,7 @@ const AddSubjectTeacher = ({ teacherid,setOpenTeacherSubject }: { teacherid: str
                 Active: true
             }
             createTeacherSubject(newTeacherSubject)
-            dispatch(addTeachersSubjects(newTeacherSubject))
+            // dispatch(addTeachersSubjects(newTeacherSubject))
             setOpenTeacherSubject(false)
         }
     }

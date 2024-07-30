@@ -1,11 +1,12 @@
 import { Response, Request } from "express";
 import Students from "../../models/Students";
 import { studentInterface } from "../../types/student";
+import { io } from "..";
 export async function createStudents(req: Request, res: Response) {
   try {
     console.log(Students)
     const students: studentInterface = req.body
-    await Students.update({ Id: students.Id },
+    const student = await Students.update({ Id: students.Id },
       {
         $set: { Status: true,Name:students.Name,BirthYear:students.BirthYear },
         $setOnInsert: {  ...students,
@@ -13,7 +14,9 @@ export async function createStudents(req: Request, res: Response) {
           Status: undefined,Name:undefined,BirthYear:undefined}
       },
       { new: true, upsert: true })
+
     res.status(200).json(students)
+    io.addStudent(student as studentInterface)
   } catch (e) {
     res.status(400).send(e)
   }
@@ -24,7 +27,7 @@ export async function createStudents(req: Request, res: Response) {
 
 export async function getStudents(req: Request, res: Response) {
   try {
-    console.log(Students)
+    // console.log(Students)
 
     const students: studentInterface[] = await Students.get()
     res.send(students).status(200)
@@ -38,10 +41,11 @@ export async function deleteStudents(req: Request, res: Response) {
     // console.log(Subjects)
 
     const studentId: string = req.params.id
-    Students.update({ Id: studentId },
+    const student  = await  Students.update({ Id: studentId },
       { Status: false },
       { new: true })
     res.send(studentId).status(200)
+    io.removeStudent(student as studentInterface)
   } catch (e) {
     res.send(e).status(400)
   }
@@ -81,6 +85,7 @@ export async function getCourseStudents(req: Request, res: Response) {
       }
     ])
     res.send(students).status(200)
+    
   } catch (e) {
     res.send(e).status(400)
   }

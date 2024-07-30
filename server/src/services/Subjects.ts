@@ -2,11 +2,12 @@ import { Response, Request } from "express";
 import { cousresInterface } from "../../types/courses";
 import { subjectInterface } from "../../types/subject";
 import Subjects from "../../models/Subjects";
+import { io } from "..";
 export async function createSubject(req: Request, res: Response) {
     try {
-        console.log(Subjects)
+        // console.log(Subjects)
         const subject: subjectInterface = req.body
-        await Subjects.update({
+        const Subject = await Subjects.update({
             Name: subject.Name
         },
             {$set: {Active: true},
@@ -16,6 +17,8 @@ export async function createSubject(req: Request, res: Response) {
             
         )
     res.json().status(200)
+    
+    io.addSubject(Subject as subjectInterface)
 } catch (e) {
     res.send(e).status(400)
 }
@@ -40,10 +43,11 @@ export async function deleteSubject(req: Request, res: Response) {
         // console.log(Subjects)
 
         const subjectsId: string = req.params.id
-        await Subjects.update({ Id: subjectsId },
+        const subject = await Subjects.update({ Id: subjectsId },
             { Active: false },
             { new: true })
         res.send(subjectsId).status(200)
+        io.removeSubject(subject as subjectInterface)
     } catch (e) {
         res.send(e).status(400)
     }

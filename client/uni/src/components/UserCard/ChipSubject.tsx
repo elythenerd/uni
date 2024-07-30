@@ -23,7 +23,7 @@ const ChipSubject = ({ label, teacherid, subjectid, id }: { label: string | unde
 
         const chipToRemove = TeachersSubjects.find((teachersubject) => teachersubject.Id == id)
         // console.log(chipToRemove)
-        dispatch(removeTeachersSubjects(chipToRemove))
+        // dispatch(removeTeachersSubjects(chipToRemove))
         patchTeacherSubject(chipToRemove?.Id)
     }
     return (<Box sx={{ display: 'flex', alignItems: 'center', gap: '0.5rem',justifyContent:'flex-end'  }}>

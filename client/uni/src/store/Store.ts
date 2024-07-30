@@ -6,6 +6,7 @@ import { studentsSlice } from "./students"
 import { TeachersSubjectsSlice } from "./TeachersSubjects"
 import { courseParticipantsSlice } from "./CourseParticipants"
 import { userSlice } from "./LoggedUser"
+import { addGradeSlice } from "./AddGrade"
 export const store = configureStore({
     reducer: {
         subject : SubjectSlice.reducer,
@@ -14,6 +15,7 @@ export const store = configureStore({
         students : studentsSlice.reducer,
         teachersSubjects: TeachersSubjectsSlice.reducer,
         courseParticipants: courseParticipantsSlice.reducer,
-        user:userSlice.reducer
+        user:userSlice.reducer,
+        grades: addGradeSlice.reducer
     }
 })
