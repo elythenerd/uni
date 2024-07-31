@@ -25,8 +25,8 @@ class Courses{
         return this.courses.create(body)
     }
 
-    async get():Promise<cousresInterface[]>{
-        return this.courses.find()
+    async get(object={}):Promise<cousresInterface[]>{
+        return this.courses.find(object)
     }
     async delete(id:string): Promise<cousresInterface |null>{
         return this.courses.findOneAndUpdate(

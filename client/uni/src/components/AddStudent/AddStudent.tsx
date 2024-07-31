@@ -3,7 +3,7 @@ import { Box, Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { StudentsInterface } from "../../types/Students";
 import { useDispatch } from "react-redux";
-import { addStudent, setStudents } from "../../store/students";
+import { addStudent, deleteStudent, setStudents } from "../../store/students";
 import axios from "axios";
 import { checkID } from "../../utils/checkId";
 const AddStudent = ({ setopenStudent }: { setopenStudent: React.Dispatch<React.SetStateAction<boolean>> }) => {
@@ -19,6 +19,7 @@ const AddStudent = ({ setopenStudent }: { setopenStudent: React.Dispatch<React.S
     async function createStudent(newStudent: StudentsInterface){
         try{
             const res = await axios.post('http://localhost:8000/api/students/create',newStudent)
+            
             console.log('post created')
         }catch (e){
             console.log('posting user failed:',e)

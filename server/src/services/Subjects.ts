@@ -10,18 +10,24 @@ export async function createSubject(req: Request, res: Response) {
         const Subject = await Subjects.update({
             Name: subject.Name
         },
-            {$set: {Active: true},
-            $setOnInsert:{  ...subject,
-            Active: undefined } },
+            {
+                $set: { Active: true },
+                $setOnInsert: {
+                    ...subject,
+                    Active: undefined
+                }
+            },
             { new: true, upsert: true }
-            
+
         )
-    res.json().status(200)
-    
-    io.addSubject(Subject as subjectInterface)
-} catch (e) {
-    res.send(e).status(400)
-}
+        res.json().status(200)
+        if (subject.Id === Subject?.Id) {
+            io.addSubject(Subject as subjectInterface)
+        }
+
+    } catch (e) {
+        res.send(e).status(400)
+    }
 }
 
 

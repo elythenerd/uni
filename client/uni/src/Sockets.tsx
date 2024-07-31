@@ -12,9 +12,11 @@ import { CourseInterface } from "./types/Course";
 import { addCourse, removeCourse } from "./store/courses";
 import { Subject } from "./types/Subject";
 import { addSubject, removeSubject } from "./store/Subject";
-import { cpInterface } from "./types/CourseParticicpants";
+import { cpInterface, PieGradesInterface } from "./types/CourseParticicpants";
 import { addCp, removeCp,setCp } from "./store/CourseParticipants";
 import { addGrade } from "./store/AddGrade";
+import { addStudentOption, deleteStudentOption } from "./store/CourseParticipantOptions";
+import { setPieGrades } from "./store/pieGrades";
 const Sockets = () => {
     const dispatch = useDispatch()
     let socket: Socket
@@ -38,6 +40,7 @@ const Sockets = () => {
                 dispatch(removeTeachersSubjects(data.teacherSubject))
             })
             socket.on('addStudent', (data: { student: StudentsInterface }) => {
+                console.log(data)
                 dispatch(addStudent(data.student))
             })
             socket.on('removeStudent', (data: { student: StudentsInterface }) => {
@@ -61,6 +64,18 @@ const Sockets = () => {
             socket.on('removeCp', (data: { cp: StudentsInterface }) => {
                 // console.log(data.cp.Id)
                 dispatch(removeCp(data.cp.Id))
+            })
+            socket.on('removeStudentOption', (data: { student: StudentsInterface }) => {
+                // console.log(data)
+                dispatch(deleteStudentOption(data.student.Id))
+            })
+            socket.on('addStudentOption', (data: { student: StudentsInterface }) => {
+                // console.log(data)
+                dispatch(addStudentOption(data.student))
+            })
+            socket.on('pieGrades', (data: { pieGrades: PieGradesInterface[] }) => {
+                console.log(data,1111111)
+                dispatch(setPieGrades(data.pieGrades))
             })
         
         

@@ -27,8 +27,8 @@ const StudentsTable = ({ students, addGrade = false, course = false }: { student
             console.log('student not deleted', e)
         }
     }
-    const removeStudentParticipation = (id: string,courseId:string) => {
-        console.log(id,'studentsid')
+    const removeStudentParticipation = (id: string, courseId: string) => {
+        console.log(id, 'studentsid')
         try {
             const res = axios.delete(`http://localhost:8000/api/cp/delete/${id}/${courseId}`)
             // dispatch(deleteStudent(id))
@@ -42,14 +42,14 @@ const StudentsTable = ({ students, addGrade = false, course = false }: { student
             <Table stickyHeader >
                 <TableHead >
                     <TableRow >
-                    {!addGrade && <TableCell align="center"></TableCell>}
-                    <TableCell align="center">ת.ז</TableCell>
-                    <TableCell align="center">שם</TableCell>
-                    <TableCell align="center">שנתון</TableCell>
+                        {!addGrade && <TableCell align="center"></TableCell>}
+                        <TableCell align="center">ת.ז</TableCell>
+                        <TableCell align="center">שם</TableCell>
+                        <TableCell align="center">שנתון</TableCell>
                         {course && <>
                             {addGrade && <TableCell align="center">הזן ציון</TableCell>}
                             {!addGrade && <TableCell align="center">ציון</TableCell>}</>}
-                        
+
 
 
                     </TableRow>
@@ -60,8 +60,8 @@ const StudentsTable = ({ students, addGrade = false, course = false }: { student
                             key={row.Id}
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
-                             {!addGrade &&<TableCell align="center">
-                                <IconButton onClick={() => course?removeStudentParticipation(row.Id,courseId):removeStudent(row.Id)}>
+                            {!addGrade && <TableCell align="center">
+                                <IconButton onClick={() => course ? removeStudentParticipation(row.Id, courseId) : removeStudent(row.Id)}>
                                     <FaTrash></FaTrash>
                                 </IconButton>
 
@@ -69,12 +69,12 @@ const StudentsTable = ({ students, addGrade = false, course = false }: { student
                             <TableCell align="center">{row.Id}</TableCell>
                             <TableCell align="center">{row.Name}</TableCell>
                             <TableCell align="center">{row.BirthYear}</TableCell>
-                            {course && <>{addGrade &&<TableCell align="center">
+                            {course && <>{addGrade && <TableCell align="center">
 
-                                 <AddGrade id={row.Id} courseId={courseId} ></AddGrade>
+                                <AddGrade id={row.Id} courseId={courseId} ></AddGrade>
                             </TableCell>}
-                                {!addGrade && <TableCell align="center">{row.Grade?row.Grade:'-'}</TableCell>}</>}
-                            
+                                {!addGrade && <TableCell align="center">{row.Grade ? row.Grade : '-'}</TableCell>}</>}
+
                         </TableRow>
                     ))}
                 </TableBody>

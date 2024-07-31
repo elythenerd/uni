@@ -2,13 +2,20 @@ import Courses from "../../models/Courses";
 import { Response, Request } from "express";
 import { cousresInterface } from "../../types/courses";
 import { io } from "..";
+import Subjects from "../../models/Subjects";
+import { subjectInterface } from "../../types/subject";
+import { userInterface } from "../../types/users";
+import Users from "../../models/Users";
 export async function createCourse(req: Request, res: Response) {
   try {
     console.log(Courses)
     const courses: cousresInterface = req.body
     const course = await Courses.create(courses)
+    const subjectName = await Subjects.get({Id:courses.SubjectId})
+    const teacherName = await Users.get({Id:courses.TeacherId})
+    console.log(subjectName,)
     res.json().status(200)
-    io.addCourse(course)
+    io.addCourse({...courses,SubjectName:subjectName[0].Name,TeacherName:teacherName[0].Name})
   } catch (e) {
     res.send(e).status(400)
   }

@@ -78,7 +78,7 @@ const BossPage = () => {
     const courses: CourseInterface[] = useSelector((state: coursesState) => state.courses.value.courses)
     const students: StudentsInterface[] = useSelector((state: studentsState) => state.students.value.students)
     const Users = useSelector((state: usersState) => state.users.value.users)
-
+    console.log(students)
     return (
         <Box sx={{ display: 'flex', width: '100vw', height: '100vh', flexDirection: 'column' }}>
             <Box sx={{ width: '100vw' }}>

@@ -4,7 +4,7 @@ import { studentInterface } from "../../types/student";
 import { io } from "..";
 export async function createStudents(req: Request, res: Response) {
   try {
-    console.log(Students)
+    console.log('Students')
     const students: studentInterface = req.body
     const student = await Students.update({ Id: students.Id },
       {
@@ -16,7 +16,10 @@ export async function createStudents(req: Request, res: Response) {
       { new: true, upsert: true })
 
     res.status(200).json(students)
-    io.addStudent(student as studentInterface)
+    // if (students.Id!== student?.Id){
+      io.addStudent(student as studentInterface)
+    // }
+   
   } catch (e) {
     res.status(400).send(e)
   }
@@ -186,6 +189,7 @@ export async function getAddStudentCourseOptions(req: Request, res: Response) {
       ]
     )
     res.send(avgGrades).status(200)
+    
   } catch (e) {
     res.send(e).status(400)
   }

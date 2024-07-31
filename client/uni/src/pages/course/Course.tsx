@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import StudentsTable from '../../components/StudentsTable/StudentsTable';
 import { useDispatch, useSelector } from 'react-redux';
-import { avgGradesInterface, cpInterface, cpState, cpStateStudents } from '../../types/CourseParticicpants';
+import { avgGradesInterface, cpInterface, cpState, cpStateStudents, studentOptionsState } from '../../types/CourseParticicpants';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { StudentsInterface } from '../../types/Students';
@@ -13,18 +13,20 @@ import { Doughnut, Pie } from "react-chartjs-2";
 import PieChart from '../../components/PieChart/PieChart';
 import methods from '../../utils/methods';
 import { setCp } from '../../store/CourseParticipants';
+import { setStudentOptions } from '../../store/CourseParticipantOptions';
 
 const Course = () => {
     // const mehtod = new methods()
     const [OpenAddTest, setOpenAddTest] = useState<boolean>(false)
     const [OpenAddStudent, setOpenAddStudent] = useState<boolean>(false)
-    const [studentOptions, setstudentOptions] = useState<StudentsInterface[]>()
+    // const [studentOptions, setstudentOptions] = useState<StudentsInterface[]>()
     const [students, setStudents] = useState<StudentsInterface[]>()
     const [Grade, setGrade] = useState<avgGradesInterface[]>()
-    
+
     const [studentId, setStudentId] = useState<string>('')
     const dispatch = useDispatch()
     const grades = useSelector((state: cpState) => state.grades.value.courseParticipants)
+    const studentOptions = useSelector((state: studentOptionsState) => state.studentOptions.value.studentOptions)
 
     const courseParticipants = useSelector((state: cpStateStudents) => state.courseParticipants.value.courseParticipants)
     const location = useLocation()
@@ -36,16 +38,20 @@ const Course = () => {
         fetchStudents()
         fetchGrade(courseId)
     }, [])
+    useEffect(() => {
+        console.log('--------------------', studentOptions)
+    }, [studentOptions])
+
     async function getStudentOptions(id: string) {
-        try{
+        try {
             const res = await methods.get(`http://localhost:8000/api/students/get/course/options/${id}/${year}`)
             const options = res.data
-            console.log(options)
-            setstudentOptions(options)
-        }catch(e){
+            // console.log(options, 'options')
+            dispatch(setStudentOptions(options))
+        } catch (e) {
             console.log(e)
         }
-      
+
     }
     const fetchStudents = async () => {
         try {
@@ -112,7 +118,7 @@ const Course = () => {
             setOpenAddStudent(false)
         }
     }
-
+    // console.log(studentOptions, 111111)
     return (
         <Stack sx={{ width: '100vw', height: '100vh', alignItems: 'center' }}>
             <Navbar></Navbar>
@@ -154,7 +160,7 @@ const Course = () => {
                 <PieChart courseId={courseId}></PieChart>
                 <Card sx={{ height: '30%', alignItems: 'center', justifyContent: 'center', display: 'flex', width: '30%', direction: 'rtl' }}>
                     <CardContent >
-                        <Typography sx={{fontSize:30}}>ציון ממוצע</Typography>
+                        <Typography sx={{ fontSize: 30 }}>ציון ממוצע</Typography>
                         <Divider></Divider>
                         <Typography>{Grade?.map((value) => value.avgGrade)}</Typography>
                     </CardContent>

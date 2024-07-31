@@ -14,6 +14,15 @@ export interface cpState {
 export interface cpValue {
     value: { courseParticipants: cpInterface[] }
 }
+export interface studentOptionsState {
+    studentOptions: studentOptionsValue
+}
+
+export interface studentOptionsValue {
+    value: { studentOptions: StudentsInterface[] }
+}
+
+
 export interface cpStateStudents {
     courseParticipants: cpValueStudents
 }
@@ -31,4 +40,11 @@ export interface PieGradesInterface {
 export interface avgGradesInterface {
     _id: string,
     avgGrade: number
+}
+export interface pieGradesState {
+    pieGrades: pieGradesValue
+}
+
+export interface pieGradesValue {
+    value: { pieGrades: PieGradesInterface[] }
 }

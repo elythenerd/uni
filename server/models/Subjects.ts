@@ -23,8 +23,8 @@ class Subjects {
         return this.subjects.create(body)
     }
 
-    async get(): Promise<subjectInterface[]> {
-        return this.subjects.find()
+    async get(body={}): Promise<subjectInterface[]> {
+        return this.subjects.find(body)
     }
     async delete(id:string): Promise<subjectInterface[] |null>{
         return this.subjects.findOneAndUpdate(

@@ -4,5 +4,7 @@ export interface cousresInterface{
     TeacherId: string,
     SubjectId: string,
     enrollementYear?:string,
-    Status:  Boolean
+    Status:  Boolean,
+    TeacherName?: string,
+    SubjectName?:string
 }

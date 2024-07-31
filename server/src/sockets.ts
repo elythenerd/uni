@@ -1,7 +1,7 @@
 import { Server } from 'socket.io'
 import http from 'http'
 import { userInterface } from '../types/users'
-import { cpInterface } from '../types/courseParticipants'
+import { cpInterface, PieGradesInterface } from '../types/courseParticipants'
 import { TsInterface } from '../types/teachersSubjects'
 import { studentInterface } from '../types/student'
 import { cousresInterface } from '../types/courses'
@@ -59,6 +59,15 @@ class sockets {
     }
     async removeCp(cp: studentInterface) {
         this.io.emit('removeCp', { cp })
+    }
+    async removeStudentOption(student: studentInterface) {
+        this.io.emit('removeStudentOption', { student })
+    }
+    async addStudentOption(student: studentInterface) {
+        this.io.emit('addStudentOption', { student })
+    }
+    async pieGrades(pieGrades: PieGradesInterface[]) {
+        this.io.emit('pieGrades', { pieGrades })
     }
 
 

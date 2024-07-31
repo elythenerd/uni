@@ -20,6 +20,7 @@ export async function createCourseParticipant(req: Request, res: Response) {
     res.json().status(200)
     // console.log(student)
     io.addCp(student[0])
+    io.removeStudentOption(student[0])
   } catch (e) {
     res.send(e).status(400)
   }
@@ -41,6 +42,7 @@ export async function deleteCourseParticipant(req: Request, res: Response) {
     console.log(cp)
     res.json().status(200)
     io.removeCp(cp[0])
+    io.addStudentOption(cp[0])
   } catch (e) {
     res.send(e).status(400)
   }
@@ -84,6 +86,126 @@ export async function createManyCourseParticipants(req: Request, res: Response) 
     const cp = await CourseParticipants.createMany(coursePrticipants)
     const courseId = cp[0].CourseId
     const studentIds = cp.map((cp)=>{return cp.StudentId})
+    const pieGrades: PieGradesInterface[] = await CourseParticipants.aggregate(
+      [{
+        '$addFields': {
+          'gradeInt': {
+            '$toInt': '$Grade'
+          }
+        }
+      }, {
+        '$group': {
+          '_id': {
+            'StudentId': '$StudentId',
+            'CourseId': '$CourseId'
+          },
+          'avgGrade': {
+            '$avg': '$gradeInt'
+          }
+        }
+      }, {
+        '$project': {
+          'StudentId': '$_id.StudentId',
+          'CourseId': '$_id.CourseId',
+          'avgGrade': 1,
+          '_id': 0
+        }
+      }
+        , {
+        '$match': {
+          'CourseId': courseId
+        }
+      }, {
+        '$group': {
+          '_id': {
+            '$switch': {
+              'branches': [
+                {
+                  'case': {
+                    '$eq': [
+                      '$avgGrade', null
+                    ]
+                  },
+                  'then': 'null'
+                }, {
+                  'case': {
+                    '$lte': [
+                      '$avgGrade', 55
+                    ]
+                  },
+                  'then': '<55'
+                }, {
+                  'case': {
+                    '$lte': [
+                      '$avgGrade', 70
+                    ]
+                  },
+                  'then': '55-70'
+                }, {
+                  'case': {
+                    '$lte': [
+                      '$avgGrade', 84
+                    ]
+                  },
+                  'then': '70-84'
+                }, {
+                  'case': {
+                    '$lte': [
+                      '$avgGrade', 100
+                    ]
+                  },
+                  'then': '85-100'
+                }
+              ],
+              'default': 'other'
+            }
+          },
+          'count': {
+            '$sum': 1
+          }
+        }
+      }, {
+        '$addFields': {
+          'color': {
+            '$switch': {
+              'branches': [
+                {
+                  'case': {
+                    '$eq': [
+                      '$_id', '<55'
+                    ]
+                  },
+                  'then': 'red'
+                }, {
+                  'case': {
+                    '$eq': [
+                      '$_id', '55-70'
+                    ]
+                  },
+                  'then': 'yellow'
+                }, {
+                  'case': {
+                    '$eq': [
+                      '$_id', '70-84'
+                    ]
+                  },
+                  'then': 'orange'
+                }, {
+                  'case': {
+                    '$eq': [
+                      '$_id', '85-100'
+                    ]
+                  },
+                  'then': 'green'
+                }
+              ],
+              'default': 'other'
+            }
+          }
+        }
+      }
+      ]
+    )
     const students = await Students.aggregate(
       [
         {
@@ -134,6 +256,8 @@ export async function createManyCourseParticipants(req: Request, res: Response) 
     res.json().status(200)
     console.log(students,studentIds)
     io.addGrade(students)
+    io.pieGrades(pieGrades)
+
   } catch (e) {
     res.send(e).status(400)
 
