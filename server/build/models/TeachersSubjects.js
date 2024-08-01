@@ -17,20 +17,40 @@ const mongoose_2 = __importDefault(require("mongoose"));
 const TeachersSubjectsSchema = new mongoose_1.Schema({
     Id: { type: String, require: true, unique: true },
     TeacherId: { type: String, require: true },
-    subjectId: { type: String, require: true }
+    SubjectId: { type: String, require: true },
+    Active: { type: Boolean, required: true }
 });
 class TeachersSubjects {
     constructor() {
-        this.teachersSubjects = mongoose_2.default.model('Subjects', TeachersSubjectsSchema);
+        this.teachersSubjects = mongoose_2.default.model('TeachersSubjects', TeachersSubjectsSchema);
     }
     create(body) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.teachersSubjects.create(body);
+            const TeacherId = body.TeacherId;
+            const subjectId = body.SubjectId;
+            // console.log(body,'1234567890')
+            return this.teachersSubjects.findOneAndUpdate({ TeacherId: TeacherId, SubjectId: subjectId }, { $set: body }, { new: true, upsert: true });
+            // return this.teachersSubjects.create(body)
         });
     }
     get() {
         return __awaiter(this, void 0, void 0, function* () {
             return this.teachersSubjects.find();
+        });
+    }
+    delete(id) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.teachersSubjects.findOneAndUpdate({ Id: id }, { Active: false }, { new: true });
+        });
+    }
+    update() {
+        return __awaiter(this, arguments, void 0, function* (expression = {}, apply = {}, how = {}) {
+            return this.teachersSubjects.findOneAndUpdate(expression, apply, how);
+        });
+    }
+    aggregation(pipeline) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.teachersSubjects.aggregate(pipeline);
         });
     }
 }

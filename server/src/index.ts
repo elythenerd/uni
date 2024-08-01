@@ -12,6 +12,8 @@ import session from 'express-session'
 import cookieParser from 'cookie-parser'
 import http from 'http'
 import sockets from './sockets'
+import path from 'path';
+
 const app = express()
 const server: http.Server = http.createServer(app)
 export const io = new sockets(server)

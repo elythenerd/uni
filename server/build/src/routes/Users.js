@@ -2,7 +2,14 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = require("express");
 const Users_1 = require("../services/Users");
+const Multer_1 = require("../utils/Multer");
 const userRouter = (0, express_1.Router)();
-userRouter.post('/api/users/create', Users_1.createUsers);
-userRouter.get('/api/users/get', Users_1.getUsers);
+userRouter.post('/create', Users_1.createUsers);
+userRouter.get('/get', Users_1.getUsers);
+userRouter.post('/auth/login', Users_1.checkUserAuth);
+userRouter.get('/auth', Users_1.checkAuth);
+userRouter.get('/get/year/:year', Users_1.getTeacherOptions);
+userRouter.patch('/delete/:id', Users_1.deleteUser);
+userRouter.get('/logOut', Users_1.logOut);
+userRouter.post('/upload', Multer_1.upload.single('file'), Users_1.postMulter);
 exports.default = userRouter;

@@ -252,11 +252,36 @@ export async function createManyCourseParticipants(req: Request, res: Response) 
         }
       ]
     )
-    
+    const avgGrades = (await CourseParticipants.aggregate(
+      [
+        {
+          '$lookup': {
+            'from': 'avgGradeView',
+            'localField': 'Id',
+            'foreignField': '_id',
+            'as': 'result'
+          }
+        }, {
+          '$unwind': {
+            'path': '$result',
+            'preserveNullAndEmptyArrays': true
+          }
+        }, {
+          '$project': {
+            '_id': 1,
+            'Id': 1,
+            'Name': 1,
+            'BirthYear': 1,
+            'Grade': '$result.avgGrade'
+          }
+        }
+      ]
+    )) as avgGradesInterface[]
     res.json().status(200)
     console.log(students,studentIds)
     io.addGrade(students)
     io.pieGrades(pieGrades)
+    io.courseAvgGrade(avgGrades)
 
   } catch (e) {
     res.send(e).status(400)

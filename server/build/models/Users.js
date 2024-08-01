@@ -34,8 +34,18 @@ class Users {
         });
     }
     get() {
+        return __awaiter(this, arguments, void 0, function* (body = {}) {
+            return this.users.find(body);
+        });
+    }
+    update() {
+        return __awaiter(this, arguments, void 0, function* (expression = {}, apply = {}, how = {}) {
+            return this.users.findOneAndUpdate(expression, apply, how);
+        });
+    }
+    aggregation(pipeline) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.users.find();
+            return this.users.aggregate(pipeline);
         });
     }
 }

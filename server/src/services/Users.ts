@@ -3,12 +3,14 @@ import { Response,Request } from "express";
 import { userCredentials, userInterface } from "../../types/users";
 import { Password } from "@mui/icons-material";
 import { io } from "../index";
+import { comparePassword, hashPassword } from "../utils/Bcrypt";
 export async function createUsers(req: Request, res: Response) {
     try {
         const user : userInterface = req.body
         const users:userInterface[] = await Users.get()
+        user.Password = hashPassword(user.Password)
         const findUser = users.find((userDB)=>userDB.Id === user.Id )
-        // console.log(Object.keys().)
+        console.log(user)
         if (findUser){
             return res.status(401).send('user already signed')
         }else{
@@ -57,13 +59,13 @@ export async function checkUserAuth(req: Request, res: Response) {
 
     try {
         const User :userCredentials = req.body
-        console.log(Users)
+        // console.log(Users)
        
         const users:userInterface[] = await Users.get()
         // const Password = users.find((user)=> user.Password === User.Password)
         const selectedUser = users.find((user)=> user.Id === User.Id)
-        
-        if (!selectedUser || selectedUser.Password !==User.Password){
+        console.log(selectedUser?.Password)
+        if (!selectedUser || !comparePassword(User.Password,selectedUser.Password)){
             return res.status(401).send('bad credentials')
         }
         else {
@@ -164,3 +166,10 @@ export async function getTeacherOptions(req: Request, res: Response) {
     }
 }
 
+export const postMulter = async (req: Request, res: Response)=>{
+    if (!req.file) {
+        return res.status(400).send('No file uploaded.');
+      }
+      res.status(200).send(`File uploaded successfully: ${req.file.filename}`);
+    
+}

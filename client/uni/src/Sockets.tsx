@@ -12,11 +12,12 @@ import { CourseInterface } from "./types/Course";
 import { addCourse, removeCourse } from "./store/courses";
 import { Subject } from "./types/Subject";
 import { addSubject, removeSubject } from "./store/Subject";
-import { cpInterface, PieGradesInterface } from "./types/CourseParticicpants";
+import { avgGradesInterface, cpInterface, PieGradesInterface } from "./types/CourseParticicpants";
 import { addCp, removeCp,setCp } from "./store/CourseParticipants";
 import { addGrade } from "./store/AddGrade";
 import { addStudentOption, deleteStudentOption } from "./store/CourseParticipantOptions";
 import { setPieGrades } from "./store/pieGrades";
+import { setCourseAvgGrade } from "./store/courseAvgGrade";
 const Sockets = () => {
     const dispatch = useDispatch()
     let socket: Socket
@@ -76,6 +77,10 @@ const Sockets = () => {
             socket.on('pieGrades', (data: { pieGrades: PieGradesInterface[] }) => {
                 console.log(data,1111111)
                 dispatch(setPieGrades(data.pieGrades))
+            })
+            socket.on('courseAvgGrade', (data: { avgGrade: avgGradesInterface[] }) => {
+                console.log(data,1111111)
+                dispatch(setCourseAvgGrade(data.avgGrade))
             })
         
         

@@ -20,12 +20,14 @@ const SignUp = () => {
     const [Gender, setGender] = useState<GenderType>()
     const [DateOfBirth, setDateOfBirth] = useState<string>('')
     const [ProfilePicture, setProfilePicture] = useState<string>('')
+    const [ProfilePictureMulter, setProfilePictureMulter] = useState<File>()
+
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [passwordError, setPasswordError] = useState<boolean>(false)
     const [error, setError] = useState<boolean>(false)
     const [auth, setAuth] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string>('')
-    const [idErrorMessage, setIdErrorMessage] = useState<string>('')
+    const [idErrorMessage, setIdErrorMessage] = useState<string>()
     // const Users = useSelector((state: usersState) => state)
     const dispatch = useDispatch()
     const Navigator = useNavigate()
@@ -62,7 +64,7 @@ const SignUp = () => {
     }
     const checkSignUp = async () => {
         if (!Job || !Id || !Password || !Name || !DateOfBirth || !Gender) {
-            window.alert(`שדות ריקים: \n ${!Id && 'ת.ז\n'} ${!Name && 'שם מלא\n'} ${!Password && 'סיסמה\n'} ${!Job && 'תפקיד\n'} ${!DateOfBirth && 'תאריך לידה\n'} ${!Gender && 'ת.ז\n'}`)
+            // window.alert(`שדות ריקים: \n ${!Id && 'ת.ז\n'} ${!Name && 'שם מלא\n'} ${!Password && 'סיסמה\n'} ${!Job && 'תפקיד\n'} ${!DateOfBirth && 'תאריך לידה\n'} ${!Gender && 'ת.ז\n'}`)
         } else {
             const newUser: User = {
                 Id: Id,
@@ -76,6 +78,7 @@ const SignUp = () => {
 
             }
             createUser(newUser)
+            handlePictureUpload()
             console.log(newUser)
 
             // dispatch(setUsers(newUser))
@@ -103,6 +106,23 @@ const SignUp = () => {
             // Navigator('/')
         }
     }
+    const handlePictureUpload = async ()=>{
+        const formData = new FormData();
+    formData.append('file', ProfilePicture);
+
+    try {
+      const response = await axios.post('http://localhost:8000/api/users/upload', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
+        }
+      });
+      console.log(response)
+    } catch (error) {
+    
+      console.error(error);
+    }
+  };
+    
 
     return (
 
@@ -146,9 +166,10 @@ const SignUp = () => {
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', width: '40%', justifyContent: 'space-between', padding: '5px' }}>
                     <input type='date' title='תאריך לילה' onChange={(e: ChangeEvent<HTMLInputElement>) => { checkBirthDate(e) }}></input>
-                    <input className='file-selector' type='file' onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    <input className='file-selector'  name='file' type='file' onChange={(e: ChangeEvent<HTMLInputElement>) => {
                         if (e.target.files && e.target.files.length > 0) {
                             setProfilePicture(URL.createObjectURL(e.target.files[0]));
+                            setProfilePictureMulter(e.target.files[0])
                             console.log(ProfilePicture)
                         }
 

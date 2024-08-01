@@ -31,23 +31,23 @@ const CourseCard = ({ course }: { course: CourseInterface }) => {
         patchCourse(id)
         // dispatch(removeCourse(id))
     }
-    function toCourse(id:string,year:string|undefined){
-        Navigator('/Course',{state:{CourseId:id,year:year}})
+    function toCourse(id: string, year: string | undefined, status: boolean) {
+        Navigator('/Course', { state: { CourseId: id, year: year, isclosed: status } })
     }
     return (
 
         <Card sx={{ width: 700 }}>
             <CardContent sx={{ textAlign: 'center' }}>
-                <Stack sx={{alignItems:'center'}}>
+                <Stack sx={{ alignItems: 'center' }}>
                     <Typography variant="h5" sx={{ color: 'black' }}>{course.Name}</Typography>
                     <Typography color="text.secondary">{course.TeacherName}</Typography>
-                    <Chip sx={{width:'40%'}} label={course.SubjectName}></Chip>
+                    <Chip sx={{ width: '40%' }} label={course.SubjectName}></Chip>
                     <Typography color={course.Status ? "green" : "red"}>{course.Status ? "פעיל" : 'סגור'}</Typography>
                     {course.Status && <IconButton onClick={() => deleteCourse(course.Id)}>
                         <TiDeleteOutline ></TiDeleteOutline>
                     </IconButton>}
                     <Typography color="text.secondary">{course.enrollementYear}</Typography>
-                    <Button onClick={()=>toCourse(course.Id,course?.enrollementYear)}>לפרטי קורס</Button>
+                    <Button onClick={() => toCourse(course.Id, course?.enrollementYear,course.Status)}>לפרטי קורס</Button>
                 </Stack>
             </CardContent>
         </Card>

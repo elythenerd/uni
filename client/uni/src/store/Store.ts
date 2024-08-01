@@ -9,6 +9,7 @@ import { userSlice } from "./LoggedUser"
 import { addGradeSlice } from "./AddGrade"
 import { studentOptionsSlice } from "./CourseParticipantOptions"
 import { PieGradesSlice } from "./pieGrades"
+import { courseAvgGradeSlice } from "./courseAvgGrade"
 export const store = configureStore({
     reducer: {
         subject : SubjectSlice.reducer,
@@ -20,6 +21,7 @@ export const store = configureStore({
         user:userSlice.reducer,
         grades: addGradeSlice.reducer,
         studentOptions: studentOptionsSlice.reducer,
-        pieGrades : PieGradesSlice.reducer
+        pieGrades : PieGradesSlice.reducer,
+        courseAvgGrade: courseAvgGradeSlice.reducer
     }
 })

@@ -32,6 +32,7 @@ const Course = () => {
     const location = useLocation()
     const courseId = location.state.CourseId
     const year = location.state.year
+    const isclosed = location.state.isclosed
     // console.log(courseId)
     useEffect(() => {
         getStudentOptions(courseId)
@@ -123,8 +124,8 @@ const Course = () => {
         <Stack sx={{ width: '100vw', height: '100vh', alignItems: 'center' }}>
             <Navbar></Navbar>
             <Box>
-                <Button onClick={() => setOpenAddStudent(true)}>הוסף תלמיד</Button>
-                <Button onClick={() => setOpenAddTest(true)}>הוסף מבחן</Button>
+                <Button disabled={!isclosed} onClick={() => setOpenAddStudent(true)}>הוסף תלמיד</Button>
+                <Button disabled={!isclosed} onClick={() => setOpenAddTest(true)}>הוסף מבחן</Button>
             </Box>
 
             <Dialog open={OpenAddTest} onClose={() => setOpenAddTest(false)} maxWidth='lg' >

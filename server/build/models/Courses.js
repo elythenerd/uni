@@ -18,6 +18,8 @@ const CoursesSchema = new mongoose_1.Schema({
     Id: { type: String, require: true, unique: true },
     Name: { type: String, require: true },
     TeacherId: { type: String, require: true },
+    SubjectId: { type: String, require: true },
+    enrollementYear: { type: String },
     Status: { type: Boolean, require: true }
 });
 class Courses {
@@ -30,8 +32,18 @@ class Courses {
         });
     }
     get() {
+        return __awaiter(this, arguments, void 0, function* (object = {}) {
+            return this.courses.find(object);
+        });
+    }
+    delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.courses.find();
+            return this.courses.findOneAndUpdate({ Id: id }, { Status: false }, { new: true });
+        });
+    }
+    aggregate(body) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.courses.aggregate(body);
         });
     }
 }

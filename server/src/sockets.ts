@@ -1,7 +1,7 @@
 import { Server } from 'socket.io'
 import http from 'http'
 import { userInterface } from '../types/users'
-import { cpInterface, PieGradesInterface } from '../types/courseParticipants'
+import { avgGradesInterface, cpInterface, PieGradesInterface } from '../types/courseParticipants'
 import { TsInterface } from '../types/teachersSubjects'
 import { studentInterface } from '../types/student'
 import { cousresInterface } from '../types/courses'
@@ -68,6 +68,11 @@ class sockets {
     }
     async pieGrades(pieGrades: PieGradesInterface[]) {
         this.io.emit('pieGrades', { pieGrades })
+    }
+
+
+    async courseAvgGrade(avgGrade: avgGradesInterface[]) {
+        this.io.emit('courseAvgGrade', { avgGrade })
     }
 
 

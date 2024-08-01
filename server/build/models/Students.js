@@ -20,7 +20,6 @@ const studentsSchema = new mongoose_1.Schema({
     BirthYear: { type: String, require: true },
     Status: { type: Boolean, require: true }
 });
-// const users = 
 class Students {
     constructor() {
         this.students = mongoose_2.default.model('Students', studentsSchema);
@@ -33,6 +32,16 @@ class Students {
     get() {
         return __awaiter(this, void 0, void 0, function* () {
             return this.students.find();
+        });
+    }
+    aggregate(pipeline) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.students.aggregate(pipeline);
+        });
+    }
+    update() {
+        return __awaiter(this, arguments, void 0, function* (expression = {}, apply = {}, how = {}) {
+            return this.students.findOneAndUpdate(expression, apply, how);
         });
     }
 }

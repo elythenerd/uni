@@ -29,8 +29,23 @@ class Subjects {
         });
     }
     get() {
+        return __awaiter(this, arguments, void 0, function* (body = {}) {
+            return this.subjects.find(body);
+        });
+    }
+    delete(id) {
         return __awaiter(this, void 0, void 0, function* () {
-            return this.subjects.find();
+            return this.subjects.findOneAndUpdate({ Id: id }, { Active: false }, { new: true });
+        });
+    }
+    update() {
+        return __awaiter(this, arguments, void 0, function* (expression = {}, apply = {}, how = {}) {
+            return this.subjects.findOneAndUpdate(expression, apply, how);
+        });
+    }
+    aggregate(pipeline) {
+        return __awaiter(this, void 0, void 0, function* () {
+            return this.subjects.aggregate(pipeline);
         });
     }
 }
