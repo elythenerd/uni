@@ -12,6 +12,7 @@ import { useDispatch } from 'react-redux';
 import { checkID } from '../../utils/checkId';
 import { GenderOption, genderOptions, jobOptions } from './Options';
 import { DatePicker, DesktopDatePicker, LocalizationProvider } from '@mui/lab';
+import methods from '../../utils/methods';
 const SignUp = () => {
     const [Id, setID] = useState<string>('')
     const [Name, setName] = useState<string>('')
@@ -19,7 +20,7 @@ const SignUp = () => {
     const [Job, setJob] = useState<JobType>()
     const [Gender, setGender] = useState<GenderType>()
     const [DateOfBirth, setDateOfBirth] = useState<string>('')
-    const [ProfilePicture, setProfilePicture] = useState<string>('')
+    const [ProfilePicture, setProfilePicture] = useState<Blob|string>('')
     const [ProfilePictureMulter, setProfilePictureMulter] = useState<File>()
 
     const [showPassword, setShowPassword] = useState<boolean>(false)
@@ -31,9 +32,26 @@ const SignUp = () => {
     // const Users = useSelector((state: usersState) => state)
     const dispatch = useDispatch()
     const Navigator = useNavigate()
+    const postMulter = async () => {
+        const formData = new FormData()
+        formData.append('file', ProfilePicture);
+        console.log(ProfilePicture)
+        try {
+            const response = await axios.post(`http://localhost:8000/api/users/upload/${Id}`, formData, {
+                headers: {
+                    'Content-Type': 'multipart/form-data',
+                },
+            });
+
+            console.log('File uploaded successfully', response.data);
+        } catch (error) {
+
+            console.error('Error uploading file', error);
+        }
+    }
     const createUser = async (newUser: User) => {
         try {
-            const res = await axios.post('http://localhost:8000/api/users/create', newUser, { withCredentials: true })
+            const res = await methods.post('http://localhost:8000/api/users/create', newUser)
             if (res.status === 200) {
                 console.log('status 200')
                 Navigator('/')
@@ -73,30 +91,30 @@ const SignUp = () => {
                 Job: Job,
                 BirthDate: DateOfBirth,
                 Gender: Gender,
-                ProfilePicture: ProfilePicture,
+                // ProfilePicture: ProfilePicture,
                 Active: true
 
             }
             createUser(newUser)
-            handlePictureUpload()
+            postMulter()
             console.log(newUser)
 
             // dispatch(setUsers(newUser))
-            
-                // const userCheck = await createUser(newUser)
-                // if (auth){
-                //     Navigator('/')
-                //     dispatch(setLoggedUser(newUser))
-                    
-                // }else{
-                //     setIdErrorMessage('ת.ז זה כבר קיים במערכת')
-                // }
-                // console.log('in')
-                // Navigator('/')
-            
-                // console.log('failed')
-                // setAuth(false)
-            
+
+            // const userCheck = await createUser(newUser)
+            // if (auth){
+            //     Navigator('/')
+            //     dispatch(setLoggedUser(newUser))
+
+            // }else{
+            //     setIdErrorMessage('ת.ז זה כבר קיים במערכת')
+            // }
+            // console.log('in')
+            // Navigator('/')
+
+            // console.log('failed')
+            // setAuth(false)
+
 
             // // setUsers([...Users, newUser])
             // setUsers((prev) => {
@@ -106,31 +124,31 @@ const SignUp = () => {
             // Navigator('/')
         }
     }
-    const handlePictureUpload = async ()=>{
-        const formData = new FormData();
-    formData.append('file', ProfilePicture);
+    // const handlePictureUpload = async () => {
+    //     const formData = new FormData();
+    //     formData.append('file', ProfilePicture);
 
-    try {
-      const response = await axios.post('http://localhost:8000/api/users/upload', formData, {
-        headers: {
-          'Content-Type': 'multipart/form-data'
-        }
-      });
-      console.log(response)
-    } catch (error) {
-    
-      console.error(error);
-    }
-  };
-    
+    //     try {
+    //         const response = await axios.post('http://localhost:8000/api/users/upload', formData, {
+    //             headers: {
+    //                 'Content-Type': 'multipart/form-data'
+    //             }
+    //         });
+    //         console.log(response)
+    //     } catch (error) {
+
+    //         console.error(error);
+    //     }
+    // };
+
 
     return (
 
         <Stack sx={{ backgroundColor: 'white', display: 'flex', justifyContent: 'space-between', height: '50%', width: '25%', padding: '3%', alignItems: 'center', borderRadius: '5px', boxShadow: '1px 1px 1px 1px  rgb(239, 239, 239)' }}>
             <Typography variant='h1'>הרשמה</Typography>
             <div className='underline'></div>
-            <TextField error={idErrorMessage? true:false} sx={{ width: '90%' }} helperText={idErrorMessage && idErrorMessage} label={error ? errorMessage : 'ת.ז'} onChange={(e: ChangeEvent<HTMLInputElement>) => checkID(e.target.value, setID, setError, setErrorMessage)}></TextField>
-            <TextField   sx={{ width: '90%' }} label={'שם'} onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}></TextField>
+            <TextField error={idErrorMessage ? true : false} sx={{ width: '90%' }} helperText={idErrorMessage && idErrorMessage} label={error ? errorMessage : 'ת.ז'} onChange={(e: ChangeEvent<HTMLInputElement>) => checkID(e.target.value, setID, setError, setErrorMessage)}></TextField>
+            <TextField sx={{ width: '90%' }} label={'שם'} onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}></TextField>
             <TextField error={passwordError} type={showPassword ? 'text' : 'password'} label='סיסמה' onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 sx={{ width: '90%' }}
                 helperText={passwordError && 'סיסמה שגויה'}
@@ -166,11 +184,10 @@ const SignUp = () => {
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', width: '40%', justifyContent: 'space-between', padding: '5px' }}>
                     <input type='date' title='תאריך לילה' onChange={(e: ChangeEvent<HTMLInputElement>) => { checkBirthDate(e) }}></input>
-                    <input className='file-selector'  name='file' type='file' onChange={(e: ChangeEvent<HTMLInputElement>) => {
+                    <input className='file-selector' name='file' type='file' onChange={(e: ChangeEvent<HTMLInputElement>) => {
                         if (e.target.files && e.target.files.length > 0) {
-                            setProfilePicture(URL.createObjectURL(e.target.files[0]));
-                            setProfilePictureMulter(e.target.files[0])
-                            console.log(ProfilePicture)
+                            setProfilePicture(e.target.files[0]);
+
                         }
 
                     }}>

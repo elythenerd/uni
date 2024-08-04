@@ -8,6 +8,8 @@ import { User, usersState } from "../../types/User";
 import methods from "../../utils/methods";
 import { setUsers } from "../../store/Users";
 
+// import {} from '../../../public'
+
 export const Home = () => {
    
     const dispatch = useDispatch()
@@ -30,6 +32,7 @@ export const Home = () => {
     return <div className="home-container">
         <Navbar></Navbar>
         <UserCardGrid Users={Users.filter((user)=>user.Active!==false)} set={false} />
+        
     </div>
 }
 

@@ -18,6 +18,7 @@ import { useNavigate } from "react-router-dom";
 import { useSelector } from "react-redux";
 import { JobType, userState } from "../../types/User";
 import methods from "../../utils/methods";
+// import fs from
 const Navbar = () => {
     const loggedUser = useSelector((state: userState) => state.user.value.user)
     const [openMenu, setOpenMenu] = useState<boolean>(false)
@@ -50,7 +51,7 @@ const Navbar = () => {
                         aria-expanded={open ? 'true' : undefined}
                         id="avatar-logo"
                         onClick={handleClick}>
-                        <Avatar sx={{ height: '1.5rem', width: '1.5rem' }} ></Avatar>
+                        <Avatar sx={{ height: '1.5rem', width: '1.5rem' }} src={`../../../public/images/${loggedUser?.Id}.png`} ></Avatar>
 
                     </IconButton>
                     <Menu id="avatar-menu"

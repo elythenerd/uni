@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
 import StudentsTable from '../../components/StudentsTable/StudentsTable';
 import { useDispatch, useSelector } from 'react-redux';
-import { avgGradesInterface, cpInterface, cpState, cpStateStudents, studentOptionsState } from '../../types/CourseParticicpants';
+import { avgGradesInterface, courseAvgGradeState, cpInterface, cpState, cpStateStudents, studentOptionsState } from '../../types/CourseParticicpants';
 import axios from 'axios';
 import { useLocation } from 'react-router-dom';
 import { StudentsInterface } from '../../types/Students';
@@ -14,6 +14,7 @@ import PieChart from '../../components/PieChart/PieChart';
 import methods from '../../utils/methods';
 import { setCp } from '../../store/CourseParticipants';
 import { setStudentOptions } from '../../store/CourseParticipantOptions';
+import { setCourseAvgGrade } from '../../store/courseAvgGrade';
 
 const Course = () => {
     // const mehtod = new methods()
@@ -27,7 +28,7 @@ const Course = () => {
     const dispatch = useDispatch()
     const grades = useSelector((state: cpState) => state.grades.value.courseParticipants)
     const studentOptions = useSelector((state: studentOptionsState) => state.studentOptions.value.studentOptions)
-
+    const courseAvgGrade = useSelector((state: courseAvgGradeState) => state.courseAvgGrade.value.avgGrade)
     const courseParticipants = useSelector((state: cpStateStudents) => state.courseParticipants.value.courseParticipants)
     const location = useLocation()
     const courseId = location.state.CourseId
@@ -71,8 +72,8 @@ const Course = () => {
             const res = await methods.get(`http://localhost:8000/api/cp/get/Grade/${id}`)
             const res_Grade: avgGradesInterface[] = res.data
             // console.log(res_students)
-            setGrade(res_Grade)
-            // dispatch(setStudents(students))
+            // setGrade(res_Grade)
+            dispatch(setCourseAvgGrade(res_Grade))
             return res_Grade
         } catch (e) {
             console.log('users not fetched', e)
@@ -163,7 +164,7 @@ const Course = () => {
                     <CardContent >
                         <Typography sx={{ fontSize: 30 }}>ציון ממוצע</Typography>
                         <Divider></Divider>
-                        <Typography>{Grade?.map((value) => value.avgGrade)}</Typography>
+                        <Typography>{courseAvgGrade?.map((value) => value.avgGrade)}</Typography>
                     </CardContent>
                 </Card>
             </Box>

@@ -1,4 +1,5 @@
 import { Dispatch,SetStateAction } from "react";
+import { cpInterface } from "./CourseParticicpants";
 export interface User {
     Id : string,
     Name:  string,
@@ -66,3 +67,5 @@ export interface userState {
 export interface userValue{
     value: {user:User | undefined}
 }
+
+

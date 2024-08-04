@@ -48,3 +48,13 @@ export interface pieGradesState {
 export interface pieGradesValue {
     value: { pieGrades: PieGradesInterface[] }
 }
+
+
+
+export interface courseAvgGradeState {
+    courseAvgGrade : courseAvgGradeValue
+}
+
+export interface courseAvgGradeValue{
+    value: {avgGrade:avgGradesInterface[] | undefined}
+}
