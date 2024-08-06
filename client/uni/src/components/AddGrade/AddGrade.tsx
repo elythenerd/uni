@@ -1,14 +1,17 @@
 import { Typography } from "@mui/material";
 import TextField from "@mui/material/TextField";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { cpInterface, cpState } from "../../types/CourseParticicpants";
 import { useDispatch, useSelector } from "react-redux";
-import { addGrade, changegrade } from "../../store/AddGrade";
+import { addGrade, changegrade, setGrades } from "../../store/AddGrade";
 
-const AddGrade = ({ id, courseId}: { id: string, courseId: string }) => {
+const AddGrade = ({ id, courseId }: { id: string, courseId: string }) => {
     const [grade, setGrade] = useState<string>('')
     const dispatch = useDispatch()
-    
+    useEffect(() => {
+        dispatch(setGrades([]))
+    }, [])
+    // 
     // const [coursParticipants, setCourseParticicpants] = useState<cpInterface[]>([])
 
     const courseParticipants = useSelector((state: cpState) => state.grades.value.courseParticipants)

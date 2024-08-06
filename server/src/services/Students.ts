@@ -16,9 +16,9 @@ export async function createStudents(req: Request, res: Response) {
       { new: true, upsert: true })
 
     res.status(200).json(students)
-    // if (students.Id!== student?.Id){
+    if (students.Id!== student?.Id){
       io.addStudent(student as studentInterface)
-    // }
+    }
    
   } catch (e) {
     res.status(400).send(e)

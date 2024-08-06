@@ -9,7 +9,7 @@ export async function createTeachersSubject(req: Request, res: Response) {
         // await TeachersSubjects.create(teachersSubjects)
         await TeachersSubjects.update({
             TeacherId: teachersSubjects.TeacherId,
-            SubjectId: teachersSubjects.Id
+            SubjectId: teachersSubjects.SubjectId
         },
             { $set: teachersSubjects },
             { new: true, upsert: true })
@@ -26,6 +26,7 @@ export async function createTeachersSubject(req: Request, res: Response) {
 
 
 export async function getTeachersSubject(req: Request, res: Response) {
+    const id =req.params.id
     try {
         // console.log(TeachersSubjects)
 
@@ -94,8 +95,8 @@ export async function getTeachersSubjectOptions(req: Request, res: Response) {
             {
                 '$lookup': {
                     'from': 'courses', 
-                    'localField': 'TeacherId', 
-                    'foreignField': 'TeacherId', 
+                    'localField': 'Name', 
+                    'foreignField': 'Name', 
                     'as': 'result'
                 }
             },

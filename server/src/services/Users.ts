@@ -65,7 +65,7 @@ export async function checkUserAuth(req: Request, res: Response) {
         // const Password = users.find((user)=> user.Password === User.Password)
         const selectedUser = users.find((user)=> user.Id === User.Id)
         console.log(selectedUser?.Password)
-        if (!selectedUser || !comparePassword(User.Password,selectedUser.Password)){
+        if (!selectedUser || !comparePassword(User.Password,selectedUser.Password) || !selectedUser?.Active){
             return res.status(401).send('bad credentials')
         }
         else {

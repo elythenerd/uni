@@ -11,6 +11,7 @@ import axios, { AxiosError, AxiosResponse } from 'axios';
 import { setLoggedUser } from '../../store/LoggedUser';
 import { useDispatch } from 'react-redux';
 import { checkID } from '../../utils/checkId';
+import methods from '../../utils/methods';
 // import { setUser } from '../../store/LoggedUser';
 // import { setUsers } from '../../store/Users';
 
@@ -29,19 +30,14 @@ const LogIn = () => {
     // const { Users } = useContext(UserContext) || { Users: [] }
     const checkUserAuth = async (body: userCredentials) => {
         try {
-            const res = await axios.post('http://localhost:8000/api/users/auth/login', body, { withCredentials: true })
+            const res = await methods.post('http://localhost:8000/api/users/auth/login', body)
             const userFetched: User = await res.data
             // console.log(userFetched)
-            if (res.status == 401) {
-
-                setUser(userFetched)
-                setPasswordError(true)
-                return userFetched
-            } else {
+            
+            
                 setPasswordError(false)
-                setUser(userFetched)
                 return userFetched
-            }
+            
 
         }
 

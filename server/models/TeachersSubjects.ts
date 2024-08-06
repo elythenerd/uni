@@ -33,8 +33,8 @@ class TeachersSubjects {
         // return this.teachersSubjects.create(body)
     }
 
-    async get(): Promise<TsInterface[]> {
-        return this.teachersSubjects.find()
+    async get(body={}): Promise<TsInterface[]> {
+        return this.teachersSubjects.find(body)
     }
 
     async delete(id: string): Promise<TsInterface[] | null> {

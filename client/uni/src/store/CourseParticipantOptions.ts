@@ -18,7 +18,7 @@ export const studentOptionsSlice = createSlice({
         },
         deleteStudentOption: (state, action) => {
             // console.log(action.payload)
-            let index: number = state.value.studentOptions.findIndex(student => student.Id == action.payload)
+            // let index: number = state.value.studentOptions.findIndex(student => student.Id == action.payload)
             // console.log(index)
             // console.log(state.value.courses)
             state.value.studentOptions = state.value.studentOptions.filter((student)=>student.Id!==action.payload)

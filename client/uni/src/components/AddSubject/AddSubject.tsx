@@ -1,4 +1,4 @@
-import { Box, Button } from "@mui/material";
+import { Box, Button, Dialog, DialogActions, DialogContent, DialogTitle } from "@mui/material";
 import React, { useState, useContext, useEffect } from "react";
 import { ChangeEvent } from "react";
 import TextField from "@mui/material/TextField";
@@ -10,13 +10,13 @@ import { v4 as uuidv4 } from 'uuid';
 import axios from "axios";
 
 
-const AddSubject = ({ setOpenSubject }: { setOpenSubject: React.Dispatch<React.SetStateAction<boolean>> }) => {
+const AddSubject = ({ setOpenSubject, openSubject }: { setOpenSubject: React.Dispatch<React.SetStateAction<boolean>>, openSubject: boolean }) => {
     const [Subject, setSubject] = useState<string>('')
     const [SubjectId, setSubjectId] = useState<string>()
     // const { openSubject, setOpenSubject }: OpenSubjectInterface = useContext(OpenContext)
 
     const dispatch = useDispatch()
-    
+
     const fetchSubjects = async () => {
         try {
             const res = axios.get('http://localhost:8000/api/subjects/get')
@@ -52,10 +52,17 @@ const AddSubject = ({ setOpenSubject }: { setOpenSubject: React.Dispatch<React.S
         }
     }
     return (
-        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
-            <TextField required label='שם' onChange={(e: ChangeEvent<HTMLInputElement>) => setSubject(e.target.value)} />
-            <Button onClick={() => checkAddSubject()}>הוסף</Button>
-        </Box>)
+
+        <Dialog open={openSubject} onClose={() => setOpenSubject(false)} fullWidth>
+            <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>הוסף מקצוע</DialogTitle>
+            <DialogContent>
+                <TextField fullWidth variant="standard" required label='שם' onChange={(e: ChangeEvent<HTMLInputElement>) => setSubject(e.target.value)} />
+            </DialogContent>
+            <DialogActions>
+                <Button onClick={() => checkAddSubject()}>הוסף</Button>
+
+            </DialogActions>
+        </Dialog>)
 }
 export default AddSubject
 

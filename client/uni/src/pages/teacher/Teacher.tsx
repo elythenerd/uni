@@ -14,6 +14,9 @@ const Teacher = () => {
     const location = useLocation()
     const loggedUser = useSelector((state:userState)=> state.user.value.user)
     const id : string = loggedUser?.Job===JobType.Boss? location.state.id:loggedUser?.Id
+    const courses = useSelector((state: coursesState) => state.courses.value.courses)
+
+    
     const dispatch  = useDispatch()
     useEffect(()=>{
         fetchCourses()
@@ -31,12 +34,11 @@ const Teacher = () => {
     }
     // const courses:CourseInterface[] = useSelector((state: coursesState) => state.courses.value.courses)
 
-    const courses = useSelector((state: coursesState) => state.courses.value.courses)
 
     return (
-        <Box sx={{ width: '100vw', height: '100vh' }}>
+        <Box >
             <Stack>
-                <Navbar />
+               
                 <Divider><Chip label='קורסים פתוחים'></Chip></Divider>
                 {courses.filter((course) => course.Status).length?<CourseGrid courses={courses.filter((course) => course.Status)}/>:<Typography sx={{textAlign:'center'}}>אין קורסים פתוחים</Typography>}
                 {<Divider ><Chip label='קורסים סגורים'></Chip></Divider>}

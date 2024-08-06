@@ -23,6 +23,7 @@ exports.getAvgGrade = getAvgGrade;
 const CourseParticipants_1 = __importDefault(require("../../models/CourseParticipants"));
 const __1 = require("..");
 const Students_1 = __importDefault(require("../../models/Students"));
+const MongoAggregate_1 = require("../utils/MongoAggregate");
 function createCourseParticipant(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
@@ -108,175 +109,18 @@ function createManyCourseParticipants(req, res) {
     return __awaiter(this, void 0, void 0, function* () {
         try {
             const coursePrticipants = req.body;
+            console.log(coursePrticipants);
             const cp = yield CourseParticipants_1.default.createMany(coursePrticipants);
             const courseId = cp[0].CourseId;
             const studentIds = cp.map((cp) => { return cp.StudentId; });
-            const pieGrades = yield CourseParticipants_1.default.aggregate([{
-                    '$addFields': {
-                        'gradeInt': {
-                            '$toInt': '$Grade'
-                        }
-                    }
-                }, {
-                    '$group': {
-                        '_id': {
-                            'StudentId': '$StudentId',
-                            'CourseId': '$CourseId'
-                        },
-                        'avgGrade': {
-                            '$avg': '$gradeInt'
-                        }
-                    }
-                }, {
-                    '$project': {
-                        'StudentId': '$_id.StudentId',
-                        'CourseId': '$_id.CourseId',
-                        'avgGrade': 1,
-                        '_id': 0
-                    }
-                },
-                {
-                    '$match': {
-                        'CourseId': courseId
-                    }
-                }, {
-                    '$group': {
-                        '_id': {
-                            '$switch': {
-                                'branches': [
-                                    {
-                                        'case': {
-                                            '$eq': [
-                                                '$avgGrade', null
-                                            ]
-                                        },
-                                        'then': 'null'
-                                    }, {
-                                        'case': {
-                                            '$lte': [
-                                                '$avgGrade', 55
-                                            ]
-                                        },
-                                        'then': '<55'
-                                    }, {
-                                        'case': {
-                                            '$lte': [
-                                                '$avgGrade', 70
-                                            ]
-                                        },
-                                        'then': '55-70'
-                                    }, {
-                                        'case': {
-                                            '$lte': [
-                                                '$avgGrade', 84
-                                            ]
-                                        },
-                                        'then': '70-84'
-                                    }, {
-                                        'case': {
-                                            '$lte': [
-                                                '$avgGrade', 100
-                                            ]
-                                        },
-                                        'then': '85-100'
-                                    }
-                                ],
-                                'default': 'other'
-                            }
-                        },
-                        'count': {
-                            '$sum': 1
-                        }
-                    }
-                }, {
-                    '$addFields': {
-                        'color': {
-                            '$switch': {
-                                'branches': [
-                                    {
-                                        'case': {
-                                            '$eq': [
-                                                '$_id', '<55'
-                                            ]
-                                        },
-                                        'then': 'red'
-                                    }, {
-                                        'case': {
-                                            '$eq': [
-                                                '$_id', '55-70'
-                                            ]
-                                        },
-                                        'then': 'yellow'
-                                    }, {
-                                        'case': {
-                                            '$eq': [
-                                                '$_id', '70-84'
-                                            ]
-                                        },
-                                        'then': 'orange'
-                                    }, {
-                                        'case': {
-                                            '$eq': [
-                                                '$_id', '85-100'
-                                            ]
-                                        },
-                                        'then': 'green'
-                                    }
-                                ],
-                                'default': 'other'
-                            }
-                        }
-                    }
-                }
-            ]);
-            const students = yield Students_1.default.aggregate([
-                {
-                    '$lookup': {
-                        'from': 'AvgGradeView',
-                        'localField': 'Id',
-                        'foreignField': 'StudentId',
-                        'as': 'result'
-                    }
-                }, {
-                    '$unwind': {
-                        'path': '$result',
-                        'preserveNullAndEmptyArrays': true
-                    }
-                }, {
-                    '$project': {
-                        '_id': 1,
-                        'Id': 1,
-                        'Name': 1,
-                        'BirthYear': 1,
-                        'Status': 1,
-                        'Grade': '$result.avgGrade',
-                        'CourseId': '$result.CourseId'
-                    }
-                }, {
-                    '$match': {
-                        'CourseId': courseId
-                    }
-                },
-                {
-                    '$project': {
-                        'Id': 1,
-                        'Name': 1,
-                        'BirthYear': 1,
-                        'Status': 1,
-                        'Grade': 1
-                    }
-                }, {
-                    '$match': {
-                        'Id': {
-                            '$in': studentIds
-                        }
-                    }
-                }
-            ]);
+            const pieGrades = yield CourseParticipants_1.default.aggregate((0, MongoAggregate_1.pieGradesMongo)(courseId));
+            const students = yield Students_1.default.aggregate((0, MongoAggregate_1.studentsMongo)(courseId, studentIds));
+            const avgGrades = (yield CourseParticipants_1.default.aggregate((0, MongoAggregate_1.avgGrdaesMongo)(courseId)));
             res.json().status(200);
-            console.log(students, studentIds);
+            // console.log(avgGrades)
             __1.io.addGrade(students);
             __1.io.pieGrades(pieGrades);
+            __1.io.courseAvgGrade(avgGrades);
         }
         catch (e) {
             res.send(e).status(400);
@@ -453,33 +297,7 @@ function getAvgGrade(req, res) {
         try {
             // console.log(Students)
             const CourseId = req.params.id;
-            const avgGrades = (yield CourseParticipants_1.default.aggregate([
-                {
-                    '$addFields': {
-                        'gradeInt': {
-                            '$toInt': '$Grade'
-                        }
-                    }
-                }, {
-                    '$group': {
-                        '_id': {
-                            'CourseId': '$CourseId'
-                        },
-                        'avgGrade': {
-                            '$avg': '$gradeInt'
-                        }
-                    }
-                }, {
-                    '$project': {
-                        '_id': '$_id.CourseId',
-                        'avgGrade': 1
-                    }
-                }, {
-                    '$match': {
-                        '_id': CourseId
-                    }
-                }
-            ]));
+            const avgGrades = (yield CourseParticipants_1.default.aggregate((0, MongoAggregate_1.avgGrdaesMongo)(CourseId)));
             res.send(avgGrades).status(200);
         }
         catch (e) {

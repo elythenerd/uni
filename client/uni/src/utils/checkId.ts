@@ -3,7 +3,7 @@ import React from "react"
 export const checkID = (id: string,setID:React.Dispatch<React.SetStateAction<string>>,setError:React.Dispatch<React.SetStateAction<boolean>>,setErrorMessage:React.Dispatch<React.SetStateAction<string>>) => {
      
     setID(id)
-    // console.log(id)
+    // console.log(ErrorMessage)
     // console.log(Id.length)
     if (parseInt(id) && id.length === 9) {
         setError(false)

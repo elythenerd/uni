@@ -26,6 +26,7 @@ app.use((0, cors_1.default)({
     origin: ['http://localhost:5173'],
     credentials: true
 }));
+app.use('/uploads', express_1.default.static(path_1.default.join(__dirname, 'uploads')));
 dotenv_1.default.config();
 app.use(express_1.default.json());
 app.use((0, cookie_parser_1.default)());
@@ -43,7 +44,6 @@ app.use('/api/subjects', Subjects_1.default);
 app.use('/api/students', Students_1.default);
 app.use('/api/ts', TeacherSubjects_1.default);
 app.use('/api/cp', CourseParticipants_1.default);
-app.use('/uploads', express_1.default.static(path_1.default.join(__dirname, 'uploads')));
 const port = process.env.PORT || 7000;
 const mongoUrl = process.env.MONGO_URL;
 server.listen(port, () => {

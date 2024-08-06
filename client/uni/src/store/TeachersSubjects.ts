@@ -1,31 +1,31 @@
 import { configureStore, createSlice } from "@reduxjs/toolkit";
 import { TeachersSubjects } from "../types/TeachersSubjects";
 // import { Subject } from "../types/Subject";
-const teachersSubjectsInitialState = {value : {teachersSubjects : [] as TeachersSubjects[]} }
+const teachersSubjectsInitialState = { value: { teachersSubjects: [] as TeachersSubjects[] } }
 export const TeachersSubjectsSlice = createSlice({
-    name : "teachersSubjects",
+    name: "teachersSubjects",
     initialState: teachersSubjectsInitialState,
     reducers: {
-        addTeachersSubjects : (state,action)=>{
-             console.log(state.value.teachersSubjects[0])
-             console.log(action.payload)
+        addTeachersSubjects: (state, action) => {
+            console.log(state.value.teachersSubjects[0])
+            console.log(action.payload)
             state.value.teachersSubjects.push(action.payload)
-            
+
         },
-        removeTeachersSubjects: (state,action)=>{
-             console.log(action.payload)
-            let index:number = state.value.teachersSubjects.findIndex(teachersSubject=>teachersSubject.Id==action.payload.Id)
+        removeTeachersSubjects: (state, action) => {
+            console.log(action.payload)
+            let index: number = state.value.teachersSubjects.findIndex(teachersSubject => teachersSubject.Id == action.payload.Id)
             console.log(index)
-            state.value.teachersSubjects[index] = {...state.value.teachersSubjects[index],Active:false}
+            state.value.teachersSubjects[index] = { ...state.value.teachersSubjects[index], Active: false }
             console.log(state.value.teachersSubjects[0])
 
         },
-        setTeachersSubjects : (state,action)=>{
+        setTeachersSubjects: (state, action) => {
             state.value.teachersSubjects = action.payload
         }
     }
-    
+
 })
 
-export const {addTeachersSubjects,removeTeachersSubjects,setTeachersSubjects} = TeachersSubjectsSlice.actions
+export const { addTeachersSubjects, removeTeachersSubjects, setTeachersSubjects } = TeachersSubjectsSlice.actions
 

@@ -20,9 +20,8 @@ const SignUp = () => {
     const [Job, setJob] = useState<JobType>()
     const [Gender, setGender] = useState<GenderType>()
     const [DateOfBirth, setDateOfBirth] = useState<string>('')
-    const [ProfilePicture, setProfilePicture] = useState<Blob|string>('')
+    const [ProfilePicture, setProfilePicture] = useState<Blob | string>('')
     const [ProfilePictureMulter, setProfilePictureMulter] = useState<File>()
-
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [passwordError, setPasswordError] = useState<boolean>(false)
     const [error, setError] = useState<boolean>(false)
@@ -81,7 +80,7 @@ const SignUp = () => {
         }
     }
     const checkSignUp = async () => {
-        if (!Job || !Id || !Password || !Name || !DateOfBirth || !Gender) {
+        if (!Job || !Id || !Password || !Name || !DateOfBirth || !Gender || error) {
             // window.alert(`שדות ריקים: \n ${!Id && 'ת.ז\n'} ${!Name && 'שם מלא\n'} ${!Password && 'סיסמה\n'} ${!Job && 'תפקיד\n'} ${!DateOfBirth && 'תאריך לידה\n'} ${!Gender && 'ת.ז\n'}`)
         } else {
             const newUser: User = {
@@ -140,14 +139,14 @@ const SignUp = () => {
     //         console.error(error);
     //     }
     // };
-
+    // console.log(errorMessage)
 
     return (
 
         <Stack sx={{ backgroundColor: 'white', display: 'flex', justifyContent: 'space-between', height: '50%', width: '25%', padding: '3%', alignItems: 'center', borderRadius: '5px', boxShadow: '1px 1px 1px 1px  rgb(239, 239, 239)' }}>
             <Typography variant='h1'>הרשמה</Typography>
             <div className='underline'></div>
-            <TextField error={idErrorMessage ? true : false} sx={{ width: '90%' }} helperText={idErrorMessage && idErrorMessage} label={error ? errorMessage : 'ת.ז'} onChange={(e: ChangeEvent<HTMLInputElement>) => checkID(e.target.value, setID, setError, setErrorMessage)}></TextField>
+            <TextField error={error} sx={{ width: '90%' }} helperText={idErrorMessage && idErrorMessage} label={error ? errorMessage : 'ת.ז'} onChange={(e: ChangeEvent<HTMLInputElement>) => checkID(e.target.value, setID, setError, setErrorMessage)}></TextField>
             <TextField sx={{ width: '90%' }} label={'שם'} onChange={(e: ChangeEvent<HTMLInputElement>) => setName(e.target.value)}></TextField>
             <TextField error={passwordError} type={showPassword ? 'text' : 'password'} label='סיסמה' onChange={(e: ChangeEvent<HTMLInputElement>) => setPassword(e.target.value)}
                 sx={{ width: '90%' }}
@@ -196,8 +195,8 @@ const SignUp = () => {
                 </Box>
             </Box>
             <Box sx={{ display: 'flex', justifyContent: 'flex-start', width: '100%', marginLeft: '3rem' }}>
-                <Typography>לא רשומים?</Typography>
-                <Link to={'/LogIn'}> הרשמו כאן</Link>
+                <Typography>כבר רשומים?</Typography>
+                <Link to={'/LogIn'}> התחברו כאן</Link>
             </Box>
 
             <Button variant='contained' onClick={() => checkSignUp()} sx={{ width: '90%', borderRadius: '5px', backgroundColor: ' rgb(80, 139, 241)', color: 'white', }}>כניסה</Button>

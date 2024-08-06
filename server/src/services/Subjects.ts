@@ -52,8 +52,8 @@ export async function deleteSubject(req: Request, res: Response) {
         const subject = await Subjects.update({ Id: subjectsId },
             { Active: false },
             { new: true })
-        res.send(subjectsId).status(200)
         io.removeSubject(subject as subjectInterface)
+        res.send(subjectsId).status(200)
     } catch (e) {
         res.send(e).status(400)
     }

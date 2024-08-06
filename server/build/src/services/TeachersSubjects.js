@@ -26,7 +26,7 @@ function createTeachersSubject(req, res) {
             // await TeachersSubjects.create(teachersSubjects)
             yield TeachersSubjects_1.default.update({
                 TeacherId: teachersSubjects.TeacherId,
-                SubjectId: teachersSubjects.Id
+                SubjectId: teachersSubjects.SubjectId
             }, { $set: teachersSubjects }, { new: true, upsert: true });
             console.log('this is');
             res.json().status(200);
@@ -104,8 +104,8 @@ function getTeachersSubjectOptions(req, res) {
                 {
                     '$lookup': {
                         'from': 'courses',
-                        'localField': 'TeacherId',
-                        'foreignField': 'TeacherId',
+                        'localField': 'Name',
+                        'foreignField': 'Name',
                         'as': 'result'
                     }
                 },

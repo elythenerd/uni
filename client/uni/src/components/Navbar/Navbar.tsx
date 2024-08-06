@@ -59,9 +59,9 @@ const Navbar = () => {
                         open={open}
                         onClose={handleClose}
                         aria-labelledby="avatar-logo">
-                        <MenuItem onClick={()=>LogOut()}>התנתק</MenuItem>
+                        <MenuItem onClick={() => LogOut()}>התנתק</MenuItem>
                     </Menu>
-                    <Typography>שלום {loggedUser?.Name}</Typography>
+                    <Typography>שלום {loggedUser?.Name}, </Typography>
 
                     <Typography>{loggedUser?.Job === JobType.Boss ? JobType.BossLabel : JobType.TeacherLabel}</Typography>
                 </Box>

@@ -132,7 +132,8 @@ export async function getCourseNamesByteacherId(req: Request, res: Response) {
             '$arrayElemAt': [
               '$result2.Name', 0
             ]
-          }
+          },
+          'enrollementYear':1
         }
       },
       {

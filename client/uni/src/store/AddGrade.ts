@@ -6,7 +6,7 @@ export const addGradeSlice = createSlice({
     name: "addGrade",
     initialState: addGradeInitialState,
     reducers: {
-        setCp: (state, action) => {
+        setGrades: (state, action) => {
             // console.log(state.value.Subjects[0])
             // console.log(action.payload)
             state.value.courseParticipants = action.payload
@@ -34,5 +34,5 @@ export const addGradeSlice = createSlice({
     }
 })
 
-export const { setCp, addGrade,changegrade,addCp } = addGradeSlice.actions
+export const { setGrades, addGrade,changegrade,addCp } = addGradeSlice.actions
 

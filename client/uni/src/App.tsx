@@ -12,7 +12,7 @@ import { Provider, useSelector } from 'react-redux';
 import OpenContextProvider from './context/SubjectContext/openContext/openContextProvider';
 import { store } from './store/Store';
 import Course from './pages/course/Course';
-import { ThemeProvider } from '@mui/material';
+import { Box, ThemeProvider } from '@mui/material';
 import { cacheRtl, theme } from './theme/theme';
 import { CacheProvider } from '@emotion/react';
 import axios from 'axios';
@@ -29,14 +29,17 @@ function App() {
       <ThemeProvider theme={theme}>
         <CacheProvider value={cacheRtl} >
 
-          <Provider store={store} stabilityCheck="never">
+          <Provider store={store} >
             <Sockets/>
             <UserContextProvider>
               <OpenContextProvider>
 
                 <Router>
+               
+                 
                   <Auth/>
                    <AllRoutes></AllRoutes>
+                 
                 </Router>
               </OpenContextProvider>
 

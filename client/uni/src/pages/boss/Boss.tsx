@@ -26,13 +26,14 @@ import { JobType, User, usersState } from "../../types/User";
 import { FetchCourses } from "../../utils/requests";
 import methods from "../../utils/methods";
 const BossPage = () => {
-    
     const [openCourse, setOpenCourse] = useState<boolean>(false)
     const [openSubject, setOpenSubject] = useState<boolean>(false)
     // const [openTeacher, setOpenTeacher] = useState<boolean>(false)
     const [openStudent, setopenStudent] = useState<boolean>(false)
     const [tabvalue, setTabValue] = useState<string>('0');
-
+    const courses: CourseInterface[] = useSelector((state: coursesState) => state.courses.value.courses)
+    const students: StudentsInterface[] = useSelector((state: studentsState) => state.students.value.students)
+    const Users = useSelector((state: usersState) => state.users.value.users)
     const dispatch = useDispatch()
     useEffect(() => {
         fetchCourses()
@@ -50,7 +51,6 @@ const BossPage = () => {
             console.log('users not fetched', e)
         }
     }
-
     const fetchStudents = async () => {
         try {
             const res = methods.get('http://localhost:8000/api/students/get')
@@ -62,7 +62,6 @@ const BossPage = () => {
             console.log('users not fetched', e)
         }
     }
-
     const fetchUsers = async () => {
         try {
             const res = methods.get('http://localhost:8000/api/users/get')
@@ -74,34 +73,13 @@ const BossPage = () => {
             console.log('users not fetched', e)
         }
     }
-    
-    const courses: CourseInterface[] = useSelector((state: coursesState) => state.courses.value.courses)
-    const students: StudentsInterface[] = useSelector((state: studentsState) => state.students.value.students)
-    const Users = useSelector((state: usersState) => state.users.value.users)
-    console.log(students)
     return (
-        <Box sx={{ display: 'flex', width: '100vw', height: '100vh', flexDirection: 'column' }}>
-            <Box sx={{ width: '100vw' }}>
-                <Navbar></Navbar>
-            </Box>
+        <Box sx={{ display: 'flex', flexDirection: 'column' }}>
+
             <Box>
                 <Box>
-                    <Dialog open={openCourse} onClose={() => setOpenCourse(false)}>
-                        <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>הוסף קורס</DialogTitle>
-                        <AddCourse setOpenCourse={setOpenCourse}></AddCourse>
-                    </Dialog>
-
-                    <Dialog open={openSubject} onClose={() => setOpenSubject(false)}>
-                        <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>הוסף מקצוע</DialogTitle>
-                        <AddSubject setOpenSubject={setOpenSubject}></AddSubject>
-                    </Dialog>
-
-                    <Dialog open={openStudent} onClose={() => setopenStudent(false)}>
-                        <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>הוסף תלמיד</DialogTitle>
-                        <AddStudent setopenStudent={setopenStudent}></AddStudent>
-                    </Dialog>
-
-
+                    <AddSubject openSubject={openSubject} setOpenSubject={setOpenSubject}></AddSubject>
+                    <AddStudent openStudent={openStudent} setopenStudent={setopenStudent}></AddStudent>
                 </Box>
                 <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', height: '100%', width: '100vw' }}>
                     <TabContext value={tabvalue}>
@@ -114,7 +92,6 @@ const BossPage = () => {
                                 <Tab value={'2'} label={'תלמידים'}></Tab>
                                 <Tab value={'3'} label={'מורים'}></Tab>
                             </Tabs>
-
                         </Box>
                         <Box sx={{ justifyContent: 'center', display: 'flex', width: '100%', alignItems: 'center' }}>
                             <TabPanel value="0" sx={{ width: '100%', height: '100%' }}>
@@ -126,8 +103,6 @@ const BossPage = () => {
                                         <SubjectsList></SubjectsList>
                                     </Box>
                                 </Stack>
-
-
                             </TabPanel >
                             <TabPanel value='1' sx={{ width: '100%', height: '100%' }}>
                                 <CourseGrid courses={courses}></CourseGrid>
@@ -140,22 +115,16 @@ const BossPage = () => {
                             </TabPanel>
                             <TabPanel value="3" sx={{ width: '100%', height: '100%' }}>
                                 <Stack>
+                                    <AddCourse openCourse={openCourse} setOpenCourse={setOpenCourse}></AddCourse>
+
                                     <Button onClick={() => setOpenCourse(true)}> הוסף קורס חדש</Button>
-                                    <UserCardGrid Users={Users.filter((user) => user.Job === JobType.Teacher && user.Active!==false)} set={true}></UserCardGrid>
+                                    <UserCardGrid Users={Users.filter((user) => user.Job === JobType.Teacher && user.Active !== false)} set={true}></UserCardGrid>
                                 </Stack>
-
-
-
-
                             </TabPanel>
-
-
                         </Box>
                     </TabContext>
                 </Box>
             </Box>
-
-
         </Box>
     )
 }

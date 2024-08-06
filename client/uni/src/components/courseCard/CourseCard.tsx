@@ -32,6 +32,7 @@ const CourseCard = ({ course }: { course: CourseInterface }) => {
         // dispatch(removeCourse(id))
     }
     function toCourse(id: string, year: string | undefined, status: boolean) {
+        console.log(year)
         Navigator('/Course', { state: { CourseId: id, year: year, isclosed: status } })
     }
     return (
@@ -47,7 +48,7 @@ const CourseCard = ({ course }: { course: CourseInterface }) => {
                         <TiDeleteOutline ></TiDeleteOutline>
                     </IconButton>}
                     <Typography color="text.secondary">{course.enrollementYear}</Typography>
-                    <Button onClick={() => toCourse(course.Id, course?.enrollementYear,course.Status)}>לפרטי קורס</Button>
+                    <Button onClick={() => toCourse(course.Id, course?.enrollementYear, course.Status)}>לפרטי קורס</Button>
                 </Stack>
             </CardContent>
         </Card>

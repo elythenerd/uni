@@ -1,7 +1,19 @@
 import React, { useContext, useEffect, useState } from "react";
 import './UserCard.css'
 import UserContext from "../../context/usersContext";
-import { Avatar, Box, Button, Card, CardContent, Chip, Dialog, IconButton, Stack, Typography } from "@mui/material";
+import {
+    Avatar,
+    Box,
+    Button,
+    Card,
+    CardContent,
+    Chip,
+    Dialog,
+    IconButton,
+    Stack,
+    Typography,
+    DialogContent
+} from "@mui/material";
 import { JobType, User } from "../../types/User";
 import { FaBirthdayCake } from "react-icons/fa";
 import { CiCirclePlus } from "react-icons/ci";
@@ -21,7 +33,11 @@ export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
     const navigator = useNavigate()
     const [teacherMode, setTeacherMode] = useState<boolean>(set)
     const [OpenTeacherSubject, setOpenTeacherSubject] = useState<boolean>(false)
+    const TeachersSubjects = useSelector((state: teachersSubjectsState) => state.teachersSubjects.value.teachersSubjects.filter((TeachersSubject: TeachersSubjects) => TeachersSubject.Active && TeachersSubject.TeacherId == user.Id))
+    const Subjects = useSelector((state: subjectState) => state.subject.value.Subjects)
+
     const dispatch = useDispatch()
+    
     useEffect(() => {
         fetchTeachersSubjects()
     }, [])
@@ -40,8 +56,6 @@ export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
 
         navigator('/Teacher', { state: { id: user.Id } })
     }
-    const TeachersSubjects = useSelector((state: teachersSubjectsState) => state.teachersSubjects.value.teachersSubjects.filter((TeachersSubject: TeachersSubjects) => TeachersSubject.Active && TeachersSubject.TeacherId == user.Id))
-    const Subjects = useSelector((state: subjectState) => state.subject.value.Subjects)
 
 
     function getInitials(name: string) {
@@ -54,26 +68,26 @@ export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
         const todaysYear = today.getFullYear()
         const birthDateMonth = birthDate.getMonth()
         const birthDateDay = birthDate.getDate()
-        let dateToCheckString = `${todaysYear}-${birthDateMonth+1}-${birthDateDay}`
+        let dateToCheckString = `${todaysYear}-${birthDateMonth + 1}-${birthDateDay}`
         let pastDate = new Date();
         let dateToCheck = new Date(dateToCheckString)
         pastDate.setDate(pastDate.getDate() - 7);
         // console.log(dateToCheckString)
-        return (dateToCheck >= pastDate && dateToCheck<=today)
+        return (dateToCheck >= pastDate && dateToCheck <= today)
     }
     function getSubject(id: string) {
         const subjectObj: Subject | undefined = Subjects.find((subject) => subject.Id == id)
         return subjectObj?.Name
     }
-    const deleteUser = async (id:string)=>{
-        try{
+    const deleteUser = async (id: string) => {
+        try {
             await methods.patch(`http://localhost:8000/api/users/delete/${id}`)
             // dispatch(removeUser(id))
             console.log('patch not created')
-        }catch(e){
+        } catch (e) {
             console.log(e)
         }
-        
+
     }
     return (
         // <div className="userCardContainer">
@@ -91,30 +105,31 @@ export const UserCard = ({ user, set }: { user: User, set: boolean }) => {
 
         <Card sx={{ width: '100%' }}>
             <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: 1 }}>
-                {checkBirthday(user.BirthDate) && !teacherMode && <FaBirthdayCake className="birthday"></FaBirthdayCake>}
+                {checkBirthday(user.BirthDate) && !set && <FaBirthdayCake className="birthday"></FaBirthdayCake>}
                 <Avatar src={`../../../public/images/${user.Id}.png`}></Avatar>
                 <Typography color="text.secondary">{user.Name}</Typography>
                 <Chip label={user.Job == JobType.Boss ? JobType.BossLabel : JobType.TeacherLabel}></Chip>
-                {teacherMode &&
-                    <Box sx={{ direction: 'rtl' }}>
-                        <Box sx={{ display: 'flex', width: '90%' }}>
+                {set &&
+                    <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                        <Box sx={{ display: 'flex', width: '90%', flexWrap: 'wrap', justifyContent: 'space-evenly', gap: '1rem' }}>
                             {TeachersSubjects.map((teachersubject) => {
-                                return <Chip label={<ChipSubject id={teachersubject.Id} teacherid={teachersubject.TeacherId} subjectid={teachersubject.SubjectId} label={getSubject(teachersubject.SubjectId)}></ChipSubject>}></Chip>
+                                return <Chip sx={{ padding: '5px' }} label={<ChipSubject id={teachersubject.Id} teacherid={teachersubject.TeacherId} subjectid={teachersubject.SubjectId} label={getSubject(teachersubject.SubjectId)}></ChipSubject>}></Chip>
                             })}
                         </Box>
-                        <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column' }}>
+                        <Box sx={{ display: 'flex', justifyContent: 'center', flexDirection: 'column', width: '20%', alignItems: 'center' }}>
                             <IconButton>
                                 <CiCirclePlus onClick={() => setOpenTeacherSubject(true)}></CiCirclePlus>
 
                             </IconButton>
                             <Button onClick={() => toTeacherPage()}>קורסים</Button>
                             <IconButton>
-                                <AiOutlineUserDelete onClick={()=>deleteUser(user.Id)}></AiOutlineUserDelete>
+                                <AiOutlineUserDelete onClick={() => deleteUser(user.Id)}></AiOutlineUserDelete>
                             </IconButton>
                         </Box>
-                        <Dialog open={OpenTeacherSubject} onClose={() => setOpenTeacherSubject(false)}>
-                            <AddSubjectTeacher setOpenTeacherSubject={setOpenTeacherSubject} teacherid={user.Id}></AddSubjectTeacher>
-                        </Dialog>
+
+                        <AddSubjectTeacher OpenTeacherSubject={OpenTeacherSubject} setOpenTeacherSubject={setOpenTeacherSubject} teacherid={user.Id}></AddSubjectTeacher>
+
+
                     </Box>}
             </CardContent>
         </Card>

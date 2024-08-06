@@ -11,5 +11,5 @@ userRouter.get('/auth', Users_1.checkAuth);
 userRouter.get('/get/year/:year', Users_1.getTeacherOptions);
 userRouter.patch('/delete/:id', Users_1.deleteUser);
 userRouter.get('/logOut', Users_1.logOut);
-userRouter.post('/upload', Multer_1.upload.single('file'), Users_1.postMulter);
+userRouter.post('/upload/:id', Multer_1.upload.single('file'), Users_1.postMulter);
 exports.default = userRouter;

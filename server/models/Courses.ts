@@ -38,7 +38,7 @@ class Courses{
     async aggregate(body:PipelineStage[]):Promise<cousresInterface[]>{
         return this.courses.aggregate(
             body
-        )
+        ) 
     }
     
     

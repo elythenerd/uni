@@ -11,7 +11,7 @@ import { setUsers } from "../../store/Users";
 // import {} from '../../../public'
 
 export const Home = () => {
-   
+    const Users = useSelector((state: usersState) => state.users.value.users)
     const dispatch = useDispatch()
     useEffect(()=>{
         fetchUsers()
@@ -28,10 +28,9 @@ export const Home = () => {
             console.log('users not fetched', e)
         }
     }
-    const Users = useSelector((state: usersState) => state.users.value.users)
     return <div className="home-container">
-        <Navbar></Navbar>
-        <UserCardGrid Users={Users.filter((user)=>user.Active!==false)} set={false} />
+        
+        <UserCardGrid Users={Users.filter((user)=>user.Active)} set={false} />
         
     </div>
 }

@@ -1,4 +1,4 @@
-import { Box, Button, Card, CardContent, Dialog, Divider, MenuItem, Stack, TextField, Typography } from '@mui/material';
+import { Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, Divider, MenuItem, Stack, TextField, Typography } from '@mui/material';
 import react, { useEffect } from 'react';
 import { useState } from 'react';
 import Navbar from '../../components/Navbar/Navbar';
@@ -15,46 +15,44 @@ import methods from '../../utils/methods';
 import { setCp } from '../../store/CourseParticipants';
 import { setStudentOptions } from '../../store/CourseParticipantOptions';
 import { setCourseAvgGrade } from '../../store/courseAvgGrade';
+import AddTest from '../../components/AddTest/AddTest';
+import AddCourseParticipant from '../../components/AddCourseParticipant/AddCourseParticipant';
 
 const Course = () => {
     // const mehtod = new methods()
     const [OpenAddTest, setOpenAddTest] = useState<boolean>(false)
     const [OpenAddStudent, setOpenAddStudent] = useState<boolean>(false)
     // const [studentOptions, setstudentOptions] = useState<StudentsInterface[]>()
-    const [students, setStudents] = useState<StudentsInterface[]>()
-    const [Grade, setGrade] = useState<avgGradesInterface[]>()
-
-    const [studentId, setStudentId] = useState<string>('')
+    // const [students, setStudents] = useState<StudentsInterface[]>()
+    // const [Grade, setGrade] = useState<avgGradesInterface[]>()
+    // const [studentId, setStudentId] = useState<string>('')
     const dispatch = useDispatch()
-    const grades = useSelector((state: cpState) => state.grades.value.courseParticipants)
-    const studentOptions = useSelector((state: studentOptionsState) => state.studentOptions.value.studentOptions)
+    // const grades = useSelector((state: cpState) => state.grades.value.courseParticipants)
+    // const studentOptions = useSelector((state: studentOptionsState) => state.studentOptions.value.studentOptions)
     const courseAvgGrade = useSelector((state: courseAvgGradeState) => state.courseAvgGrade.value.avgGrade)
     const courseParticipants = useSelector((state: cpStateStudents) => state.courseParticipants.value.courseParticipants)
     const location = useLocation()
     const courseId = location.state.CourseId
     const year = location.state.year
-    const isclosed = location.state.isclosed
+    const isopen = location.state.isclosed
     // console.log(courseId)
     useEffect(() => {
-        getStudentOptions(courseId)
+        // getStudentOptions(courseId)
         fetchStudents()
         fetchGrade(courseId)
     }, [])
-    useEffect(() => {
-        console.log('--------------------', studentOptions)
-    }, [studentOptions])
+   
+    // async function getStudentOptions(id: string) {
+    //     try {
+    //         const res = await methods.get(`http://localhost:8000/api/students/get/course/options/${id}/${year}`)
+    //         const options = res.data
+    //         // console.log(options, 'options')
+    //         dispatch(setStudentOptions(options))
+    //     } catch (e) {
+    //         console.log(e)
+    //     }
 
-    async function getStudentOptions(id: string) {
-        try {
-            const res = await methods.get(`http://localhost:8000/api/students/get/course/options/${id}/${year}`)
-            const options = res.data
-            // console.log(options, 'options')
-            dispatch(setStudentOptions(options))
-        } catch (e) {
-            console.log(e)
-        }
-
-    }
+    // }
     const fetchStudents = async () => {
         try {
             const res = methods.get(`http://localhost:8000/api/students/get/course/${courseId}/grades/avg`)
@@ -62,7 +60,7 @@ const Course = () => {
             // console.log(res_students)
             // setStudents(res_students)
             dispatch(setCp(res_students))
-            return students
+            return res_students
         } catch (e) {
             console.log('users not fetched', e)
         }
@@ -79,64 +77,70 @@ const Course = () => {
             console.log('users not fetched', e)
         }
     }
-    async function postCourseParticipants(body: cpInterface[]) {
-        try {
-            // body.forEach((cp)=> cp.Active=true)
-            console.log(body)
-            const req = await methods.post('http://localhost:8000/api/cp/createMany', body)
-            console.log('post created \n', req)
-        } catch (e) {
-            console.log(e, 'error')
-        }
-    }
-    async function postCourseParticipant(body: cpInterface) {
-        try {
-            // body.forEach((cp)=> cp.Active=true)
-            console.log(body)
-            const req = await methods.post('http://localhost:8000/api/cp/create', body)
-            console.log('post created \n', req)
-        } catch (e) {
-            console.log(e, 'error')
-        }
-    }
+    // async function postCourseParticipants(body: cpInterface[]) {
+    //     try {
+    //         // body.forEach((cp)=> cp.Active=true)
+    //         console.log(body)
+    //         const req = await methods.post('http://localhost:8000/api/cp/createMany', body)
+    //         console.log('post created \n', req)
+    //     } catch (e) {
+    //         console.log(e, 'error')
+    //     }
+    // }
+    // async function postCourseParticipant(body: cpInterface) {
+    //     try {
+    //         // body.forEach((cp)=> cp.Active=true)
+    //         console.log(body)
+    //         const req = await methods.post('http://localhost:8000/api/cp/create', body)
+    //         console.log('post created \n', req)
+    //     } catch (e) {
+    //         console.log(e, 'error')
+    //     }
+    // }
 
-    const checkAddTest = () => {
-        if (grades.filter((cp) => parseInt(cp.Grade as string) >= 0 && parseInt(cp.Grade as string) <= 100).length === grades.length) {
-            postCourseParticipants(grades)
-            console.log(grades)
-            setOpenAddTest(false)
-        } else {
-            console.log('not good')
-        }
-    }
-    const addStudent = () => {
-        const newStudent: cpInterface = {
-            StudentId: studentId,
-            CourseId: courseId,
+    // const checkAddTest = () => {
+    //     if (grades.filter((cp) => parseInt(cp.Grade as string) >= 0 && parseInt(cp.Grade as string) <= 100).length === grades.length) {
+    //         postCourseParticipants(grades)
+    //         console.log(grades)
+    //         setOpenAddTest(false)
+    //     } else {
+    //         console.log('not good')
+    //     }
+    // }
+    // const addStudent = () => {
+    //     const newStudent: cpInterface = {
+    //         StudentId: studentId,
+    //         CourseId: courseId,
 
-        }
-        if (studentId) {
-            postCourseParticipant(newStudent)
-            setOpenAddStudent(false)
-        }
-    }
-    // console.log(studentOptions, 111111)
+    //     }
+    //     if (studentId) {
+    //         postCourseParticipant(newStudent)
+    //         setOpenAddStudent(false)
+    //     }
+    // }
+    console.log(courseId, 111111)
     return (
-        <Stack sx={{ width: '100vw', height: '100vh', alignItems: 'center' }}>
-            <Navbar></Navbar>
+        <Stack sx={{ alignItems: 'center' }}>
+            
             <Box>
-                <Button disabled={!isclosed} onClick={() => setOpenAddStudent(true)}>הוסף תלמיד</Button>
-                <Button disabled={!isclosed} onClick={() => setOpenAddTest(true)}>הוסף מבחן</Button>
+                <Button disabled={!isopen} onClick={() => setOpenAddStudent(true)}>הוסף תלמיד</Button>
+                <Button disabled={!isopen} onClick={() => setOpenAddTest(true)}>הוסף מבחן</Button>
             </Box>
 
-            <Dialog open={OpenAddTest} onClose={() => setOpenAddTest(false)} maxWidth='lg' >
-                <Stack >
+            {/* <Dialog sx={{'alignItems':'center'}} fullWidth maxWidth='lg' open={OpenAddTest} onClose={() => setOpenAddTest(false)}  >
+                <DialogTitle sx={{ display: "flex", justifyContent: "center" }}>הזן ציונים</DialogTitle>
+                <DialogContent sx={{ display: "flex", justifyContent: "center",flexDirection:'column',alignItems:'center' }}>
                     <StudentsTable students={courseParticipants as StudentsInterface[]} course={true} addGrade={true} ></StudentsTable>
-                    <Button sx={{ padding: '5px' }} onClick={() => checkAddTest()}>שמור מבחן</Button>
+                    <DialogActions>
+                        <Button sx={{ padding: '5px' }} onClick={() => checkAddTest()}>שמור מבחן</Button>
 
-                </Stack>
-            </Dialog>
-            <Dialog open={OpenAddStudent} onClose={() => setOpenAddStudent(false)} maxWidth='lg' >
+                    </DialogActions>
+
+                </DialogContent>
+            </Dialog> */}
+            <AddTest OpenAddTest={OpenAddTest} setOpenAddTest={setOpenAddTest}></AddTest>
+            <AddCourseParticipant year={year} setOpenAddStudent={setOpenAddStudent} OpenAddStudent={OpenAddStudent} courseId={courseId}></AddCourseParticipant>
+            {/* <Dialog open={OpenAddStudent} onClose={() => setOpenAddStudent(false)} maxWidth='lg' >
                 <Stack sx={{ padding: '5px' }}>
                     <Typography>הוסף לתלמיד לקורס</Typography>
                     <TextField select>
@@ -155,8 +159,8 @@ const Course = () => {
                     {/* <StudentsTable courseId={courseId}></StudentsTable> */}
                     {/* <Button sx={{ padding: '5px' }} onClick={() => checkAddTest()}>שמור מבחן</Button> */}
 
-                </Stack>
-            </Dialog>
+                {/* </Stack> */}
+            {/* </Dialog> */} 
             <StudentsTable students={courseParticipants as StudentsInterface[]} course={true}></StudentsTable>
             <Box sx={{ display: 'flex', alignItems: 'center' }}>
                 <PieChart courseId={courseId}></PieChart>

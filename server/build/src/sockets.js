@@ -104,5 +104,10 @@ class sockets {
             this.io.emit('pieGrades', { pieGrades });
         });
     }
+    courseAvgGrade(avgGrade) {
+        return __awaiter(this, void 0, void 0, function* () {
+            this.io.emit('courseAvgGrade', { avgGrade });
+        });
+    }
 }
 exports.default = sockets;

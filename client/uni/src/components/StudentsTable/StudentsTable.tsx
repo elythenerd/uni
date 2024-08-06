@@ -13,6 +13,9 @@ const StudentsTable = ({ students, addGrade = false, course = false }: { student
     const [coursParticipants, setCourseParticicpants] = useState<cpInterface[]>([])
     const location = useLocation()
     const courseId = course ? location.state.CourseId : ''
+     const isopen = location.state?.isclosed === undefined ? true : location.state?.isclosed
+     console.log(isopen)
+
     const dispatch = useDispatch()
     console.log(courseId)
     // const courseId = '123456789'
@@ -38,7 +41,7 @@ const StudentsTable = ({ students, addGrade = false, course = false }: { student
         }
     }
     return (
-        <TableContainer component={Paper} sx={{ width: '80vw', maxHeight: '70vh', overflowY: 'auto' }}>
+        <TableContainer component={Paper} sx={{ width: '80%', maxHeight: '70%', overflowY: 'auto' }}>
             <Table stickyHeader >
                 <TableHead >
                     <TableRow >
@@ -61,9 +64,9 @@ const StudentsTable = ({ students, addGrade = false, course = false }: { student
                             sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                         >
                             {!addGrade && <TableCell align="center">
-                                <IconButton onClick={() => course ? removeStudentParticipation(row.Id, courseId) : removeStudent(row.Id)}>
+                                {isopen&&<IconButton onClick={() => course ? removeStudentParticipation(row.Id, courseId) : removeStudent(row.Id)}>
                                     <FaTrash></FaTrash>
-                                </IconButton>
+                                </IconButton>}
 
                             </TableCell>}
                             <TableCell align="center">{row.Id}</TableCell>
