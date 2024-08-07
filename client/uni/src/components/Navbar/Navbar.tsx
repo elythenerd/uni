@@ -43,7 +43,7 @@ const Navbar = () => {
     };
     return (
 
-        <AppBar position="static" sx={{ padding: '5px', backgroundColor: 'rgb(80, 139, 241)' }}>
+        <AppBar position="static" sx={{zIndex:9999, position: 'sticky',top:0, padding: '5px', backgroundColor: 'rgb(80, 139, 241)' }}>
             <div className="navbar-container">
                 <Box sx={{ display: 'flex', gap: '0.5px', justifyContent: 'center', alignItems: 'center' }}>
                     <IconButton aria-controls={open ? 'avatar-menu' : undefined}

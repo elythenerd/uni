@@ -27,6 +27,7 @@ export async function createTeachersSubject(req: Request, res: Response) {
 
 export async function getTeachersSubject(req: Request, res: Response) {
     const id =req.params.id
+    
     try {
         // console.log(TeachersSubjects)
 

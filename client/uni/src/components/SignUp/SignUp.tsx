@@ -11,7 +11,12 @@ import { setLoggedUser } from '../../store/LoggedUser';
 import { useDispatch } from 'react-redux';
 import { checkID } from '../../utils/checkId';
 import { GenderOption, genderOptions, jobOptions } from './Options';
-import { DatePicker, DesktopDatePicker, LocalizationProvider } from '@mui/lab';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
+import 'react-date-range/dist/styles.css'; // main style file
+import 'react-date-range/dist/theme/default.css'; // theme css file
+import { Calendar } from 'react-date-range';
+
 import methods from '../../utils/methods';
 const SignUp = () => {
     const [Id, setID] = useState<string>('')
@@ -19,15 +24,24 @@ const SignUp = () => {
     const [Password, setPassword] = useState<string>('')
     const [Job, setJob] = useState<JobType>()
     const [Gender, setGender] = useState<GenderType>()
-    const [DateOfBirth, setDateOfBirth] = useState<string>('')
+    const [DateOfBirth, setDateOfBirth] = useState<Date | null>(new Date())
     const [ProfilePicture, setProfilePicture] = useState<Blob | string>('')
     const [ProfilePictureMulter, setProfilePictureMulter] = useState<File>()
     const [showPassword, setShowPassword] = useState<boolean>(false)
     const [passwordError, setPasswordError] = useState<boolean>(false)
     const [error, setError] = useState<boolean>(false)
-    const [auth, setAuth] = useState<boolean>(false)
+    const [openCalender, setopenCalender] = useState<boolean>(false)
     const [errorMessage, setErrorMessage] = useState<string>('')
     const [idErrorMessage, setIdErrorMessage] = useState<string>()
+    const [startDate, setStartDate] = useState<Date | null>(new Date());
+    const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
+    const handleClick = (event: React.MouseEvent<HTMLElement>) => {
+        setAnchorEl(event.currentTarget);
+    }
+    const handleClose = () => {
+        setAnchorEl(null);
+    };
+    const open = Boolean(anchorEl)
     // const Users = useSelector((state: usersState) => state)
     const dispatch = useDispatch()
     const Navigator = useNavigate()
@@ -72,13 +86,13 @@ const SignUp = () => {
 
 
     }
-    const checkBirthDate = (e: ChangeEvent<HTMLInputElement>) => {
-        if (new Date(e.target.value) < new Date()) {
-            setDateOfBirth(e.target.value)
-        } else {
-            setDateOfBirth('')
-        }
-    }
+    // const checkBirthDate = (e: ChangeEvent<HTMLInputElement>) => {
+    //     if (new Date(e.target.value) < new Date()) {
+    //         setDateOfBirth(e.target.value)
+    //     } else {
+    //         setDateOfBirth('')
+    //     }
+    // }
     const checkSignUp = async () => {
         if (!Job || !Id || !Password || !Name || !DateOfBirth || !Gender || error) {
             // window.alert(`שדות ריקים: \n ${!Id && 'ת.ז\n'} ${!Name && 'שם מלא\n'} ${!Password && 'סיסמה\n'} ${!Job && 'תפקיד\n'} ${!DateOfBirth && 'תאריך לידה\n'} ${!Gender && 'ת.ז\n'}`)
@@ -88,7 +102,7 @@ const SignUp = () => {
                 Name: Name,
                 Password: Password,
                 Job: Job,
-                BirthDate: DateOfBirth,
+                BirthDate: DateOfBirth.toLocaleDateString(),
                 Gender: Gender,
                 // ProfilePicture: ProfilePicture,
                 Active: true
@@ -182,7 +196,33 @@ const SignUp = () => {
                     </TextField>
                 </Box>
                 <Box sx={{ display: 'flex', flexDirection: 'column', width: '40%', justifyContent: 'space-between', padding: '5px' }}>
-                    <input type='date' title='תאריך לילה' onChange={(e: ChangeEvent<HTMLInputElement>) => { checkBirthDate(e) }}></input>
+                    <Button
+                        sx={{ border: '1px solid grey', borderRadius: '5px' }}
+                        id="dateButton"
+                        onClick={handleClick}
+                        aria-haspopup="true"
+                        aria-expanded={open ? 'true' : undefined}>
+                        תאריך לידה:{` ${DateOfBirth?.toLocaleDateString('he')}`}
+
+                    </Button>
+                    <Menu
+                        open={open}
+                        onClose={handleClose}
+                        anchorEl={anchorEl}
+                        id='dateMenu'
+                        aria-labelledby="dateButton">
+                        <Stack>
+                            <Calendar
+                                maxDate={new Date()}
+                                date={DateOfBirth as Date}
+                                onChange={(item: Date) => setDateOfBirth(item)}
+                            />
+                            <Button onClick={() => handleClose()}>אישור</Button>
+                        </Stack>
+                    </Menu>
+
+
+                    {/* <input type='date' title='תאריך לילה' onChange={(e: ChangeEvent<HTMLInputElement>) => { checkBirthDate(e) }}></input> */}
                     <input className='file-selector' name='file' type='file' onChange={(e: ChangeEvent<HTMLInputElement>) => {
                         if (e.target.files && e.target.files.length > 0) {
                             setProfilePicture(e.target.files[0]);

@@ -11,13 +11,7 @@ export async function createCourseParticipant(req: Request, res: Response) {
     const coursePrticipant: cpInterface = req.body
 
     const cp = await CourseParticipants.create(coursePrticipant)
-    const student = await Students.aggregate([
-      {
-        '$match': {
-          'Id': cp.StudentId
-        }
-      }
-    ])
+    const student = await Students.get({Id:cp.StudentId})
     res.json().status(200)
     // console.log(student)
     io.addCp(student[0])
@@ -31,14 +25,8 @@ export async function deleteCourseParticipant(req: Request, res: Response) {
     console.log(CourseParticipants)
     const id: string = req.params.id
     const courseId: string = req.params.courseId
-    // const courseParticipants  = await CourseParticipants.get()
-    const cp = await Students.aggregate([
-      {
-        '$match': {
-          'Id': id
-        }
-      }
-    ])
+    const cp  = await Students.get({Id:id})
+    
     await CourseParticipants.delete({ StudentId: id, CourseId: courseId })
     console.log(cp)
     res.json().status(200)

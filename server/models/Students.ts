@@ -21,8 +21,8 @@ class Students {
         return this.students.create(body)
     }
 
-    async get(): Promise<studentInterface[]> {
-        return this.students.find()
+    async get(body={}): Promise<studentInterface[]> {
+        return this.students.find(body)
     }
 
     async aggregate(pipeline: PipelineStage[]): Promise<studentInterface[]> {

@@ -47,7 +47,7 @@ class TeachersSubjects {
     async update(expression={},apply={},how={}):Promise<TsInterface | null>{
         return this.teachersSubjects.findOneAndUpdate(expression,apply,how)
     }
-    async aggregation(pipeline:PipelineStage[]): Promise<subjectInterface[] | null> {
+    async aggregation(pipeline:PipelineStage[]): Promise<any | null> {
         return this.teachersSubjects.aggregate(
             pipeline
         )
